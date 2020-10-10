@@ -30,15 +30,15 @@ public class HulletHellGame extends ScreenBasedGame {
         FileHandleResolver fileHandleResolver = new FallbackFileHandleResolver(new ClasspathFileHandleResolver(), new InternalFileHandleResolver());
         assetManager = new AssetManager();
 
-        this.addScreen(new LoadingScreen(assetManager));
-        this.addScreen(new MainMenuScreen());
-
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
 
 //    	fitViewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT);
 
         enterGameScreen(0, new NullTransition(), new NullTransition());
+
+        this.addScreen(new LoadingScreen(assetManager));
+        this.addScreen(new MainMenuScreen(assetManager));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void interpolate(float alpha) {
-
+        getScreenManager().interpolate(this, alpha);
     }
 
     @Override

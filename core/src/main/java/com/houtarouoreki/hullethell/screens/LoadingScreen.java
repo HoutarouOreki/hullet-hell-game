@@ -52,7 +52,6 @@ public class LoadingScreen extends BasicGameScreen {
         g.drawString("Loading game", screenCenterH, screenCenterV + 60, 0, Align.center);
         g.setColor(Color.FOREST);
         g.fillRect(screenCenterH / 2, screenCenterV + 100, getProgressBarPercentage() * screenCenterH, 30);
-        System.out.println(assetManager.getProgress());
     }
 
     @Override
@@ -61,7 +60,6 @@ public class LoadingScreen extends BasicGameScreen {
     }
 
     private float getProgressBarPercentage() {
-        System.out.println(loadingDuration);
         return Math.min(assetManager.getProgress(), loadingDuration / (minimum_loading_time - 0.5f));
     }
 }
