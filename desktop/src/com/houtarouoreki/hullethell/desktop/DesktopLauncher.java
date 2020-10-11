@@ -1,5 +1,7 @@
 package com.houtarouoreki.hullethell.desktop;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import org.mini2Dx.desktop.DesktopMini2DxConfig;
 
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
@@ -13,6 +15,15 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.vSyncEnabled = true;
-		new DesktopMini2DxGame(new HulletHellGame(), config);
+
+		config.targetFPS = 0;
+		// z jakiegoś powodu przeciwdziała tearingowi i przycinaniu się
+		// zakładając, że ustawienia z panelu NVIDIA niczego nie forsują
+		// (np. 3D Settings -> Adjust image settings -> Performance)
+
+		config.fullscreen = false;
+		config.samples = 0;
+		DesktopMini2DxGame game = new DesktopMini2DxGame(new HulletHellGame(), config);
+		game.getGraphics().setFullscreenMode(Gdx.graphics.getDisplayMode());
 	}
 }

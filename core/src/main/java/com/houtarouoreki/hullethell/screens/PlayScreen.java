@@ -2,7 +2,6 @@ package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
@@ -29,6 +28,7 @@ public class PlayScreen extends BasicGameScreen {
     private Ship player;
     private World world;
     private Viewport viewport;
+    private float enemySpawnTimer;
 
     @Override
     public void initialise(GameContainer gc) {
@@ -53,6 +53,30 @@ public class PlayScreen extends BasicGameScreen {
         updateBackground(delta);
         world.update(delta, viewArea);
         clampPlayerPosition();
+        attemptSpawnEnemy(delta);
+    }
+
+    private void attemptSpawnEnemy(float delta) {
+        enemySpawnTimer += delta;
+        float enemySpawnFrequency = 0.4f;
+        if (enemySpawnTimer > enemySpawnFrequency) {
+            enemySpawnTimer -= enemySpawnFrequency;
+            spawnEnemy();
+        }
+    }
+
+    private void spawnEnemy() {
+        final float enemySize = 4 + (float) Math.random() * 4;
+        Ship enemy = new Ship(new ArrayList<CollisionCircle>() {
+            {
+                add(new CollisionCircle(0, 0, enemySize / 2));
+            }
+        });
+        enemy.setTextureName("asteroida.png");
+        enemy.setSize(new Vector2(enemySize, enemySize));
+        enemy.setPosition(new Vector2(viewArea.x + enemy.getSize().x / 2, (float) Math.random() * viewArea.y));
+        enemy.setVelocity(new Vector2(-12, 0));
+        world.bodies.add(enemy);
     }
 
     private void clampPlayerPosition() {
@@ -76,7 +100,7 @@ public class PlayScreen extends BasicGameScreen {
     }
 
     private void initialiseBackground() {
-        float starsAmount = 1000;
+        float starsAmount = 200;
         final float minStarSize = 0.04f;
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {

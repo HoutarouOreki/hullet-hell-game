@@ -1,13 +1,15 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class World {
-    private final float time_step_duration = 0.016667f;
+    private final float time_step_duration = 0.01f;
     public List<Body> bodies;
     public float totalTimePassed;
     private float bufferedTime;
@@ -23,10 +25,19 @@ public class World {
             bufferedTime -= time_step_duration;
             totalTimePassed += time_step_duration;
         }
+        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     protected void physics(Vector2 viewArea) {
-        for (Body body : bodies) {
+        Iterator<Body> i = bodies.iterator();
+        while (i.hasNext()) {
+            Body body = i.next();
+            if (body.getPosition().x < -10 || body.getPosition().y < -10 ||
+                    body.getPosition().x > viewArea.x + 10 || body.getPosition().y > viewArea.y + 10) {
+                // usuń jeśli 10m poza planszą
+                i.remove();
+                continue;
+            }
             body.physics(time_step_duration, viewArea);
         }
     }
