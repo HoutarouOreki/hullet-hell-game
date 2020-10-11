@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.EntityTeam;
@@ -33,11 +34,12 @@ public class PlayScreen extends BasicGameScreen {
     public void initialise(GameContainer gc) {
         viewport = new FitViewport(1280, 1280 * viewArea.y / viewArea.x);
         player = new Ship(new ArrayList<CollisionCircle>() {{
-            add(new CollisionCircle(0, 0, 1.5f));
-            add(new CollisionCircle(1.5f, 0, 1));
-            add(new CollisionCircle(0, 1, 1));
+            add(new CollisionCircle(-0.2f, -0.1f, 0.55f));
+            add(new CollisionCircle(0.8f, -0.35f, 0.3f));
         }});
         player.setTeam(EntityTeam.PLAYER);
+        player.setTextureName("playerShip.png");
+        player.setSize(new Vector2(3.2f, 1.3f));
         world = new World();
         world.bodies.add(player);
 
@@ -46,9 +48,19 @@ public class PlayScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager, float delta) {
-//        player.acceleration.x = 0;
-//        player.acceleration.y = 0;
-        //player.velocity.set(0, 0);
+        updateSteering();
+
+        updateBackground(delta);
+        world.update(delta, viewArea);
+        clampPlayerPosition();
+    }
+
+    private void clampPlayerPosition() {
+        player.getPosition().x = MathUtils.clamp(player.getPosition().x, 0, viewArea.x);
+        player.getPosition().y = MathUtils.clamp(player.getPosition().y, 0, viewArea.y);
+    }
+
+    private void updateSteering() {
         float speed = 10;
         Vector2 targetVelocity = new Vector2();
         if (Gdx.input.isKeyPressed(Input.Keys.A))
@@ -61,9 +73,6 @@ public class PlayScreen extends BasicGameScreen {
             targetVelocity.y += 1;
 
         player.getVelocity().set(targetVelocity.scl(speed));
-
-        updateBackground(delta);
-        world.update(delta, viewArea);
     }
 
     private void initialiseBackground() {

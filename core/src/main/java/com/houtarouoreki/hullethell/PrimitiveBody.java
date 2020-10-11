@@ -7,6 +7,7 @@ import org.mini2Dx.core.graphics.viewport.Viewport;
 public abstract class PrimitiveBody {
     private Vector2 position = new Vector2();
     private Vector2 velocity = new Vector2();
+    private Vector2 size = new Vector2();
 
     public Vector2 getPosition() {
         return position;
@@ -28,5 +29,21 @@ public abstract class PrimitiveBody {
         getPosition().add(new Vector2(getVelocity()).scl(delta));
     }
 
+    public Vector2 getRenderPosition(Viewport vp, Vector2 viewArea) {
+        return new Vector2(position.x, viewArea.y - position.y).scl(vp.getWidth(), vp.getHeight()).scl(1 / viewArea.x, 1 / viewArea.y);
+    }
+
+    public Vector2 getRenderSize(Viewport vp, Vector2 viewArea) {
+        return new Vector2(size).scl(vp.getWidth(), vp.getHeight()).scl(1 / viewArea.x, 1 / viewArea.y);
+    }
+
     abstract public void render(Graphics g, Viewport vp, Vector2 viewArea);
+
+    public Vector2 getSize() {
+        return size;
+    }
+
+    public void setSize(Vector2 size) {
+        this.size = size;
+    }
 }

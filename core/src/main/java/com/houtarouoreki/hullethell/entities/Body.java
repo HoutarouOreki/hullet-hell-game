@@ -1,9 +1,9 @@
 package com.houtarouoreki.hullethell.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
-import org.apache.commons.lang3.StringUtils;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -14,6 +14,7 @@ public class Body extends PrimitiveBody {
     private final List<CollisionCircle> collisionBody;
     private Vector2 acceleration = new Vector2();
     private String textureName;
+    private Texture texture;
 
     public Body(List<CollisionCircle> collisionBody) {
         this.collisionBody = collisionBody;
@@ -36,15 +37,20 @@ public class Body extends PrimitiveBody {
     }
 
     public void render(Graphics g, Viewport vp, Vector2 viewArea) {
-        if (StringUtils.isEmpty(getTextureName())) {
-            for (CollisionCircle circle : getCollisionBody()) {
-                g.drawCircle((getPosition().x + circle.getX()) / viewArea.x * vp.getWidth(),
-                        (viewArea.y - (getPosition().y + circle.getY())) / viewArea.y * vp.getHeight(),
-                        circle.getRadius() / viewArea.y * vp.getHeight());
-            }
-        } else {
-            g.drawTexture(new Texture(getTextureName()), getPosition().x, getPosition().y,
-                    getFarthestPointDistance() * 2, getFarthestPointDistance() * 2);
+        if (texture != null) {
+            Vector2 renderSize = getRenderSize(vp, viewArea);
+            Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).add(new Vector2(renderSize).scl(-0.5f));
+            g.drawTexture(texture, topLeft.x, topLeft.y, renderSize.x, renderSize.y);
+        }
+        renderCollisionBody(g, vp, viewArea);
+    }
+
+    private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {
+        g.setColor(Color.YELLOW);
+        for (CollisionCircle circle : getCollisionBody()) {
+            g.drawCircle((getPosition().x + circle.getX()) / viewArea.x * vp.getWidth(),
+                    (viewArea.y - (getPosition().y + circle.getY())) / viewArea.y * vp.getHeight(),
+                    circle.getRadius() / viewArea.y * vp.getHeight());
         }
     }
 
@@ -66,5 +72,6 @@ public class Body extends PrimitiveBody {
 
     public void setTextureName(String textureName) {
         this.textureName = textureName;
+        texture = new Texture(textureName);
     }
 }
