@@ -14,7 +14,7 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 public class LoadingScreen extends BasicGameScreen {
     private final AssetManager assetManager;
-    private final float minimum_loading_time = 4;
+    private final float minimum_loading_time = 2.5f;
     private float loadingDuration = 0;
     private boolean beganTransition = false;
     private Texture logo;

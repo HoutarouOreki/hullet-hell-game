@@ -1,11 +1,14 @@
 package com.houtarouoreki.hullethell.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.transition.FadeInTransition;
+import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.ui.UiContainer;
 import org.mini2Dx.ui.element.Container;
 import org.mini2Dx.ui.element.Div;
@@ -19,7 +22,7 @@ public class MainMenuScreen extends BasicGameScreen {
     private final AssetManager assetManager;
     private UiContainer uiContainer;
     private Div buttonsContainer;
-    private TextButton playButton;
+    private ScreenManager<? extends GameScreen> screenManager;
 
     public MainMenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -28,25 +31,37 @@ public class MainMenuScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         uiContainer = new UiContainer(gc, assetManager);
+        Gdx.input.setInputProcessor(uiContainer);
 
         buttonsContainer = new Container(100, 100, 200, gc.getHeight() - 200);
         buttonsContainer.setVisibility(Visibility.VISIBLE);
         uiContainer.add(buttonsContainer);
 
-        playButton = createTextButton("Play", 0);
-        playButton.addActionListener(new ActionListener() {
+        createAndAddTextButton("Play", new ActionListener() {
             @Override
             public void onActionBegin(ActionEvent event) {
-                playButton.setText("Clicked");
-                System.out.println("Registered click");
             }
 
             @Override
             public void onActionEnd(ActionEvent event) {
-                playButton.setText("Play");
+                onPlayButton();
             }
         });
-        buttonsContainer.add(playButton);
+
+        createAndAddTextButton("Exit", new ActionListener() {
+            @Override
+            public void onActionBegin(ActionEvent event) {
+            }
+
+            @Override
+            public void onActionEnd(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+    }
+
+    private void onPlayButton() {
+        screenManager.enterGameScreen(2, new FadeOutTransition(), new FadeInTransition());
     }
 
     @Override
@@ -54,6 +69,7 @@ public class MainMenuScreen extends BasicGameScreen {
         if (!UiContainer.isThemeApplied())
             UiContainer.setTheme(assetManager.get(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class));
         uiContainer.update(delta);
+        this.screenManager = screenManager;
     }
 
     @Override
@@ -71,15 +87,16 @@ public class MainMenuScreen extends BasicGameScreen {
         return 1;
     }
 
-    private TextButton createTextButton(String label, int row) {
+    private void createAndAddTextButton(String label, ActionListener actionListener) {
         TextButton button = new TextButton();
         button.setVisibility(Visibility.VISIBLE);
         button.setWidthToContentWidthOf(buttonsContainer);
         button.setHeight(30);
         button.setText(label);
         button.getLabel().setY(-3);
-        button.setY(row * 60);
+        button.setY(buttonsContainer.getTotalChildren() * 60);
         button.setEnabled(true);
-        return button;
+        button.addActionListener(actionListener);
+        buttonsContainer.add(button);
     }
 }
