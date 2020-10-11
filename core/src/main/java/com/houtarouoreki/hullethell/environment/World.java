@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.environment;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 
@@ -25,7 +24,6 @@ public class World {
             bufferedTime -= time_step_duration;
             totalTimePassed += time_step_duration;
         }
-        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     protected void physics(Vector2 viewArea) {
