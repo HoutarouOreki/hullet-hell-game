@@ -1,12 +1,13 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-    private final float time_step_duration = 0.01f;
+    private final float time_step_duration = 0.016667f;
     public List<Body> bodies;
     public float totalTimePassed;
     private float bufferedTime;
@@ -15,18 +16,18 @@ public class World {
         bodies = new ArrayList<Body>();
     }
 
-    public void update(float delta) {
+    public void update(float delta, Vector2 viewArea) {
         bufferedTime += delta;
-        if (bufferedTime >= time_step_duration) {
-            physics();
+        while (bufferedTime >= time_step_duration) {
+            physics(viewArea);
             bufferedTime -= time_step_duration;
             totalTimePassed += time_step_duration;
         }
     }
 
-    protected void physics() {
+    protected void physics(Vector2 viewArea) {
         for (Body body : bodies) {
-            body.physics(time_step_duration);
+            body.physics(time_step_duration, viewArea);
         }
     }
 }

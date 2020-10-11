@@ -6,10 +6,26 @@ import org.mini2Dx.core.engine.geom.CollisionCircle;
 import java.util.List;
 
 public class Entity extends Body {
-    public float health;
-    public EntityTeam team;
+    private float health;
+    private EntityTeam team;
 
-    public Entity(Vector2 pos, Vector2 vel, List<CollisionCircle> collisionBody) {
-        super(pos, vel, collisionBody);
+    public Entity(List<CollisionCircle> collisionBody) {
+        super(collisionBody);
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public EntityTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(EntityTeam team) {
+        this.team = team;
     }
 }
