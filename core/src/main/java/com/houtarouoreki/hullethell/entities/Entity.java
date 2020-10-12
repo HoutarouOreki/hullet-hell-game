@@ -1,7 +1,11 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
+import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 
 import java.util.List;
 
@@ -25,4 +29,22 @@ public class Entity extends Body {
     }
 
     public boolean isAlive() { return health > 0; }
+
+    @Override
+    public void render(Graphics g, Viewport vp, Vector2 viewArea) {
+        super.render(g, vp, viewArea);
+        renderHealthBar(g, vp, viewArea);
+    }
+
+    private void renderHealthBar(Graphics g, Viewport vp, Vector2 viewArea) {
+        Vector2 renderSize = getRenderSize(vp, viewArea);
+        Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).mulAdd(getRenderSize(vp, viewArea), new Vector2(-0.5f, 0.5f));
+        for (int i = 0; i < (int)(health - 1) / 10 + 1; i++) {
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
+            g.setColor(Color.RED);
+            float fill = i == (int)(health - 1) / 10 ? renderSize.x * (health - i * 10) / 10f : renderSize.x;
+            g.fillRect(topLeft.x, topLeft.y + 10 * i, fill, 5);
+        }
+    }
 }
