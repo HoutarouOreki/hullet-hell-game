@@ -2,10 +2,13 @@ package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.entities.Asteroid;
 import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.entities.EntityTeam;
+import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
@@ -23,25 +26,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayScreen extends BasicGameScreen {
-    private final Vector2 viewArea = new Vector2(36, 20);
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
+    private final AssetManager assetManager;
     private Ship player;
     private World world;
     private Viewport viewport;
-    private float enemySpawnTimer;
+    private float asteroidSpawnTimer;
+
+    public PlayScreen(AssetManager assetManager) { this.assetManager = assetManager; }
 
     @Override
     public void initialise(GameContainer gc) {
-        viewport = new FitViewport(1280, 1280 * viewArea.y / viewArea.x);
-        player = new Ship(new ArrayList<CollisionCircle>() {{
+        world = new World();
+        viewport = new FitViewport(1280, 1280 * world.viewArea.y / world.viewArea.x);
+        player = new Ship(assetManager, new ArrayList<CollisionCircle>() {{
             add(new CollisionCircle(-0.2f, -0.1f, 0.55f));
             add(new CollisionCircle(0.8f, -0.35f, 0.3f));
         }});
-        player.setTeam(EntityTeam.PLAYER);
+        player.setTeam(CollisionTeam.PLAYER);
         player.setTextureName("playerShip.png");
         player.setSize(new Vector2(3.2f, 1.3f));
-        world = new World();
+        player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
+        player.setHealth(5);
         world.bodies.add(player);
+
+        Ship enemyShip = new Ship(assetManager, new ArrayList<CollisionCircle>() {{
+            add(new CollisionCircle(0.75f, -0.85f, 0.8f));
+            add(new CollisionCircle(-0.5f, 1.55f, 0.05f));
+            add(new CollisionCircle(-1.55f, -1.05f, 0.05f));
+
+            add(new CollisionCircle(-0.8f, -1.15f, 0.3f));
+            add(new CollisionCircle(0.6f, 1f, 0.3f));
+        }});
+        enemyShip.setTeam(CollisionTeam.COMPUTER);
+        enemyShip.setHealth(30);
+        enemyShip.setPosition(new Vector2(world.viewArea.x * 0.8f, world.viewArea.y * 0.5f));
+        enemyShip.setTextureName("enemyShip1.png");
+        enemyShip.setSize(new Vector2(3.2f, 3.2f));
+        world.bodies.add(enemyShip);
+        world.cpus.add(new CpuPlayer(enemyShip, world));
 
         initialiseBackground();
     }
@@ -51,37 +74,33 @@ public class PlayScreen extends BasicGameScreen {
         updateSteering();
 
         updateBackground(delta);
-        world.update(delta, viewArea);
+        world.update(delta);
         clampPlayerPosition();
-        attemptSpawnEnemy(delta);
+        attemptSpawnAsteroid(delta);
     }
 
-    private void attemptSpawnEnemy(float delta) {
-        enemySpawnTimer += delta;
-        float enemySpawnFrequency = 0.4f;
-        if (enemySpawnTimer > enemySpawnFrequency) {
-            enemySpawnTimer -= enemySpawnFrequency;
-            spawnEnemy();
+    private void attemptSpawnAsteroid(float delta) {
+        asteroidSpawnTimer += delta;
+        float asteroidSpawnFrequency = 2f;
+        if (asteroidSpawnTimer > asteroidSpawnFrequency) {
+            asteroidSpawnTimer -= asteroidSpawnFrequency;
+            spawnAsteroid();
         }
     }
 
-    private void spawnEnemy() {
-        final float enemySize = 4 + (float) Math.random() * 4;
-        Ship enemy = new Ship(new ArrayList<CollisionCircle>() {
-            {
-                add(new CollisionCircle(0, 0, enemySize / 2));
-            }
-        });
-        enemy.setTextureName("asteroida.png");
-        enemy.setSize(new Vector2(enemySize, enemySize));
-        enemy.setPosition(new Vector2(viewArea.x + enemy.getSize().x / 2, (float) Math.random() * viewArea.y));
-        enemy.setVelocity(new Vector2(-12, 0));
-        world.bodies.add(enemy);
+    private void spawnAsteroid() {
+        float size = 0.5f + (float) Math.random() * 2;
+        Asteroid asteroid = new Asteroid(assetManager, size);
+        asteroid.setTextureName("asteroida.png");
+        asteroid.setSize(new Vector2(size, size));
+        asteroid.setPosition(new Vector2(world.viewArea.x + asteroid.getSize().x / 2, (float) Math.random() * world.viewArea.y));
+        asteroid.setVelocity(new Vector2(-4, 0));
+        world.bodies.add(asteroid);
     }
 
     private void clampPlayerPosition() {
-        player.getPosition().x = MathUtils.clamp(player.getPosition().x, 0, viewArea.x);
-        player.getPosition().y = MathUtils.clamp(player.getPosition().y, 0, viewArea.y);
+        player.getPosition().x = MathUtils.clamp(player.getPosition().x, 0, world.viewArea.x);
+        player.getPosition().y = MathUtils.clamp(player.getPosition().y, 0, world.viewArea.y);
     }
 
     private void updateSteering() {
@@ -105,8 +124,8 @@ public class PlayScreen extends BasicGameScreen {
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar((float) Math.random() * viewArea.x,
-                    (float) Math.random() * viewArea.y, starSize);
+            BackgroundStar star = new BackgroundStar(assetManager,(float) Math.random() * world.viewArea.x,
+                    (float) Math.random() * world.viewArea.y, starSize);
             star.setVelocity(new Vector2(-1, 0));
             stars.add(star);
         }
@@ -114,7 +133,7 @@ public class PlayScreen extends BasicGameScreen {
 
     private void updateBackground(float delta) {
         for (BackgroundObject star : stars) {
-            star.physics(delta, viewArea);
+            star.physics(delta, world.viewArea);
         }
     }
 
@@ -133,7 +152,7 @@ public class PlayScreen extends BasicGameScreen {
 
     private void drawBackground(Graphics g) {
         for (BackgroundObject star : stars) {
-            star.render(g, viewport, viewArea);
+            star.render(g, viewport, world.viewArea);
         }
     }
 
@@ -144,7 +163,7 @@ public class PlayScreen extends BasicGameScreen {
 
     private void renderBodies(Graphics g) {
         for (Body body : world.bodies) {
-            body.render(g, viewport, viewArea);
+            body.render(g, viewport, world.viewArea);
         }
     }
 }

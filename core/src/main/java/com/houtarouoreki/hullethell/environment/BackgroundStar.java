@@ -1,18 +1,18 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public class BackgroundStar extends BackgroundObject {
-    public BackgroundStar(float initialX, float initialY, float size) {
-        super(initialX, initialY);
-        setSize(new Vector2(size, size));
+    public BackgroundStar(AssetManager assetManager, float initialX, float initialY, float size) {
+        this(assetManager, new Vector2(initialX, initialY), size);
     }
 
-    public BackgroundStar(Vector2 initialPos, float size) {
-        super(initialPos);
+    public BackgroundStar(AssetManager assetManager, Vector2 initialPos, float size) {
+        super(assetManager, initialPos);
         setSize(new Vector2(size, size));
     }
 

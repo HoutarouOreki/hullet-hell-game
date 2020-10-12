@@ -1,16 +1,15 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.assets.AssetManager;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import java.util.List;
 
 public class Entity extends Body {
     private float health;
-    private EntityTeam team;
 
-    public Entity(List<CollisionCircle> collisionBody) {
-        super(collisionBody);
+    public Entity(AssetManager assetManager, List<CollisionCircle> collisionBody) {
+        super(assetManager, collisionBody);
     }
 
     public float getHealth() {
@@ -21,11 +20,9 @@ public class Entity extends Body {
         this.health = health;
     }
 
-    public EntityTeam getTeam() {
-        return team;
+    public void applyDamage(float damage) {
+        this.health -= damage;
     }
 
-    public void setTeam(EntityTeam team) {
-        this.team = team;
-    }
+    public boolean isAlive() { return health > 0; }
 }

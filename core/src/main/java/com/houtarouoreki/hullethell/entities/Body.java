@@ -1,9 +1,11 @@
 package com.houtarouoreki.hullethell.entities;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -12,11 +14,12 @@ import java.util.List;
 
 public class Body extends PrimitiveBody {
     private final List<CollisionCircle> collisionBody;
+    private CollisionTeam team;
     private Vector2 acceleration = new Vector2();
-    private String textureName;
-    private Texture texture;
+    private boolean acceptsCollisions = true;
 
-    public Body(List<CollisionCircle> collisionBody) {
+    public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
+        super(assetManager);
         this.collisionBody = collisionBody;
     }
 
@@ -36,21 +39,17 @@ public class Body extends PrimitiveBody {
         return farthestDistance;
     }
 
+    @Override
     public void render(Graphics g, Viewport vp, Vector2 viewArea) {
-        if (texture != null) {
-            Vector2 renderSize = getRenderSize(vp, viewArea);
-            Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).add(new Vector2(renderSize).scl(-0.5f));
-            g.drawTexture(texture, topLeft.x, topLeft.y, renderSize.x, renderSize.y);
-        }
+        super.render(g, vp, viewArea);
         renderCollisionBody(g, vp, viewArea);
     }
 
     private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {
         g.setColor(Color.YELLOW);
         for (CollisionCircle circle : getCollisionBody()) {
-            g.drawCircle((getPosition().x + circle.getX()) / viewArea.x * vp.getWidth(),
-                    (viewArea.y - (getPosition().y + circle.getY())) / viewArea.y * vp.getHeight(),
-                    circle.getRadius() / viewArea.y * vp.getHeight());
+            Vector2 renderPos = translateToRenderPosition(new Vector2(getPosition()).add(new Vector2(circle.getX(), circle.getY())), vp, viewArea);
+            g.drawCircle(renderPos.x, renderPos.y, circle.getRadius() / viewArea.y * vp.getHeight());
         }
     }
 
@@ -66,12 +65,21 @@ public class Body extends PrimitiveBody {
         this.acceleration = acceleration;
     }
 
-    public String getTextureName() {
-        return textureName;
+    public CollisionTeam getTeam() {
+        return team;
     }
 
-    public void setTextureName(String textureName) {
-        this.textureName = textureName;
-        texture = new Texture(textureName);
+    public void setTeam(CollisionTeam team) {
+        this.team = team;
+    }
+
+    public void onCollision(Body other, CollisionResult collision) { }
+
+    public boolean isAcceptingCollisions() {
+        return acceptsCollisions;
+    }
+
+    public void setAcceptsCollisions(boolean acceptsCollisions) {
+        this.acceptsCollisions = acceptsCollisions;
     }
 }

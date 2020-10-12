@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ClasspathFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
 import com.houtarouoreki.hullethell.screens.MainMenuScreen;
 import com.houtarouoreki.hullethell.screens.PlayScreen;
@@ -23,10 +24,12 @@ public class HulletHellGame extends ScreenBasedGame {
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
+        assetManager.load("playerShip.png", Texture.class);
+        assetManager.load("enemyShip1.png", Texture.class);
+        assetManager.load("asteroida.png", Texture.class);
+        assetManager.load("bullet1.png", Texture.class);
 
-        this.addScreen(new LoadingScreen(assetManager));
-        this.addScreen(new MainMenuScreen(assetManager));
-        this.addScreen(new PlayScreen());
+        this.addScreen(new LoadingScreen(this, assetManager));
     }
 
     @Override

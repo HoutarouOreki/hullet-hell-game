@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -13,13 +14,15 @@ import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 public class LoadingScreen extends BasicGameScreen {
+    private final HulletHellGame game;
     private final AssetManager assetManager;
     private final float minimum_loading_time = 2.5f;
     private float loadingDuration = 0;
     private boolean beganTransition = false;
     private Texture logo;
 
-    public LoadingScreen(AssetManager assetManager) {
+    public LoadingScreen(HulletHellGame game, AssetManager assetManager) {
+        this.game = game;
         this.assetManager = assetManager;
     }
 
@@ -35,6 +38,8 @@ public class LoadingScreen extends BasicGameScreen {
             return;
 
         if (assetManager.update() && loadingDuration > minimum_loading_time) {
+            game.addScreen(new MainMenuScreen(assetManager));
+            game.addScreen(new PlayScreen(assetManager));
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }
