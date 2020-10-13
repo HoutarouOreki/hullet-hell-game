@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.helpers.EntityHelpers;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;

@@ -1,4 +1,4 @@
-package com.houtarouoreki.hullethell.entities;
+package com.houtarouoreki.hullethell.helpers;
 
 public class EntityHelpers {
     public static int bigHealthBarsAmount(float health) {
