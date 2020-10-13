@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -42,11 +43,7 @@ public abstract class PrimitiveBody {
     }
 
     public Vector2 getRenderPosition(Viewport vp, Vector2 viewArea) {
-        return new Vector2(position.x, viewArea.y - position.y).scl(vp.getWidth(), vp.getHeight()).scl(1 / viewArea.x, 1 / viewArea.y);
-    }
-
-    public static Vector2 translateToRenderPosition(Vector2 position, Viewport vp, Vector2 viewArea) {
-        return new Vector2(position.x, viewArea.y - position.y).scl(vp.getWidth(), vp.getHeight()).scl(1 / viewArea.x, 1 / viewArea.y);
+        return RenderHelpers.translateToRenderPosition(position, vp, viewArea);
     }
 
     public Vector2 getRenderSize(Viewport vp, Vector2 viewArea) {

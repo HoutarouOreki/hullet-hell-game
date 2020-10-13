@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.environment.collisions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
+import com.houtarouoreki.hullethell.environment.World;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import java.util.ArrayList;
@@ -9,23 +10,22 @@ import java.util.List;
 
 public class CollisionManager {
     public final List<CollisionResult> collisions;
-    private final List<Body> bodies;
+    private final World world;
 
-    public CollisionManager(List<Body> bodies) {
+    public CollisionManager(World world) {
+        this.world = world;
         collisions = new ArrayList<CollisionResult>();
-        this.bodies = bodies;
     }
 
     public void RunCollisions() {
-        collisions.clear();
-        for (int i = 0; i < bodies.size() - 1; i++) {
-            Body a = bodies.get(i);
+        for (int i = 0; i < world.bodies.size() - 1; i++) {
+            Body a = world.bodies.get(i);
             if (!a.isAcceptingCollisions()) {
                 continue;
             }
 
-            for (int j = i + 1; j < bodies.size(); j++) {
-                Body b = bodies.get(j);
+            for (int j = i + 1; j < world.bodies.size(); j++) {
+                Body b = world.bodies.get(j);
                 if (!a.isAcceptingCollisions() || !b.isAcceptingCollisions() || a.getTeam() == b.getTeam()) {
                     continue;
                 }
@@ -53,6 +53,7 @@ public class CollisionManager {
                         <= ca.getRadius() + cb.getRadius()) {
                     collision.isCollision = true;
                     collision.position = approximateCollisionPosition(a, b, ca, cb);
+                    collision.time = world.totalTimePassed;
                     return collision;
                 }
             }

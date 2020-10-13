@@ -1,10 +1,18 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionManager;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.helpers.RenderHelpers;
+import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,11 +26,44 @@ public class World {
     private final float time_step_duration = 0.01f;
     private float bufferedTime;
     private final CollisionManager collisionManager;
+    private final float collisionEffectDuration = 0.25f;
 
     public World() {
         bodies = new ArrayList<Body>();
         cpus = new ArrayList<CpuPlayer>();
-        collisionManager = new CollisionManager(bodies);
+        collisionManager = new CollisionManager(this);
+    }
+
+    public void render(Graphics g, Viewport viewport) {
+        for (Body body : bodies) {
+            body.render(g, viewport, viewArea);
+        }
+        renderCollisions(g, viewport);
+    }
+
+    private void renderCollisions(Graphics g, Viewport viewport) {
+        Iterator<CollisionResult> i = collisionManager.collisions.iterator();
+        while (i.hasNext()) {
+            CollisionResult collision = i.next();
+            if (collision.time + collisionEffectDuration > totalTimePassed) {
+                renderCollision(collision, g, viewport);
+            } else {
+                i.remove();
+            }
+        }
+    }
+
+    private void renderCollision(CollisionResult collision, Graphics g, Viewport vp) {
+        //Gdx.gl.glEnable(GL20.GL_BLEND);
+        g.setColor(new Color(1, 1, 1,
+                Interpolation.sineIn.apply(1, -0.2f , getCollisionCompletionPercentage(collision))));
+        RenderHelpers.fillWorldCircle(collision.position,
+                0.5f * Interpolation.pow3Out.apply(getCollisionCompletionPercentage(collision)),
+                g, vp, viewArea);
+    }
+
+    private float getCollisionCompletionPercentage(CollisionResult c) {
+        return (totalTimePassed - c.time) / collisionEffectDuration;
     }
 
     public void update(float delta) {

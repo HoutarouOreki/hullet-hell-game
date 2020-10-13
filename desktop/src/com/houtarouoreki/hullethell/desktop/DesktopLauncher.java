@@ -10,7 +10,7 @@ public class DesktopLauncher {
         DesktopMini2DxConfig config = new DesktopMini2DxConfig(HulletHellGame.GAME_IDENTIFIER);
         config.title = "Hullet Hell";
         config.width = 1280;
-        config.height = 720;
+        config.height = 600;
         config.vSyncEnabled = true;
 
         config.targetFPS = 0;
@@ -21,6 +21,6 @@ public class DesktopLauncher {
         config.fullscreen = false;
         config.samples = 0;
         DesktopMini2DxGame game = new DesktopMini2DxGame(new HulletHellGame(), config);
-        game.getGraphics().setFullscreenMode(Gdx.graphics.getDisplayMode());
+        //game.getGraphics().setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
 }

@@ -12,6 +12,7 @@ import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.game.GameContainer;
@@ -53,7 +54,7 @@ public class PlayScreen extends BasicGameScreen {
         player.setTextureName("playerShip.png");
         player.setSize(new Vector2(3.2f, 1.3f));
         player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
-        player.setHealth(5);
+        player.setHealth(40);
         world.bodies.add(player);
 
         Ship enemyShip = new Ship(assetManager, new ArrayList<CollisionCircle>() {{
@@ -65,7 +66,7 @@ public class PlayScreen extends BasicGameScreen {
             add(new CollisionCircle(0.6f, 1f, 0.3f));
         }});
         enemyShip.setTeam(CollisionTeam.COMPUTER);
-        enemyShip.setHealth(30);
+        enemyShip.setHealth(61);
         enemyShip.setPosition(new Vector2(world.viewArea.x * 0.8f, world.viewArea.y * 0.5f));
         enemyShip.setTextureName("enemyShip1.png");
         enemyShip.setSize(new Vector2(3.2f, 3.2f));
@@ -155,7 +156,7 @@ public class PlayScreen extends BasicGameScreen {
         // tutaj HUD
         viewport.apply(g);
         drawBackground(g);
-        renderBodies(g);
+        world.render(g, viewport);
     }
 
     private void drawBackground(Graphics g) {
@@ -167,11 +168,5 @@ public class PlayScreen extends BasicGameScreen {
     @Override
     public int getId() {
         return 2;
-    }
-
-    private void renderBodies(Graphics g) {
-        for (Body body : world.bodies) {
-            body.render(g, viewport, world.viewArea);
-        }
     }
 }

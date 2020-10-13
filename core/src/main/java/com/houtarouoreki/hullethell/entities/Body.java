@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -48,8 +49,9 @@ public class Body extends PrimitiveBody {
     private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {
         g.setColor(Color.YELLOW);
         for (CollisionCircle circle : getCollisionBody()) {
-            Vector2 renderPos = translateToRenderPosition(new Vector2(getPosition()).add(new Vector2(circle.getX(), circle.getY())), vp, viewArea);
-            g.drawCircle(renderPos.x, renderPos.y, circle.getRadius() / viewArea.y * vp.getHeight());
+            RenderHelpers.drawWorldCircle(
+                    new Vector2(getPosition()).add(new Vector2(circle.getX(), circle.getY())),
+                    circle.getRadius(), g, vp, viewArea);
         }
     }
 
