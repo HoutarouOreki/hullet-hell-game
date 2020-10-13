@@ -46,15 +46,18 @@ public class Entity extends Body {
 
     private void renderHealthBar(Graphics g, Viewport vp, Vector2 viewArea) {
         Vector2 renderSize = getRenderSize(vp, viewArea);
-        Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).mulAdd(getRenderSize(vp, viewArea), new Vector2(-0.5f, 0.5f));
+        Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea))
+                .mulAdd(getRenderSize(vp, viewArea), new Vector2(-0.5f, 0.5f));
 
         for (int i = 0; i < healthBarsInfo.getHealthBarsAmount(); i++) {
             g.setColor(healthBarsInfo.getColor());
             g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
         }
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(), renderSize.x, 5);
+        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(),
+                renderSize.x, 5);
         g.setColor(healthBarsInfo.getColor());
-        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(), renderSize.x * healthBarsInfo.getLastBarFill(), 5);
+        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(),
+                renderSize.x * healthBarsInfo.getLastBarFill(), 5);
     }
 }
