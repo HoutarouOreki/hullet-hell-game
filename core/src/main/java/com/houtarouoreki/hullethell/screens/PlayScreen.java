@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Asteroid;
 import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Ship;
+import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -21,6 +21,8 @@ import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.transition.FadeInTransition;
+import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,16 @@ import java.util.List;
 public class PlayScreen extends BasicGameScreen {
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
     private final AssetManager assetManager;
+    private final ScreenManager<? extends GameScreen> screenManager;
     private Ship player;
     private World world;
     private Viewport viewport;
     private float asteroidSpawnTimer;
 
-    public PlayScreen(AssetManager assetManager) { this.assetManager = assetManager; }
+    public PlayScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
+        this.assetManager = assetManager;
+        this.screenManager = screenManager;
+    }
 
     @Override
     public void initialise(GameContainer gc) {
@@ -114,6 +120,8 @@ public class PlayScreen extends BasicGameScreen {
             targetVelocity.y -= 1;
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             targetVelocity.y += 1;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+            screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
 
         player.getVelocity().set(targetVelocity.scl(speed));
     }
@@ -124,7 +132,7 @@ public class PlayScreen extends BasicGameScreen {
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar(assetManager,(float) Math.random() * world.viewArea.x,
+            BackgroundStar star = new BackgroundStar(assetManager, (float) Math.random() * world.viewArea.x,
                     (float) Math.random() * world.viewArea.y, starSize);
             star.setVelocity(new Vector2(-1, 0));
             stars.add(star);

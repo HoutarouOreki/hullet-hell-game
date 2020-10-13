@@ -23,10 +23,11 @@ public class MainMenuScreen extends BasicGameScreen {
     private final AssetManager assetManager;
     private UiContainer uiContainer;
     private Div buttonsContainer;
-    private ScreenManager<? extends GameScreen> screenManager;
+    private final ScreenManager<? extends GameScreen> screenManager;
 
-    public MainMenuScreen(AssetManager assetManager) {
+    public MainMenuScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
         this.assetManager = assetManager;
+        this.screenManager = screenManager;
     }
 
     @Override
@@ -82,7 +83,6 @@ public class MainMenuScreen extends BasicGameScreen {
         if (!UiContainer.isThemeApplied())
             UiContainer.setTheme(assetManager.get(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class));
         uiContainer.update(delta);
-        this.screenManager = screenManager;
     }
 
     @Override

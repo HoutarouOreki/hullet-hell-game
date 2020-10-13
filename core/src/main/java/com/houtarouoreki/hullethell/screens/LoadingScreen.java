@@ -38,8 +38,8 @@ public class LoadingScreen extends BasicGameScreen {
             return;
 
         if (assetManager.update() && loadingDuration > minimum_loading_time) {
-            game.addScreen(new MainMenuScreen(assetManager));
-            game.addScreen(new PlayScreen(assetManager));
+            game.addScreen(new MainMenuScreen(assetManager, screenManager));
+            game.addScreen(new PlayScreen(assetManager, screenManager));
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }
