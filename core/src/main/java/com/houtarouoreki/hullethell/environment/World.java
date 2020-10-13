@@ -1,8 +1,6 @@
 package com.houtarouoreki.hullethell.environment;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
@@ -20,8 +18,8 @@ import java.util.List;
 
 public class World {
     public final Vector2 viewArea = new Vector2(36, 20);
-    public List<Body> bodies;
-    public List<CpuPlayer> cpus;
+    public final List<Body> bodies;
+    public final List<CpuPlayer> cpus;
     public float totalTimePassed;
     private final float time_step_duration = 0.01f;
     private float bufferedTime;

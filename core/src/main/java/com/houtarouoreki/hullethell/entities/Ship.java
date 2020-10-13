@@ -11,7 +11,6 @@ import java.util.List;
 public class Ship extends Entity {
     private final float collisionCooldown = 2;
     private float remainingCollisionCooldown = 0;
-    private final float collisionCooldownAnimation = 0.2f;
     private float remainingCollisionCooldownAnimation = 0;
 
     public Ship(AssetManager assetManager, List<CollisionCircle> collisionBody) {
@@ -26,6 +25,7 @@ public class Ship extends Entity {
             remainingCollisionCooldownAnimation -= delta;
 
             float interpolation = Interpolation.sineIn.apply(remainingCollisionCooldown / collisionCooldown);
+            float collisionCooldownAnimation = 0.2f;
             if (remainingCollisionCooldownAnimation <= 0) {
                 remainingCollisionCooldownAnimation = collisionCooldownAnimation;
                 sprite.setAlpha(1f - 0.7f * interpolation);

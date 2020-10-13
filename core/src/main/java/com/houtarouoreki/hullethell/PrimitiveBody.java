@@ -9,7 +9,7 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public abstract class PrimitiveBody {
-    public AssetManager assetManager;
+    public final AssetManager assetManager;
     protected Sprite sprite;
     private String textureName;
 

@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.desktop;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import org.mini2Dx.desktop.DesktopMini2DxConfig;

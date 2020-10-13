@@ -13,7 +13,6 @@ import com.houtarouoreki.hullethell.helpers.Timer;
 public class CpuPlayer {
     public final Entity entity;
     private final World world;
-    private float timePassed;
     private Ship targetShip;
     private final Timer updatePositionTimer;
     private Vector2 previousPosition;
@@ -32,7 +31,6 @@ public class CpuPlayer {
     }
 
     public void update(float delta) {
-        timePassed += delta;
         if (targetShip == null) {
             setTargetShip();
         }

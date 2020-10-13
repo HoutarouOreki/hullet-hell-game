@@ -6,8 +6,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.ClasspathFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
-import com.houtarouoreki.hullethell.screens.MainMenuScreen;
-import com.houtarouoreki.hullethell.screens.PlayScreen;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Graphics;
