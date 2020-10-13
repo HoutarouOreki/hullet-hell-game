@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.helpers.EntityHelpers;
+import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -11,10 +11,12 @@ import org.mini2Dx.core.graphics.viewport.Viewport;
 import java.util.List;
 
 public class Entity extends Body {
+    private final HealthBarsInfo healthBarsInfo;
     private float health;
 
     public Entity(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager, collisionBody);
+        healthBarsInfo = new HealthBarsInfo();
     }
 
     public float getHealth() {
@@ -23,10 +25,13 @@ public class Entity extends Body {
 
     public void setHealth(float health) {
         this.health = health;
+        healthBarsInfo.update(health);
+
     }
 
     public void applyDamage(float damage) {
         this.health -= damage;
+        healthBarsInfo.update(health);
     }
 
     public boolean isAlive() {
@@ -39,40 +44,17 @@ public class Entity extends Body {
         renderHealthBar(g, vp, viewArea);
     }
 
-//    private void renderHealthBar(Graphics g, Viewport vp, Vector2 viewArea) {
-//        Vector2 renderSize = getRenderSize(vp, viewArea);
-//        Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).mulAdd(getRenderSize(vp, viewArea), new Vector2(-0.5f, 0.5f));
-//        for (int i = 0; i < (int)(health - 1) / 10 + 1; i++) {
-//            g.setColor(Color.DARK_GRAY);
-//            g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
-//            g.setColor(Color.RED);
-//            float fill = i == (int)(health - 1) / 10 ? renderSize.x * (health - i * 10) / 10f : renderSize.x;
-//            g.fillRect(topLeft.x, topLeft.y + 10 * i, fill, 5);
-//        }
-//    }
-
     private void renderHealthBar(Graphics g, Viewport vp, Vector2 viewArea) {
-        float remainingHealthToDraw = health;
         Vector2 renderSize = getRenderSize(vp, viewArea);
         Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).mulAdd(getRenderSize(vp, viewArea), new Vector2(-0.5f, 0.5f));
-        int i = 1;
-        int purpleHealthBarsAmount = EntityHelpers.bigHealthBarsAmount(health);
-        while (i <= purpleHealthBarsAmount) {
-            g.setColor(Color.PURPLE);
+
+        for (int i = 0; i < healthBarsInfo.getHealthBarsAmount(); i++) {
+            g.setColor(healthBarsInfo.getColor());
             g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
-            i++;
-            remainingHealthToDraw -= 40;
-        }
-        int totalHealthBarsAmount = purpleHealthBarsAmount + EntityHelpers.smallHealthBarsAmount(health);
-        while (i < totalHealthBarsAmount) {
-            g.setColor(Color.RED);
-            g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
-            i++;
-            remainingHealthToDraw -= 10;
         }
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x, 5);
-        g.setColor(Color.RED);
-        g.fillRect(topLeft.x, topLeft.y + 10 * i, renderSize.x * remainingHealthToDraw / 10, 5);
+        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(), renderSize.x, 5);
+        g.setColor(healthBarsInfo.getColor());
+        g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(), renderSize.x * healthBarsInfo.getLastBarFill(), 5);
     }
 }

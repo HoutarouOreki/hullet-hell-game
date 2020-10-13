@@ -96,7 +96,7 @@ public class World {
                 i.remove();
                 continue;
             }
-            if (body instanceof Entity && ((Entity) body).getHealth() <= 0) { // check entity's health
+            if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();
                 continue;
             }
