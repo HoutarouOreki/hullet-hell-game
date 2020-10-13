@@ -1,0 +1,15 @@
+{
+  "name": "Asteroid",
+  "maxHealth": 8,
+  "size": {
+    "x": 1,
+    "y": 1
+  },
+  "collisionCircles": [
+    {
+      "x": 0,
+      "y": 0,
+      "r": 0.5
+    }
+  ]
+}
