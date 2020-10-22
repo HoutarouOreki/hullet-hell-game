@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.entities.Asteroid;
+import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
@@ -95,7 +95,7 @@ public class PlayScreen extends BasicGameScreen {
 
     private void spawnAsteroid() {
         float size = 0.5f + (float) Math.random() * 2;
-        Asteroid asteroid = new Asteroid(assetManager, size);
+        Environmental asteroid = new Environmental(assetManager, size);
         asteroid.setTextureName("asteroida.png");
         asteroid.setSize(new Vector2(size, size));
         asteroid.setPosition(new Vector2(world.viewArea.x + asteroid.getSize().x / 2, (float) Math.random() * world.viewArea.y));

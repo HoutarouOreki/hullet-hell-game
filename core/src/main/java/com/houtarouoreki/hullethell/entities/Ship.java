@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.configurations.ShipConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
@@ -15,6 +16,14 @@ public class Ship extends Entity {
 
     public Ship(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager, collisionBody);
+    }
+
+    public Ship(AssetManager assetManager, ShipConfiguration configuration) {
+        super(assetManager);
+        setTextureName(configuration.getName());
+        setHealth(configuration.getMaxHealth());
+        setSize(new Vector2(configuration.getSize()));
+        setCollisionBody(configuration.getCollisionCircles());
     }
 
     @Override

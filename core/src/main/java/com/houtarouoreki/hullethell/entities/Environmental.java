@@ -9,8 +9,8 @@ import org.mini2Dx.core.engine.geom.CollisionCircle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Asteroid extends Entity {
-    public Asteroid(AssetManager assetManager, float size) {
+public class Environmental extends Entity {
+    public Environmental(AssetManager assetManager, float size) {
         super(assetManager, generateCollisionBody(size));
         setTeam(CollisionTeam.ENVIRONMENT);
         setHealth(size);

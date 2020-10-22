@@ -11,12 +11,15 @@ import org.mini2Dx.core.graphics.viewport.Viewport;
 import java.util.List;
 
 public class Entity extends Body {
-    private final HealthBarsInfo healthBarsInfo;
+    private final HealthBarsInfo healthBarsInfo = new HealthBarsInfo();
     private float health;
 
     public Entity(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager, collisionBody);
-        healthBarsInfo = new HealthBarsInfo();
+    }
+
+    public Entity(AssetManager assetManager) {
+        super(assetManager);
     }
 
     public float getHealth() {

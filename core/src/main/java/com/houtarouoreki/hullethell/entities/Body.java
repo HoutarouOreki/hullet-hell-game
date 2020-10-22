@@ -11,6 +11,7 @@ import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Body extends PrimitiveBody {
@@ -22,6 +23,11 @@ public class Body extends PrimitiveBody {
     public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager);
         this.collisionBody = collisionBody;
+    }
+
+    public Body(AssetManager assetManager) {
+        super(assetManager);
+        collisionBody = new ArrayList<CollisionCircle>();
     }
 
     @Override
@@ -57,6 +63,12 @@ public class Body extends PrimitiveBody {
 
     public List<CollisionCircle> getCollisionBody() {
         return collisionBody;
+    }
+
+    public void setCollisionBody(List<CollisionCircle> collisionCircles) {
+        for (CollisionCircle c : collisionCircles) {
+            getCollisionBody().add(new CollisionCircle(c.getCenterX(), c.getCenterY(), c.getRadius()));
+        }
     }
 
     public Vector2 getAcceleration() {

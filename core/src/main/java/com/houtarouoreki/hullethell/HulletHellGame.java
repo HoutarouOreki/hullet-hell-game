@@ -12,6 +12,10 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.UiThemeLoader;
 import org.mini2Dx.ui.style.UiTheme;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 public class HulletHellGame extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.houtarouoreki.hullethell";
 
@@ -22,12 +26,19 @@ public class HulletHellGame extends ScreenBasedGame {
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
-        assetManager.load("playerShip.png", Texture.class);
-        assetManager.load("enemyShip1.png", Texture.class);
-        assetManager.load("asteroida.png", Texture.class);
-        assetManager.load("bullet1.png", Texture.class);
+
+        loadAssets(assetManager, "bullets", Arrays.asList("Bullet 1"));
+        loadAssets(assetManager, "environmental", Arrays.asList("Asteroid"));
+        loadAssets(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1"));
 
         this.addScreen(new LoadingScreen(this, assetManager));
+    }
+
+    private <T> void loadAssets(AssetManager am, String folder, List<String> names) {
+        for (String name : names) {
+            am.load(folder + "/" + name + ".png", Texture.class);
+            am.load(folder + "/" + name + ".cfg", String.class);
+        }
     }
 
     @Override
