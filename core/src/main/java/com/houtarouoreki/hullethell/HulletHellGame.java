@@ -28,7 +28,7 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
 
         loadAssets(assetManager, "bullets", Arrays.asList("Bullet 1"));
-        loadAssets(assetManager, "environmental", Arrays.asList("Asteroid"));
+        loadAssets(assetManager, "environmentals", Arrays.asList("Asteroid"));
         loadAssets(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1"));
 
         this.addScreen(new LoadingScreen(this, assetManager));
