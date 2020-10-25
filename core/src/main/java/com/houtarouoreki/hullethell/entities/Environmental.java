@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.configurations.EnvironmentalConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Environmental extends Entity {
-    public Environmental(AssetManager assetManager, float size) {
-        super(assetManager, generateCollisionBody(size));
+    public Environmental(AssetManager assetManager, EnvironmentalConfiguration c) {
+        super(assetManager);
         setTeam(CollisionTeam.ENVIRONMENT);
-        setHealth(size);
+        setHealth(c.getMaxHealth());
+        setSize(c.getSize());
+        setCollisionBody(c.getCollisionCircles());
     }
 
     private static List<CollisionCircle> generateCollisionBody(float size) {
