@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
+import com.houtarouoreki.hullethell.configurations.Configurations;
 import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
@@ -12,7 +14,6 @@ import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -24,19 +25,22 @@ import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayScreen extends BasicGameScreen {
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
     private final AssetManager assetManager;
+    private final Configurations configurations;
     private final ScreenManager<? extends GameScreen> screenManager;
     private Ship player;
     private World world;
     private Viewport viewport;
     private float asteroidSpawnTimer;
 
-    public PlayScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
+    public PlayScreen(AssetManager assetManager, Configurations configurations, ScreenManager<? extends GameScreen> screenManager) {
         this.assetManager = assetManager;
+        this.configurations = configurations;
         this.screenManager = screenManager;
     }
 
@@ -44,32 +48,16 @@ public class PlayScreen extends BasicGameScreen {
     public void initialise(GameContainer gc) {
         world = new World();
         viewport = new FitViewport(1280, 1280 * world.viewArea.y / world.viewArea.x);
-        player = new Ship(assetManager, new ArrayList<CollisionCircle>() {{
-            add(new CollisionCircle(-0.2f, -0.1f, 0.55f));
-            add(new CollisionCircle(0.8f, -0.35f, 0.3f));
-        }});
+        player = new Ship(assetManager, "Ship 1");
         player.setTeam(CollisionTeam.PLAYER);
-        player.setTextureName("playerShip.png");
-        player.setSize(new Vector2(3.2f, 1.3f));
         player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
-        player.setHealth(40);
         world.bodies.add(player);
 
-        Ship enemyShip = new Ship(assetManager, new ArrayList<CollisionCircle>() {{
-            add(new CollisionCircle(0.75f, -0.85f, 0.8f));
-            add(new CollisionCircle(-0.5f, 1.55f, 0.05f));
-            add(new CollisionCircle(-1.55f, -1.05f, 0.05f));
-
-            add(new CollisionCircle(-0.8f, -1.15f, 0.3f));
-            add(new CollisionCircle(0.6f, 1f, 0.3f));
-        }});
+        Ship enemyShip = new Ship(assetManager, "Enemy ship 1");
         enemyShip.setTeam(CollisionTeam.COMPUTER);
-        enemyShip.setHealth(61);
         enemyShip.setPosition(new Vector2(world.viewArea.x * 0.8f, world.viewArea.y * 0.5f));
-        enemyShip.setTextureName("enemyShip1.png");
-        enemyShip.setSize(new Vector2(3.2f, 3.2f));
         world.bodies.add(enemyShip);
-        world.cpus.add(new CpuPlayer(enemyShip, world));
+        world.cpus.add(new CpuPlayer(enemyShip, world, configurations));
 
         initialiseBackground();
     }
@@ -95,8 +83,7 @@ public class PlayScreen extends BasicGameScreen {
 
     private void spawnAsteroid() {
         float size = 0.5f + (float) Math.random() * 2;
-        Environmental asteroid = new Environmental(assetManager, size);
-        asteroid.setTextureName("asteroida.png");
+        Environmental asteroid = new Environmental(assetManager, "Asteroid");
         asteroid.setSize(new Vector2(size, size));
         asteroid.setPosition(new Vector2(world.viewArea.x + asteroid.getSize().x / 2, (float) Math.random() * world.viewArea.y));
         asteroid.setVelocity(new Vector2(-4, 0));

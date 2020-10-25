@@ -2,27 +2,19 @@ package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.EnvironmentalConfiguration;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Environmental extends Entity {
-    public Environmental(AssetManager assetManager, EnvironmentalConfiguration c) {
+    public Environmental(AssetManager assetManager, String configurationName) {
         super(assetManager);
-        setTeam(CollisionTeam.ENVIRONMENT);
+        String path = "environmentals/" + configurationName;
+        BodyConfiguration c = assetManager.get(path + ".cfg", BodyConfiguration.class);
+        setTextureName(path + ".png");
         setHealth(c.getMaxHealth());
-        setSize(c.getSize());
+        setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
-    }
-
-    private static List<CollisionCircle> generateCollisionBody(float size) {
-        List<CollisionCircle> collisionBody = new ArrayList<CollisionCircle>();
-        collisionBody.add(new CollisionCircle(0, 0, size / 2));
-        return collisionBody;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.entities.ai;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.configurations.Configurations;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Entity;
@@ -13,6 +14,7 @@ import com.houtarouoreki.hullethell.helpers.Timer;
 public class CpuPlayer {
     public final Entity entity;
     private final World world;
+    private final Configurations configurations;
     private Ship targetShip;
     private final Timer updatePositionTimer;
     private Vector2 previousPosition;
@@ -21,9 +23,10 @@ public class CpuPlayer {
     private final Timer bulletTimer;
     private int bulletIntervalIndex;
 
-    public CpuPlayer(Entity entity, World world) {
+    public CpuPlayer(Entity entity, World world, Configurations configurations) {
         this.entity = entity;
         this.world = world;
+        this.configurations = configurations;
         updatePositionTimer = new Timer(4.5f);
         updatePositionTimer.setInterval(2.5f);
         bulletTimer = new Timer(0.5f);
@@ -51,7 +54,7 @@ public class CpuPlayer {
 
             // 3 shots, 2 breaks
             if (Math.sin((bulletIntervalIndex - 1.5) * Math.PI * 0.4) + 0.5 > 0) {
-                Bullet bullet = new Bullet(entity.assetManager);
+                Bullet bullet = new Bullet(entity.assetManager, "Bullet 1");
                 bullet.setPosition(new Vector2(entity.getPosition()));
                 bullet.setTeam(entity.getTeam());
                 bullet.setVelocity(new Vector2(targetShip.getPosition()).add(new Vector2(entity.getPosition()).scl(-1)).setLength(8));

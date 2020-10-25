@@ -1,32 +1,18 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.BulletConfiguration;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
-
-import java.util.ArrayList;
 
 public class Bullet extends Entity {
-    private final int damage = 2;
-
-    public Bullet(AssetManager assetManager) {
-        super(assetManager, new ArrayList<CollisionCircle>() {{
-            add(new CollisionCircle(0, 0, 0.3f));
-        }});
-//        setTextureName("bullet1.png");
-//        sprite.setColor(Color.RED);
-//        setSize(new Vector2(0.6f, 0.6f));
-//        setHealth(damage);
-    }
-
-    public Bullet(AssetManager assetManager, BulletConfiguration c) {
+    public Bullet(AssetManager assetManager, String configurationName) {
         super(assetManager);
-        setTextureName(c.getName());
+        String path = "bullets/" + configurationName;
+        BodyConfiguration c = assetManager.get(path + ".cfg", BodyConfiguration.class);
+        setTextureName(path + ".png");
         setHealth(c.getMaxHealth());
-        setSize(c.getSize());
+        setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
     }
 
@@ -34,7 +20,7 @@ public class Bullet extends Entity {
     public void onCollision(Body other, CollisionResult collision) {
         super.onCollision(other, collision);
         if (other instanceof Entity) {
-            ((Entity) other).applyDamage(damage);
+            ((Entity) other).applyDamage(getHealth());
         }
     }
 }
