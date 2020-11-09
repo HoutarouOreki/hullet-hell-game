@@ -15,6 +15,5 @@ public class ShootAction extends ScriptedAction {
 
     @Override
     public void physics() {
-
     }
 }
