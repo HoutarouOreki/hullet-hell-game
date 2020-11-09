@@ -13,6 +13,7 @@ public abstract class PrimitiveBody {
     protected Sprite sprite;
     private String textureName;
 
+    private double time = 0;
     private Vector2 position = new Vector2();
     private Vector2 velocity = new Vector2();
     private Vector2 size = new Vector2();
@@ -20,6 +21,10 @@ public abstract class PrimitiveBody {
     public PrimitiveBody(AssetManager assetManager) {
         this.assetManager = assetManager;
         sprite = new Sprite();
+    }
+
+    public double getTime() {
+        return time;
     }
 
     public Vector2 getPosition() {
@@ -40,6 +45,7 @@ public abstract class PrimitiveBody {
 
     public void physics(float delta, Vector2 viewArea) {
         getPosition().add(new Vector2(getVelocity()).scl(delta));
+        time += delta;
     }
 
     public Vector2 getRenderPosition(Viewport vp, Vector2 viewArea) {

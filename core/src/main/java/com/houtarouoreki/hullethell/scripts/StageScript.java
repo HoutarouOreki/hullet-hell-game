@@ -12,7 +12,7 @@ public class StageScript {
             if (line.contains("=")) {
                 currentEntity = new ScriptedEntity();
             } else if (line.startsWith("\t")) {
-                ScriptedAction action = new ScriptedAction(line);
+                ScriptedAction action = ScriptedAction.createScriptedAction(line);
             }
         }
     }
