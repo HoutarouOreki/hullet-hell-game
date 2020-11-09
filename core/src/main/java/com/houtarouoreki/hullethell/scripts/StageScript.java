@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StageScript {
-    public List<ScriptedEntity> entities = new ArrayList<ScriptedEntity>();
+    public List<ScriptedBody> entities = new ArrayList<ScriptedBody>();
 
     private void readLines(List<String> lines) {
-        ScriptedEntity currentEntity = null;
+        ScriptedBody currentEntity = null;
         for (String line : lines) {
             if (line.contains("=")) {
-                currentEntity = new ScriptedEntity();
+                currentEntity = new ScriptedBody();
             } else if (line.startsWith("\t") && currentEntity != null) {
                 currentEntity.actions.add(ScriptedAction.createScriptedAction(line));
             }
