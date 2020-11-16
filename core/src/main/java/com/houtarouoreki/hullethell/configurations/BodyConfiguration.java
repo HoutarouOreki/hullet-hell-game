@@ -15,7 +15,7 @@ public class BodyConfiguration {
     private final List<CollisionCircle> collisionCircles;
 
     public BodyConfiguration(FileHandle file) {
-        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n").clone()));
+        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
     }
 
     public BodyConfiguration(List<String> configurationLines) {
