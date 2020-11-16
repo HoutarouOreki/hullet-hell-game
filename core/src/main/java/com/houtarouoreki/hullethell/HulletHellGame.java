@@ -23,7 +23,6 @@ public class HulletHellGame extends ScreenBasedGame {
     public void initialise() {
         FileHandleResolver fileHandleResolver = new FallbackFileHandleResolver(new ClasspathFileHandleResolver(), new InternalFileHandleResolver());
         AssetManager assetManager = new AssetManager();
-        Configurations configurations = new Configurations();
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(StageConfiguration.class, new StageConfigurationLoader(new InternalFileHandleResolver()));
@@ -37,7 +36,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
-        this.addScreen(new LoadingScreen(this, assetManager, configurations));
+        this.addScreen(new LoadingScreen(this, assetManager));
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {

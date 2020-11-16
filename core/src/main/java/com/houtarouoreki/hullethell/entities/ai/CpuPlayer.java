@@ -2,7 +2,6 @@ package com.houtarouoreki.hullethell.entities.ai;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.Configurations;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Entity;
@@ -14,19 +13,17 @@ import com.houtarouoreki.hullethell.helpers.Timer;
 public class CpuPlayer {
     public final Entity entity;
     private final World world;
-    private final Configurations configurations;
-    private Ship targetShip;
     private final Timer updatePositionTimer;
+    private final Timer bulletTimer;
+    private Ship targetShip;
     private Vector2 previousPosition;
     private Vector2 targetPosition;
     private float positionInterpolationProgress;
-    private final Timer bulletTimer;
     private int bulletIntervalIndex;
 
-    public CpuPlayer(Entity entity, World world, Configurations configurations) {
+    public CpuPlayer(Entity entity, World world) {
         this.entity = entity;
         this.world = world;
-        this.configurations = configurations;
         updatePositionTimer = new Timer(4.5f);
         updatePositionTimer.setInterval(2.5f);
         bulletTimer = new Timer(0.5f);
@@ -64,9 +61,9 @@ public class CpuPlayer {
     }
 
     private void setTargetShip() {
-        for (Body body: world.bodies) {
+        for (Body body : world.bodies) {
             if (body.getTeam() == CollisionTeam.PLAYER) {
-                targetShip = (Ship)body;
+                targetShip = (Ship) body;
                 return;
             }
         }

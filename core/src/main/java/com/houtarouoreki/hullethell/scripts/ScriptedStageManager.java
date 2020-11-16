@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.scripts;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ScriptedStageManager {
     private final List<ScriptedBody> activeBodies;
     private final World world;
 
-    public ScriptedStageManager(World world, StageScript script, AssetManager am) {
+    public ScriptedStageManager(World world, StageConfiguration script, AssetManager am) {
         this.world = world;
         waitingBodies = new PriorityQueue<ScriptedBody>(script.bodies);
         assetManager = am;

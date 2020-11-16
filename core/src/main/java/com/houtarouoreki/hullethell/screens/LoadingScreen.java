@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
-import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
-import com.houtarouoreki.hullethell.configurations.Configurations;
+import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -15,21 +14,17 @@ import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
-import java.util.Arrays;
-
 public class LoadingScreen extends BasicGameScreen {
     private final HulletHellGame game;
     private final AssetManager assetManager;
     private final float minimum_loading_time = 2.5f;
-    private final Configurations configurations;
     private float loadingDuration = 0;
     private boolean beganTransition = false;
     private Texture logo;
 
-    public LoadingScreen(HulletHellGame game, AssetManager assetManager, Configurations configurations) {
+    public LoadingScreen(HulletHellGame game, AssetManager assetManager) {
         this.game = game;
         this.assetManager = assetManager;
-        this.configurations = configurations;
     }
 
     @Override
@@ -45,7 +40,9 @@ public class LoadingScreen extends BasicGameScreen {
 
         if (assetManager.update() && loadingDuration > minimum_loading_time) {
             game.addScreen(new MainMenuScreen(assetManager, screenManager));
-            game.addScreen(new PlayScreen(assetManager, configurations, screenManager));
+            PlayScreen ps = new PlayScreen(assetManager, screenManager);
+            ps.setStage(assetManager.<StageConfiguration>get("stages/Stage 1.cfg"));
+            game.addScreen(ps);
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }

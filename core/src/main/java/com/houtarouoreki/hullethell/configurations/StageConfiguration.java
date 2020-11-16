@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StageConfiguration {
-    private final List<ScriptedBody> bodies;
+    public final List<ScriptedBody> bodies;
 
     public StageConfiguration(FileHandle file) {
         this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
