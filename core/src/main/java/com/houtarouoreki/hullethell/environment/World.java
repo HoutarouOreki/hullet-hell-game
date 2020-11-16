@@ -71,7 +71,12 @@ public class World {
             bufferedTime -= time_step_duration;
             totalTimePassed += time_step_duration;
             updateAI(delta);
+            updateScripts(delta);
         }
+    }
+
+    private void updateScripts(float delta) {
+
     }
 
     private void updateAI(float delta) {
