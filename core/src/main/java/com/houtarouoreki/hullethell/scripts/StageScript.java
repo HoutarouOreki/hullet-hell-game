@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StageScript {
-    public List<ScriptedBody> entities = new ArrayList<ScriptedBody>();
+    public List<ScriptedBody> bodies = new ArrayList<ScriptedBody>();
 
     private void readLines(List<String> lines) {
         ScriptedBody currentEntity = null;

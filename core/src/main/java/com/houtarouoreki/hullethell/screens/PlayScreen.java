@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.Configurations;
 import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
@@ -14,6 +13,7 @@ import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.scripts.StageScript;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -25,7 +25,6 @@ import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PlayScreen extends BasicGameScreen {
@@ -33,6 +32,7 @@ public class PlayScreen extends BasicGameScreen {
     private final AssetManager assetManager;
     private final Configurations configurations;
     private final ScreenManager<? extends GameScreen> screenManager;
+    private StageScript script;
     private Ship player;
     private World world;
     private Viewport viewport;
@@ -44,9 +44,13 @@ public class PlayScreen extends BasicGameScreen {
         this.screenManager = screenManager;
     }
 
+    public void setStage(StageScript script) {
+        this.script = script;
+    }
+
     @Override
     public void initialise(GameContainer gc) {
-        world = new World();
+        world = new World(assetManager, script);
         viewport = new FitViewport(1280, 1280 * world.viewArea.y / world.viewArea.x);
         player = new Ship(assetManager, "Ship 1");
         player.setTeam(CollisionTeam.PLAYER);

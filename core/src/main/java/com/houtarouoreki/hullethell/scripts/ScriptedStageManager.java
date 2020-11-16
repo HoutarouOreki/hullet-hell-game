@@ -14,9 +14,9 @@ public class ScriptedStageManager {
     private final List<ScriptedBody> activeBodies;
     private final World world;
 
-    public ScriptedStageManager(World world, List<ScriptedBody> bodies, AssetManager am) {
+    public ScriptedStageManager(World world, StageScript script, AssetManager am) {
         this.world = world;
-        waitingBodies = new PriorityQueue<ScriptedBody>(bodies);
+        waitingBodies = new PriorityQueue<ScriptedBody>(script.bodies);
         assetManager = am;
         activeBodies = new ArrayList<ScriptedBody>();
     }
