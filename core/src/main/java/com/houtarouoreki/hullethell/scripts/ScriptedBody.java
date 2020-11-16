@@ -8,6 +8,8 @@ import com.houtarouoreki.hullethell.entities.Ship;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScriptedBody {
     public String type;
@@ -15,6 +17,17 @@ public class ScriptedBody {
     public String configName;
     public Queue<ScriptedAction> actions = new LinkedList<ScriptedAction>();
     public Body controlledBody;
+
+    public ScriptedBody(String line) {
+        Pattern pattern = Pattern.compile("(.*): \"((.*)/(.*))\"");
+        Matcher matcher = pattern.matcher(line);
+        if (!matcher.matches()) {
+            throw new Error("Could not find a match for scripted body line: " + line);
+        }
+        name = matcher.group(1);
+        type = matcher.group(3);
+        configName = matcher.group(4);
+    }
 
     public void initialise(AssetManager assetManager) {
         controlledBody = createBodyFromScript(type, assetManager);
@@ -24,12 +37,6 @@ public class ScriptedBody {
     }
 
     private Body createBodyFromScript(String bodyClass, AssetManager assetManager) {
-//        Pattern pattern = Pattern.compile("(.*): \"((.*)\\/(.*))\"");
-//        Matcher matcher = pattern.matcher(line);
-//        String name = matcher.group(1);
-//        String path = matcher.group(2);
-//        String bodyClass = matcher.group(3);
-//        String configName = matcher.group(4);
 
         if (bodyClass.equals("ships")) {
             return new Ship(assetManager, configName);

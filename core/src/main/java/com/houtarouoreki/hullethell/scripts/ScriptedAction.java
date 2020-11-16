@@ -2,9 +2,14 @@ package com.houtarouoreki.hullethell.scripts;
 
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.scripts.actions.MoveToAction;
+import com.houtarouoreki.hullethell.scripts.actions.ShootAction;
+import com.houtarouoreki.hullethell.scripts.actions.ShootMultipleAction;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class ScriptedAction {
     public String type;
@@ -16,16 +21,24 @@ public abstract class ScriptedAction {
     private boolean finished;
 
     public static ScriptedAction createScriptedAction(String line) {
-        String[] s = line.split(" // ")[0].split("\t+");
-        String type = s[1].replace(":", "");
-        ScriptedAction a;
-        if (type.equals("position")) {
-            a = new MoveToAction();
-        } else {
-            return null;
+        Pattern pattern = Pattern.compile("\\t+(\\d+(?:\\.\\d*)?)\\t+(\\w+):\\t+(.*)");
+        Matcher match = pattern.matcher(line.split(" // ")[0]);
+        if (!match.matches()) {
+            throw new Error("Could not find a match for an action: " + line);
         }
-        a.scriptedTime = Double.parseDouble(s[0]);
-        a.arguments = Arrays.asList(s[2].split(", "));
+        String type = match.group(2);
+        ScriptedAction a;
+        if (type.equals("moveTo")) {
+            a = new MoveToAction();
+        } else if (type.equals("shoot")) {
+            a = new ShootAction();
+        } else if (type.equals("shootMultipleRadius")) {
+            a = new ShootMultipleAction();
+        } else {
+            throw new Error("Could not find action of type \"" + type + "\"");
+        }
+        a.scriptedTime = Double.parseDouble(match.group(1));
+        a.arguments = Arrays.asList(match.group(3).split(", "));
         return a;
     }
 

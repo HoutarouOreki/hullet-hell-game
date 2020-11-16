@@ -4,6 +4,7 @@ import box2dLight.Light;
 import com.badlogic.gdx.files.FileHandle;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 import com.houtarouoreki.hullethell.scripts.ScriptedBody;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,14 +22,17 @@ public class StageConfiguration {
 
         ScriptedBody currentEntity = null;
         for (String line : lines) {
-            if (line.contains("=")) {
+            if (line.matches(".*: \".*/.*\"")) {
                 if (currentEntity != null) {
                     bodies.add(currentEntity);
                 }
-                currentEntity = new ScriptedBody();
+                currentEntity = new ScriptedBody(line);
             } else if (line.startsWith("\t") && currentEntity != null) {
                 currentEntity.actions.add(ScriptedAction.createScriptedAction(line));
             }
+        }
+        if (currentEntity != null) {
+            bodies.add(currentEntity);
         }
     }
 }
