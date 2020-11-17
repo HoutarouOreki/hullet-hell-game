@@ -15,6 +15,7 @@ public class Environmental extends Entity {
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
+        setTeam(CollisionTeam.ENVIRONMENT);
     }
 
     @Override

@@ -32,7 +32,7 @@ public abstract class PrimitiveBody {
     }
 
     public void setPosition(Vector2 position) {
-        this.position = position;
+        this.position.set(position);
     }
 
     public Vector2 getVelocity() {
@@ -40,7 +40,7 @@ public abstract class PrimitiveBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
+        this.velocity.set(velocity);
     }
 
     public void physics(float delta, Vector2 viewArea) {

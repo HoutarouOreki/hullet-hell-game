@@ -18,11 +18,11 @@ public abstract class ScriptedAction {
     public ScriptedBody scriptedBody;
     public Body body;
     protected World world;
+    protected AssetManager assetManager;
     private double scriptedTime;
     private double totalTime;
     private int ticks;
     private boolean finished;
-    private AssetManager assetManager;
 
     public static ScriptedAction createScriptedAction(String line, ScriptedBody body) {
         Pattern pattern = Pattern.compile("\\t+(\\d+(?:\\.\\d*)?)\\t+(\\w+):\\t+(.*)");
