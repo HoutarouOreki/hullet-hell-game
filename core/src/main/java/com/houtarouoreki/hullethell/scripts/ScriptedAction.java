@@ -1,16 +1,14 @@
 package com.houtarouoreki.hullethell.scripts;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.scripts.actions.MoveToAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootMultipleAction;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class ScriptedAction {
     public String type;
@@ -24,25 +22,19 @@ public abstract class ScriptedAction {
     private int ticks;
     private boolean finished;
 
-    public static ScriptedAction createScriptedAction(String line, ScriptedBody body) {
-        Pattern pattern = Pattern.compile("\\t+(\\d+(?:\\.\\d*)?)\\t+(\\w+):\\t+(.*)");
-        Matcher match = pattern.matcher(line.split(" // ")[0]);
-        if (!match.matches()) {
-            throw new Error("Could not find a match for an action: " + line);
-        }
-        String type = match.group(2);
+    public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf, ScriptedBody body) {
         ScriptedAction a;
-        if (type.equals("moveTo")) {
+        if (conf.type.equals("moveTo")) {
             a = new MoveToAction();
-        } else if (type.equals("shoot")) {
+        } else if (conf.type.equals("shoot")) {
             a = new ShootAction();
-        } else if (type.equals("shootMultipleRadius")) {
+        } else if (conf.type.equals("shootMultipleRadius")) {
             a = new ShootMultipleAction();
         } else {
-            throw new Error("Could not find action of type \"" + type + "\"");
+            throw new Error("Could not find action of type \"" + conf.type + "\"");
         }
-        a.scriptedTime = Double.parseDouble(match.group(1));
-        a.arguments = Arrays.asList(match.group(3).split(", "));
+        a.scriptedTime = conf.scriptedTime;
+        a.arguments = conf.arguments;
         a.scriptedBody = body;
         return a;
     }

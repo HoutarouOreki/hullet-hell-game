@@ -55,12 +55,6 @@ public class PlayScreen extends BasicGameScreen {
         player.setTeam(CollisionTeam.PLAYER);
         player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
         world.bodies.add(player);
-//
-//        Ship enemyShip = new Ship(assetManager, "Enemy ship 1");
-//        enemyShip.setTeam(CollisionTeam.COMPUTER);
-//        enemyShip.setPosition(new Vector2(world.viewArea.x * 0.8f, world.viewArea.y * 0.5f));
-//        world.bodies.add(enemyShip);
-//        world.cpus.add(new CpuPlayer(enemyShip, world, configurations));
 
         initialiseBackground();
     }

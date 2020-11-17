@@ -1,6 +1,8 @@
 package com.houtarouoreki.hullethell.scripts;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
+import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Environmental;
@@ -8,28 +10,24 @@ import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.World;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ScriptedBody {
-    public String type;
-    public String name;
-    public String configName;
+    public final String type;
+    public final String name;
+    public final String configName;
     public Queue<ScriptedAction> waitingActions = new LinkedList<ScriptedAction>();
     public List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
     public Body controlledBody;
     private AssetManager assetManager;
     private World world;
 
-    public ScriptedBody(String line) {
-        Pattern pattern = Pattern.compile("(.*): \"((.*)/(.*))\"");
-        Matcher matcher = pattern.matcher(line);
-        if (!matcher.matches()) {
-            throw new Error("Could not find a match for scripted body line: " + line);
+    public ScriptedBody(ScriptedBodyConfiguration conf) {
+        type = conf.type;
+        name = conf.name;
+        configName = conf.configName;
+        for (ScriptedActionConfiguration actionConf : conf.actions) {
+            waitingActions.add(ScriptedAction.createScriptedAction(actionConf, this));
         }
-        name = matcher.group(1);
-        type = matcher.group(3);
-        configName = matcher.group(4);
     }
 
     public void initialise(AssetManager assetManager, World world) {
