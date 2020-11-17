@@ -43,7 +43,6 @@ public class PlayScreen extends BasicGameScreen {
 
     public void setStage(StageConfiguration script) {
         this.script = script;
-        System.out.println(script.bodies.size());
     }
 
     @Override
