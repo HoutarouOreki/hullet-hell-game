@@ -86,6 +86,7 @@ public class PlayScreen extends BasicGameScreen {
         float size = 0.5f + (float) Math.random() * 2;
         Environmental asteroid = new Environmental(assetManager, "Asteroid");
         asteroid.setSize(new Vector2(size, size));
+        asteroid.getCollisionBody().get(0).setRadius(size / 2);
         asteroid.setPosition(new Vector2(world.viewArea.x + asteroid.getSize().x / 2, (float) Math.random() * world.viewArea.y));
         asteroid.setVelocity(new Vector2(-4, 0));
         world.bodies.add(asteroid);
