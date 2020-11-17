@@ -3,10 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.badlogic.gdx.assets.AssetManager;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
-import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.entities.Bullet;
-import com.houtarouoreki.hullethell.entities.Environmental;
-import com.houtarouoreki.hullethell.entities.Ship;
+import com.houtarouoreki.hullethell.entities.*;
 import com.houtarouoreki.hullethell.environment.World;
 
 import java.util.*;
@@ -20,6 +17,7 @@ public class ScriptedBody {
     public Body controlledBody;
     private AssetManager assetManager;
     private World world;
+    private ScriptedSection section;
 
     public ScriptedBody(ScriptedBodyConfiguration conf) {
         type = conf.type;
@@ -30,14 +28,22 @@ public class ScriptedBody {
         }
     }
 
-    public void initialise(AssetManager assetManager, World world) {
+    public boolean isFinished() {
+        if (controlledBody instanceof Entity) {
+            return ((Entity) controlledBody).getHealth() == 0;
+        }
+        return currentActions.size() == 0 && waitingActions.size() == 0;
+    }
+
+    public void initialise(AssetManager assetManager, World world, ScriptedSection section) {
         controlledBody = createBodyFromScript(type, assetManager);
         this.assetManager = assetManager;
         this.world = world;
+        this.section = section;
     }
 
     public void update() {
-        while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= world.totalTimePassed) {
+        while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
             action.initialise(assetManager, world, controlledBody);
