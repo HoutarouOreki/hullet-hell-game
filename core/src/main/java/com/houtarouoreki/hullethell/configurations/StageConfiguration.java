@@ -1,10 +1,8 @@
 package com.houtarouoreki.hullethell.configurations;
 
-import box2dLight.Light;
 import com.badlogic.gdx.files.FileHandle;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 import com.houtarouoreki.hullethell.scripts.ScriptedBody;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,19 +18,19 @@ public class StageConfiguration {
     public StageConfiguration(List<String> lines) {
         bodies = new ArrayList<ScriptedBody>();
 
-        ScriptedBody currentEntity = null;
+        ScriptedBody currentBody = null;
         for (String line : lines) {
             if (line.matches(".*: \".*/.*\"")) {
-                if (currentEntity != null) {
-                    bodies.add(currentEntity);
+                if (currentBody != null) {
+                    bodies.add(currentBody);
                 }
-                currentEntity = new ScriptedBody(line);
-            } else if (line.startsWith("\t") && currentEntity != null) {
-                currentEntity.actions.add(ScriptedAction.createScriptedAction(line));
+                currentBody = new ScriptedBody(line);
+            } else if (line.startsWith("\t") && currentBody != null) {
+                currentBody.waitingActions.add(ScriptedAction.createScriptedAction(line, currentBody));
             }
         }
-        if (currentEntity != null) {
-            bodies.add(currentEntity);
+        if (currentBody != null) {
+            bodies.add(currentBody);
         }
     }
 }

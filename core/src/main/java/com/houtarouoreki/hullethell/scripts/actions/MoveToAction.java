@@ -1,7 +1,10 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.entities.Body;
+import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
@@ -11,24 +14,32 @@ public class MoveToAction extends ScriptedAction {
     private double duration;
 
     @Override
-    protected void initialize() {
-        targetPosition = ParsingHelpers.vector2fromStrings(arguments.get(0), arguments.get(1));
-        duration = Double.parseDouble(arguments.get(2));
+    protected void initialise(AssetManager assetManager, World world, Body body) {
+        super.initialise(assetManager, world, body);
+        targetPosition = ParsingHelpers.vector2fromStrings(arguments.get(0), arguments.get(1)).scl(world.viewArea);
+        if (arguments.size() < 3) {
+            duration = 0;
+        } else {
+            duration = Double.parseDouble(arguments.get(2));
+        }
     }
 
     @Override
     protected void performAction() {
-        if (getTicks() == 0) {
-            startingPosition = new Vector2(entity.getPosition());
+        if (duration == 0) {
+            body.setPosition(targetPosition.cpy());
+            return;
         }
-        super.physics();
-        float progress = (float) ((entity.getTime() - getScriptedTime()) / duration);
+        if (getTicks() == 0) {
+            startingPosition = new Vector2(body.getPosition());
+        }
+        float progress = (float) ((body.getTime() - getScriptedTime()) / duration);
         if (progress > 1) {
             progress = 1;
             setFinished();
         }
         float x = Interpolation.linear.apply(startingPosition.x, targetPosition.x, progress);
         float y = Interpolation.linear.apply(startingPosition.y, targetPosition.y, progress);
-        entity.setPosition(new Vector2(x, y));
+        body.setPosition(new Vector2(x, y));
     }
 }

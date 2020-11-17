@@ -23,10 +23,10 @@ public class ScriptedStageManager {
     }
 
     public void update() {
-        while (waitingBodies.size() > 0 && waitingBodies.peek().actions.element().getScriptedTime() <= world.totalTimePassed) {
+        while (waitingBodies.size() > 0 && waitingBodies.peek().waitingActions.element().getScriptedTime() <= world.totalTimePassed) {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
-            body.initialise(assetManager);
+            body.initialise(assetManager, world);
             world.bodies.add(body.controlledBody);
         }
         for (ScriptedBody body : activeBodies) {

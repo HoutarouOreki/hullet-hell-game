@@ -1,26 +1,30 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.houtarouoreki.hullethell.entities.Entity;
+import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.entities.Body;
+import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.scripts.actions.MoveToAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootMultipleAction;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class ScriptedAction {
     public String type;
     public List<String> arguments;
-    public Entity entity;
+    public ScriptedBody scriptedBody;
+    public Body body;
+    protected World world;
     private double scriptedTime;
     private double totalTime;
     private int ticks;
     private boolean finished;
+    private AssetManager assetManager;
 
-    public static ScriptedAction createScriptedAction(String line) {
+    public static ScriptedAction createScriptedAction(String line, ScriptedBody body) {
         Pattern pattern = Pattern.compile("\\t+(\\d+(?:\\.\\d*)?)\\t+(\\w+):\\t+(.*)");
         Matcher match = pattern.matcher(line.split(" // ")[0]);
         if (!match.matches()) {
@@ -39,6 +43,7 @@ public abstract class ScriptedAction {
         }
         a.scriptedTime = Double.parseDouble(match.group(1));
         a.arguments = Arrays.asList(match.group(3).split(", "));
+        a.scriptedBody = body;
         return a;
     }
 
@@ -48,9 +53,14 @@ public abstract class ScriptedAction {
 
     protected abstract void performAction();
 
-    protected abstract void initialize();
+    protected void initialise(AssetManager assetManager, World world, Body body) {
+        this.assetManager = assetManager;
+        this.world = world;
+        this.body = body;
+    }
 
-    public void physics() {
+    public void update() {
+        performAction();
         ticks++;
     }
 
