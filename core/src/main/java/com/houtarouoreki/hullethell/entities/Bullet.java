@@ -20,7 +20,7 @@ public class Bullet extends Entity {
     public void onCollision(Body other, CollisionResult collision) {
         super.onCollision(other, collision);
         if (other instanceof Entity) {
-            ((Entity) other).applyDamage(getHealth());
+            ((Entity) other).applyDamage(2);
         }
     }
 }
