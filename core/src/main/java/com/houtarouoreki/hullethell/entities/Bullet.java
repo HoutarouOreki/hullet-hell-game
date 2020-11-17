@@ -1,7 +1,6 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
@@ -15,7 +14,6 @@ public class Bullet extends Entity {
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
-        sprite.setColor(new Color(0xff0000ff));
     }
 
     @Override

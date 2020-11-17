@@ -14,8 +14,8 @@ public abstract class PrimitiveBody {
     private String textureName;
 
     private double time = 0;
-    private Vector2 position = new Vector2();
-    private Vector2 velocity = new Vector2();
+    private final Vector2 position = new Vector2();
+    private final Vector2 velocity = new Vector2();
     private Vector2 size = new Vector2();
 
     public PrimitiveBody(AssetManager assetManager) {
