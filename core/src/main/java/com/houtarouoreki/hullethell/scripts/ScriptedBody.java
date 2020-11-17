@@ -7,10 +7,7 @@ import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.World;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,8 +44,14 @@ public class ScriptedBody {
             currentActions.add(action);
             action.initialise(assetManager, world, controlledBody);
         }
-        for (ScriptedAction action : currentActions) {
+
+        Iterator<ScriptedAction> i = currentActions.iterator();
+        while (i.hasNext()) {
+            ScriptedAction action = i.next();
             action.update();
+            if (action.isFinished()) {
+                i.remove();
+            }
         }
     }
 

@@ -28,6 +28,7 @@ public class MoveToAction extends ScriptedAction {
     protected void performAction() {
         if (duration == 0) {
             body.setPosition(targetPosition.cpy());
+            setFinished();
             return;
         }
         if (getTicks() == 0) {
