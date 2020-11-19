@@ -18,7 +18,7 @@ import java.util.List;
 public class Body extends PrimitiveBody {
     private final List<CollisionCircle> collisionBody;
     private CollisionTeam team;
-    private Vector2 acceleration = new Vector2();
+    private final Vector2 acceleration = new Vector2();
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
