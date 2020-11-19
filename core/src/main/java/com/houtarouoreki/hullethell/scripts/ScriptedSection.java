@@ -5,10 +5,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class ScriptedSection {
     private final Queue<ScriptedBody> waitingBodies;
@@ -43,10 +40,12 @@ public class ScriptedSection {
             body.initialise(assetManager, world, this);
             world.bodies.add(body.controlledBody);
         }
-        for (ScriptedBody body : activeBodies) {
+        Iterator<ScriptedBody> i = activeBodies.iterator();
+        while (i.hasNext()) {
+            ScriptedBody body = i.next();
             body.update();
             if (body.isFinished()) {
-                activeBodies.remove(body);
+                i.remove();
             }
         }
     }

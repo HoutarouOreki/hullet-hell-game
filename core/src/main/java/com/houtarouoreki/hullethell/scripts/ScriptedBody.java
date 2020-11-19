@@ -29,6 +29,9 @@ public class ScriptedBody {
     }
 
     public boolean isFinished() {
+        if (controlledBody.isRemoved()) {
+            return true;
+        }
         if (controlledBody instanceof Entity) {
             return ((Entity) controlledBody).getHealth() == 0;
         }

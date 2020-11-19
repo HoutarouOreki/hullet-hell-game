@@ -109,10 +109,12 @@ public class World {
             if (body.getPosition().x < -5 || body.getPosition().y < -5 ||
                     body.getPosition().x > viewArea.x + 5 || body.getPosition().y > viewArea.y + 5) {
                 i.remove();
+                body.setRemoved();
                 continue;
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();
+                body.setRemoved();
                 continue;
             }
             body.physics(time_step_duration, viewArea);

@@ -19,6 +19,7 @@ public class Body extends PrimitiveBody {
     private CollisionTeam team;
     private Vector2 acceleration = new Vector2();
     private boolean acceptsCollisions = true;
+    private boolean removed;
 
     public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager);
@@ -95,5 +96,13 @@ public class Body extends PrimitiveBody {
 
     public void setAcceptsCollisions(boolean acceptsCollisions) {
         this.acceptsCollisions = acceptsCollisions;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved() {
+        removed = true;
     }
 }
