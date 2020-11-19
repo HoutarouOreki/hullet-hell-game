@@ -32,10 +32,14 @@ public class ScriptedBody {
         if (controlledBody.isRemoved()) {
             return true;
         }
-        if (controlledBody instanceof Entity) {
-            return ((Entity) controlledBody).getHealth() == 0;
+        if (controlledBody instanceof Entity && ((Entity) controlledBody).getHealth() == 0) {
+            return true;
         }
-        return currentActions.size() == 0 && waitingActions.size() == 0;
+        if (currentActions.size() == 0 && waitingActions.size() == 0) {
+            world.bodies.remove(controlledBody);
+            return true;
+        }
+        return false;
     }
 
     public void initialise(AssetManager assetManager, World world, ScriptedSection section) {
