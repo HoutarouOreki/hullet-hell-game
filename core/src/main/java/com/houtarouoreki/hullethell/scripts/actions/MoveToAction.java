@@ -1,13 +1,9 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
-import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 
 public class MoveToAction extends ScriptedAction {
     private Vector2 startingPosition;
