@@ -1,21 +1,17 @@
 package com.houtarouoreki.hullethell.scripts;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ScriptedStageManager {
     private final Queue<ScriptedSection> sections = new LinkedList<ScriptedSection>();
-    private final AssetManager assetManager;
-    private final World world;
 
     public ScriptedStageManager(World world, StageConfiguration script, AssetManager am) {
-        this.world = world;
-        assetManager = am;
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
             sections.add(new ScriptedSection(am, world, sectionConfiguration));
         }
@@ -28,5 +24,17 @@ public class ScriptedStageManager {
         if (sections.size() > 0) {
             sections.peek().update(delta);
         }
+    }
+
+    public String getCurrentStageName() {
+        return sections.size() > 0 ? sections.peek().getName() : "null";
+    }
+
+    public int getWaitingBodiesCount() {
+        return sections.size() > 0 ? sections.peek().getWaitingBodiesCount() : 0;
+    }
+
+    public int getActiveBodiesCount() {
+        return sections.size() > 0 ? sections.peek().getActiveBodiesCount() : 0;
     }
 }

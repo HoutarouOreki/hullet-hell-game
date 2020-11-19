@@ -23,12 +23,12 @@ public class World {
     public final Vector2 viewArea = new Vector2(36, 20);
     public final List<Body> bodies;
     public final List<CpuPlayer> cpus;
-    public float totalTimePassed;
     private final float time_step_duration = 0.01f;
-    private float bufferedTime;
     private final CollisionManager collisionManager;
     private final ScriptedStageManager scriptedStageManager;
     private final float collisionEffectDuration = 0.25f;
+    public float totalTimePassed;
+    private float bufferedTime;
 
     public World(AssetManager assetManager, StageConfiguration script) {
         bodies = new ArrayList<Body>();
@@ -42,6 +42,7 @@ public class World {
             body.render(g, viewport, viewArea);
         }
         renderCollisions(g, viewport);
+        renderDebugInfo(g, viewport);
     }
 
     private void renderCollisions(Graphics g, Viewport viewport) {
@@ -59,10 +60,17 @@ public class World {
     private void renderCollision(CollisionResult collision, Graphics g, Viewport vp) {
         //Gdx.gl.glEnable(GL20.GL_BLEND);
         g.setColor(new Color(1, 1, 1,
-                Interpolation.sineIn.apply(1, -0.2f , getCollisionCompletionPercentage(collision))));
+                Interpolation.sineIn.apply(1, -0.2f, getCollisionCompletionPercentage(collision))));
         RenderHelpers.fillWorldCircle(collision.position,
                 0.5f * Interpolation.pow3Out.apply(getCollisionCompletionPercentage(collision)),
                 g, vp, viewArea);
+    }
+
+    private void renderDebugInfo(Graphics g, Viewport vp) {
+        g.drawString("Bodies: " + bodies.size(), 20, 20);
+        g.drawString("Current section: " + scriptedStageManager.getCurrentStageName(), 20, 30);
+        g.drawString("Active bodies: " + scriptedStageManager.getActiveBodiesCount(), 20, 40);
+        g.drawString("Waiting bodies: " + scriptedStageManager.getWaitingBodiesCount(), 20, 50);
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {

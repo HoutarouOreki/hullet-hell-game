@@ -28,7 +28,7 @@ public abstract class PrimitiveBody {
     }
 
     public Vector2 getPosition() {
-        return position;
+        return position.cpy();
     }
 
     public void setPosition(Vector2 position) {
@@ -36,7 +36,7 @@ public abstract class PrimitiveBody {
     }
 
     public Vector2 getVelocity() {
-        return velocity;
+        return velocity.cpy();
     }
 
     public void setVelocity(Vector2 velocity) {
@@ -44,7 +44,7 @@ public abstract class PrimitiveBody {
     }
 
     public void physics(float delta, Vector2 viewArea) {
-        getPosition().add(new Vector2(getVelocity()).scl(delta));
+        setPosition(getPosition().add(new Vector2(getVelocity()).scl(delta)));
         time += delta;
     }
 

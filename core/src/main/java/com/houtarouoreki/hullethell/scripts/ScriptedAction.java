@@ -17,6 +17,7 @@ public abstract class ScriptedAction {
     public Body body;
     protected World world;
     protected AssetManager assetManager;
+    protected ScriptedSection section;
     private double scriptedTime;
     private double totalTime;
     private int ticks;
@@ -45,9 +46,10 @@ public abstract class ScriptedAction {
 
     protected abstract void performAction();
 
-    protected void initialise(AssetManager assetManager, World world, Body body) {
+    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
         this.assetManager = assetManager;
         this.world = world;
+        this.section = section;
         this.body = body;
     }
 

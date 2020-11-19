@@ -15,6 +15,7 @@ public class ScriptedSection {
     private final List<ScriptedBody> activeBodies;
     private final AssetManager assetManager;
     private final World world;
+    private final String name;
 
     private double timePassed;
 
@@ -26,6 +27,7 @@ public class ScriptedSection {
             waitingBodies.add(new ScriptedBody(bodyConf));
         }
         activeBodies = new ArrayList<ScriptedBody>();
+        name = conf.name;
     }
 
     public boolean isFinished() {
@@ -51,5 +53,17 @@ public class ScriptedSection {
 
     public double getTimePassed() {
         return timePassed;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWaitingBodiesCount() {
+        return waitingBodies.size();
+    }
+
+    public int getActiveBodiesCount() {
+        return activeBodies.size();
     }
 }

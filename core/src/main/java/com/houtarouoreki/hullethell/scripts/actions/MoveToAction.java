@@ -7,6 +7,7 @@ import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 
 public class MoveToAction extends ScriptedAction {
     private Vector2 startingPosition;
@@ -14,8 +15,8 @@ public class MoveToAction extends ScriptedAction {
     private double duration;
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, Body body) {
-        super.initialise(assetManager, world, body);
+    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
+        super.initialise(assetManager, world, section, body);
         targetPosition = ParsingHelpers.vector2fromStrings(arguments.get(0), arguments.get(1)).scl(world.viewArea);
         if (arguments.size() < 3) {
             duration = 0;
@@ -34,7 +35,7 @@ public class MoveToAction extends ScriptedAction {
         if (getTicks() == 0) {
             startingPosition = new Vector2(body.getPosition());
         }
-        float progress = (float) ((body.getTime() - getScriptedTime()) / duration);
+        float progress = (float) ((section.getTimePassed() - getScriptedTime()) / duration);
         if (progress > 1) {
             progress = 1;
             setFinished();

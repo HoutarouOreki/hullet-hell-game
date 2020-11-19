@@ -7,6 +7,7 @@ import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.VectorHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 
 public class ShootMultipleAction extends ScriptedAction {
     private int amount;
@@ -30,8 +31,8 @@ public class ShootMultipleAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, Body body) {
-        super.initialise(assetManager, world, body);
+    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
+        super.initialise(assetManager, world, section, body);
         direction = Double.parseDouble(arguments.get(2));
         spread = Double.parseDouble(arguments.get(3));
         bulletType = arguments.get(0);

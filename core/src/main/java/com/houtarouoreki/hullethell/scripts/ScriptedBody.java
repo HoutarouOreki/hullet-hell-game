@@ -46,7 +46,7 @@ public class ScriptedBody {
         while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(assetManager, world, controlledBody);
+            action.initialise(assetManager, world, section, controlledBody);
         }
 
         Iterator<ScriptedAction> i = currentActions.iterator();

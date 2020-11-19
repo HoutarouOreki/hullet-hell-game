@@ -33,7 +33,7 @@ public class Body extends PrimitiveBody {
     @Override
     public void physics(float delta, Vector2 viewArea) {
         super.physics(delta, viewArea);
-        getVelocity().add(new Vector2(getAcceleration()).scl(delta));
+        setVelocity(getVelocity().add(new Vector2(getAcceleration()).scl(delta)));
     }
 
     public float getFarthestPointDistance() {

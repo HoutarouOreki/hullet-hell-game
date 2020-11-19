@@ -7,6 +7,7 @@ import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 
 public class ShootAction extends ScriptedAction {
     private Vector2 bulletInitialVelocity;
@@ -23,8 +24,8 @@ public class ShootAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, Body body) {
-        super.initialise(assetManager, world, body);
+    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
+        super.initialise(assetManager, world, section, body);
         bulletInitialVelocity = ParsingHelpers.vector2fromStrings(arguments.get(1), arguments.get(2));
         bulletType = arguments.get(0);
     }
