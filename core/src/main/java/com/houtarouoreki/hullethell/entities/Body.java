@@ -80,11 +80,11 @@ public class Body extends PrimitiveBody {
     }
 
     public Vector2 getAcceleration() {
-        return acceleration;
+        return acceleration.cpy();
     }
 
     public void setAcceleration(Vector2 acceleration) {
-        this.acceleration = acceleration;
+        this.acceleration.set(acceleration);
     }
 
     public CollisionTeam getTeam() {
