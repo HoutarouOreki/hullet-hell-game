@@ -110,7 +110,7 @@ public class PlayScreen extends BasicGameScreen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
 
-        player.getVelocity().set(targetVelocity.scl(speed));
+        player.setVelocity(targetVelocity.scl(speed));
     }
 
     private void initialiseBackground() {
