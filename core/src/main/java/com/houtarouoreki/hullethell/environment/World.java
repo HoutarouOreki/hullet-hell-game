@@ -107,11 +107,16 @@ public class World {
         Iterator<Body> i = bodies.iterator();
         while (i.hasNext()) {
             Body body = i.next();
-            if (body.getPosition().x < -5 || body.getPosition().y < -5 ||
-                    body.getPosition().x > viewArea.x + 5 || body.getPosition().y > viewArea.y + 5) {
-                i.remove();
-                body.setRemoved();
-                continue;
+            if (body.shouldDespawnOOBounds()) {
+                float despawnMarginX = body.getSize().x;
+                float despawnMarginY = body.getSize().y;
+                if (body.getPosition().x < -despawnMarginX || body.getPosition().y < -despawnMarginY ||
+                        body.getPosition().x > viewArea.x + despawnMarginX ||
+                        body.getPosition().y > viewArea.y + despawnMarginY) {
+                    i.remove();
+                    body.setRemoved();
+                    continue;
+                }
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();

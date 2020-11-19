@@ -14,6 +14,7 @@ public class Bullet extends Entity {
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
+        setShouldDespawnOOBounds(true);
     }
 
     @Override

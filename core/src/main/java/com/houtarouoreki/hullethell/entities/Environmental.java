@@ -16,6 +16,7 @@ public class Environmental extends Entity {
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
         setTeam(CollisionTeam.ENVIRONMENT);
+        setShouldDespawnOOBounds(true);
     }
 
     @Override

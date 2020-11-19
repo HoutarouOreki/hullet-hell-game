@@ -22,6 +22,7 @@ public class Body extends PrimitiveBody {
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
+    private boolean shouldDespawnOOBounds;
 
     public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager);
@@ -31,6 +32,10 @@ public class Body extends PrimitiveBody {
     public Body(AssetManager assetManager) {
         super(assetManager);
         collisionBody = new ArrayList<CollisionCircle>();
+    }
+
+    public ScriptedSection getSection() {
+        return section;
     }
 
     public void setSection(ScriptedSection section) {
@@ -114,5 +119,13 @@ public class Body extends PrimitiveBody {
         if (section != null) {
             section.unregisterBody(this);
         }
+    }
+
+    public void setShouldDespawnOOBounds(boolean value) {
+        shouldDespawnOOBounds = value;
+    }
+
+    public boolean shouldDespawnOOBounds() {
+        return shouldDespawnOOBounds;
     }
 }
