@@ -7,6 +7,7 @@ import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
+import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -20,6 +21,7 @@ public class Body extends PrimitiveBody {
     private Vector2 acceleration = new Vector2();
     private boolean acceptsCollisions = true;
     private boolean removed;
+    private ScriptedSection section;
 
     public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
         super(assetManager);
@@ -29,6 +31,11 @@ public class Body extends PrimitiveBody {
     public Body(AssetManager assetManager) {
         super(assetManager);
         collisionBody = new ArrayList<CollisionCircle>();
+    }
+
+    public void setSection(ScriptedSection section) {
+        this.section = section;
+        section.registerBody(this);
     }
 
     @Override
@@ -104,5 +111,8 @@ public class Body extends PrimitiveBody {
 
     public void setRemoved() {
         removed = true;
+        if (section != null) {
+            section.unregisterBody(this);
+        }
     }
 }

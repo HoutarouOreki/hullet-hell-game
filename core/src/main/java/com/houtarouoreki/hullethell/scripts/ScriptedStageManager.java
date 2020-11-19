@@ -37,4 +37,8 @@ public class ScriptedStageManager {
     public int getActiveBodiesCount() {
         return sections.size() > 0 ? sections.peek().getActiveBodiesCount() : 0;
     }
+
+    public int getBodiesCount() {
+        return sections.size() > 0 ? sections.peek().getBodiesCount() : 0;
+    }
 }

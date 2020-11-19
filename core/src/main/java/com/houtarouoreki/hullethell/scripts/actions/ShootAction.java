@@ -16,6 +16,7 @@ public class ShootAction extends ScriptedAction {
         bullet.setPosition(body.getPosition());
         bullet.setTeam(body.getTeam());
         world.bodies.add(bullet);
+        bullet.setSection(section);
         setFinished();
     }
 

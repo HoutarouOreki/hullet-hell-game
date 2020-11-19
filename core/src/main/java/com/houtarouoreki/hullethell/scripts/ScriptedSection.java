@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.badlogic.gdx.assets.AssetManager;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
+import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 
 import java.util.*;
@@ -10,6 +11,7 @@ import java.util.*;
 public class ScriptedSection {
     private final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
+    private final List<Body> bodies;
     private final AssetManager assetManager;
     private final World world;
     private final String name;
@@ -24,11 +26,12 @@ public class ScriptedSection {
             waitingBodies.add(new ScriptedBody(bodyConf));
         }
         activeBodies = new ArrayList<ScriptedBody>();
+        bodies = new ArrayList<Body>();
         name = conf.name;
     }
 
     public boolean isFinished() {
-        return waitingBodies.size() == 0 && activeBodies.size() == 0;
+        return waitingBodies.size() == 0 && activeBodies.size() == 0 && bodies.size() == 0;
     }
 
     public void update(double delta) {
@@ -64,5 +67,17 @@ public class ScriptedSection {
 
     public int getActiveBodiesCount() {
         return activeBodies.size();
+    }
+
+    public int getBodiesCount() {
+        return bodies.size();
+    }
+
+    public void registerBody(Body body) {
+        bodies.add(body);
+    }
+
+    public void unregisterBody(Body body) {
+        bodies.remove(body);
     }
 }

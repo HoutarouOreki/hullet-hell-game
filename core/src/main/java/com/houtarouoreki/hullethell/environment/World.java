@@ -69,10 +69,11 @@ public class World {
 
     private void renderDebugInfo(Graphics g, Viewport vp) {
         g.drawString("Bodies: " + bodies.size(), 20, 20);
-        g.drawString("Current section: " + scriptedStageManager.getCurrentStageName(), 20, 30);
-        g.drawString("Active bodies: " + scriptedStageManager.getActiveBodiesCount(), 20, 40);
-        g.drawString("Waiting bodies: " + scriptedStageManager.getWaitingBodiesCount(), 20, 50);
-        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond() + "        ", 20, 60);
+        g.drawString("Current section: " + scriptedStageManager.getCurrentStageName(), 20, 35);
+        g.drawString("Active bodies: " + scriptedStageManager.getActiveBodiesCount(), 20, 50);
+        g.drawString("Bodies: " + scriptedStageManager.getBodiesCount(), 20, 65);
+        g.drawString("Waiting bodies: " + scriptedStageManager.getWaitingBodiesCount(), 20, 80);
+        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond() + "        ", 20, 95);
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {
