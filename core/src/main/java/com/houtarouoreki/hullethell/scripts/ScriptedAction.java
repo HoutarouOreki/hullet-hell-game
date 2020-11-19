@@ -6,6 +6,7 @@ import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.scripts.actions.MoveToAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootAction;
+import com.houtarouoreki.hullethell.scripts.actions.ShootCircleAction;
 import com.houtarouoreki.hullethell.scripts.actions.ShootMultipleAction;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public abstract class ScriptedAction {
             a = new ShootAction();
         } else if (conf.type.equals("shootMultipleRadius")) {
             a = new ShootMultipleAction();
+        } else if (conf.type.equals("shootCircle")) {
+            a = new ShootCircleAction();
         } else {
             throw new Error("Could not find action of type \"" + conf.type + "\"");
         }
@@ -51,6 +54,10 @@ public abstract class ScriptedAction {
         this.world = world;
         this.section = section;
         this.body = body;
+        initialiseArguments();
+    }
+
+    protected void initialiseArguments() {
     }
 
     public void update() {

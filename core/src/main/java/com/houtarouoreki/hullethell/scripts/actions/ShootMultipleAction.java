@@ -10,11 +10,11 @@ import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 
 public class ShootMultipleAction extends ScriptedAction {
-    private int amount;
-    private double direction;
-    private double spread;
-    private String bulletType;
-    private double speed;
+    protected int amount;
+    protected double direction;
+    protected double spread;
+    protected double speed;
+    protected String bulletType;
 
     @Override
     protected void performAction() {
@@ -31,8 +31,7 @@ public class ShootMultipleAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
-        super.initialise(assetManager, world, section, body);
+    protected void initialiseArguments() {
         direction = Double.parseDouble(arguments.get(2));
         spread = Double.parseDouble(arguments.get(3));
         bulletType = arguments.get(0);

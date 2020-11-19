@@ -24,8 +24,8 @@ public class ShootAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
-        super.initialise(assetManager, world, section, body);
+    protected void initialiseArguments() {
+        super.initialiseArguments();
         bulletInitialVelocity = ParsingHelpers.vector2fromStrings(arguments.get(1), arguments.get(2));
         bulletType = arguments.get(0);
     }

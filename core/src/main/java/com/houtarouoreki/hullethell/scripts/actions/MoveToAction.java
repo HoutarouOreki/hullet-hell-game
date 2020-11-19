@@ -15,8 +15,8 @@ public class MoveToAction extends ScriptedAction {
     private double duration;
 
     @Override
-    protected void initialise(AssetManager assetManager, World world, ScriptedSection section, Body body) {
-        super.initialise(assetManager, world, section, body);
+    protected void initialiseArguments() {
+        super.initialiseArguments();
         targetPosition = ParsingHelpers.vector2fromStrings(arguments.get(0), arguments.get(1)).scl(world.viewArea);
         if (arguments.size() < 3) {
             duration = 0;
