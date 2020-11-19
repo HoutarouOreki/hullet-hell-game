@@ -92,8 +92,10 @@ public class PlayScreen extends BasicGameScreen {
     }
 
     private void clampPlayerPosition() {
-        player.getPosition().x = MathUtils.clamp(player.getPosition().x, 0, world.viewArea.x);
-        player.getPosition().y = MathUtils.clamp(player.getPosition().y, 0, world.viewArea.y);
+        player.setPosition(
+                new Vector2(
+                        MathUtils.clamp(player.getPosition().x, 0, world.viewArea.x),
+                        MathUtils.clamp(player.getPosition().y, 0, world.viewArea.y)));
     }
 
     private void updateSteering() {

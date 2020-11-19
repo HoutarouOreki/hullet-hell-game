@@ -1,5 +1,6 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
@@ -71,6 +72,7 @@ public class World {
         g.drawString("Current section: " + scriptedStageManager.getCurrentStageName(), 20, 30);
         g.drawString("Active bodies: " + scriptedStageManager.getActiveBodiesCount(), 20, 40);
         g.drawString("Waiting bodies: " + scriptedStageManager.getWaitingBodiesCount(), 20, 50);
+        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond() + "        ", 20, 60);
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {
@@ -104,9 +106,8 @@ public class World {
         Iterator<Body> i = bodies.iterator();
         while (i.hasNext()) {
             Body body = i.next();
-            if (body.getPosition().x < -10 || body.getPosition().y < -10 ||
-                    body.getPosition().x > viewArea.x + 10 || body.getPosition().y > viewArea.y + 10) {
-                // usuń jeśli 10m poza planszą
+            if (body.getPosition().x < -5 || body.getPosition().y < -5 ||
+                    body.getPosition().x > viewArea.x + 5 || body.getPosition().y > viewArea.y + 5) {
                 i.remove();
                 continue;
             }
