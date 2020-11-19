@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Bullet;
+import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
@@ -17,6 +18,7 @@ public class ShootAction extends ScriptedAction {
         bullet.setTeam(body.getTeam());
         world.bodies.add(bullet);
         bullet.setSection(section);
+        ((Ship)body).registerBullet(bullet);
         setFinished();
     }
 

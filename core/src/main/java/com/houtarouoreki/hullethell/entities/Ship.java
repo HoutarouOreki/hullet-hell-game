@@ -6,8 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Ship extends Entity {
     private final float collisionCooldown = 2;
+    private final List<Bullet> registeredBullets = new ArrayList<Bullet>();
     private float remainingCollisionCooldown = 0;
     private float remainingCollisionCooldownAnimation = 0;
 
@@ -50,5 +54,24 @@ public class Ship extends Entity {
         setAcceptsCollisions(false);
         remainingCollisionCooldown = collisionCooldown;
         sprite.setAlpha(0.5f);
+    }
+
+    public void registerBullet(Bullet bullet) {
+        registeredBullets.add(bullet);
+        bullet.setSource(this);
+    }
+
+    public void unregisterBullet(Bullet bullet) {
+        registeredBullets.remove(bullet);
+    }
+
+    @Override
+    public void applyDamage(float damage) {
+        super.applyDamage(damage);
+        if (!isAlive()) {
+            for (Bullet bullet : registeredBullets) {
+                bullet.applyDamage(bullet.getHealth());
+            }
+        }
     }
 }
