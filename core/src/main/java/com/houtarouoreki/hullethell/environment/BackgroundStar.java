@@ -29,7 +29,7 @@ public class BackgroundStar extends BackgroundObject {
     public void physics(float delta, Vector2 viewArea) {
         super.physics(delta, viewArea);
         if (getPosition().x + getSize().x < 0) {
-            getPosition().x = viewArea.x;
+            setPosition(new Vector2(viewArea.x, getPosition().y));
         }
     }
 }
