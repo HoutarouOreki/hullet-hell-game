@@ -43,7 +43,7 @@ public class World {
             body.render(g, viewport, viewArea);
         }
         renderCollisions(g, viewport);
-        renderDebugInfo(g, viewport);
+        //renderDebugInfo(g, viewport);
     }
 
     private void renderCollisions(Graphics g, Viewport viewport) {

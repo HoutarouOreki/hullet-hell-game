@@ -62,7 +62,7 @@ public class Body extends PrimitiveBody {
     @Override
     public void render(Graphics g, Viewport vp, Vector2 viewArea) {
         super.render(g, vp, viewArea);
-        renderCollisionBody(g, vp, viewArea);
+        //renderCollisionBody(g, vp, viewArea);
     }
 
     private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {

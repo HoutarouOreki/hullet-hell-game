@@ -44,7 +44,7 @@ public class Entity extends Body {
     @Override
     public void render(Graphics g, Viewport vp, Vector2 viewArea) {
         super.render(g, vp, viewArea);
-        renderHealthBar(g, vp, viewArea);
+        //renderHealthBar(g, vp, viewArea);
     }
 
     private void renderHealthBar(Graphics g, Viewport vp, Vector2 viewArea) {
