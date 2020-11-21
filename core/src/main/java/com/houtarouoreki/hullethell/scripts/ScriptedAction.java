@@ -77,6 +77,8 @@ public abstract class ScriptedAction {
         return finished;
     }
 
+    public abstract int bodiesAmount();
+
     protected void setFinished() {
         this.finished = true;
     }

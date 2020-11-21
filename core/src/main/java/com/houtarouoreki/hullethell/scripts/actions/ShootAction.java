@@ -28,4 +28,9 @@ public class ShootAction extends ScriptedAction {
         bulletInitialVelocity = ParsingHelpers.vector2fromStrings(arguments.get(1), arguments.get(2));
         bulletType = arguments.get(0);
     }
+
+    @Override
+    public int bodiesAmount() {
+        return 1;
+    }
 }

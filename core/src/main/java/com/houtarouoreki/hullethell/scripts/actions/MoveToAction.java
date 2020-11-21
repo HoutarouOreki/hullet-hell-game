@@ -28,6 +28,11 @@ public class MoveToAction extends ScriptedAction {
     }
 
     @Override
+    public int bodiesAmount() {
+        return 0;
+    }
+
+    @Override
     protected void performAction() {
         if (duration == 0) {
             body.setPosition(targetPosition.cpy());

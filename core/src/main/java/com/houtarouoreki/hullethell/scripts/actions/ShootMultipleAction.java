@@ -37,4 +37,9 @@ public class ShootMultipleAction extends ScriptedAction {
         amount = Integer.parseInt(arguments.get(1));
         speed = Double.parseDouble(arguments.get(4));
     }
+
+    @Override
+    public int bodiesAmount() {
+        return amount;
+    }
 }
