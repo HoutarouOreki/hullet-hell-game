@@ -61,19 +61,27 @@ public class World {
     private void renderCollision(CollisionResult collision, Graphics g, Viewport vp) {
         //Gdx.gl.glEnable(GL20.GL_BLEND);
         g.setColor(new Color(1, 1, 1,
-                Interpolation.sineIn.apply(1, -0.2f, getCollisionCompletionPercentage(collision))));
+                Interpolation.sineIn.apply(1, -0.2f,
+                        getCollisionCompletionPercentage(collision))));
         RenderHelpers.fillWorldCircle(collision.position,
-                0.5f * Interpolation.pow3Out.apply(getCollisionCompletionPercentage(collision)),
+                0.5f * Interpolation.pow3Out
+                        .apply(getCollisionCompletionPercentage(collision)),
                 g, vp, viewArea);
     }
 
     private void renderDebugInfo(Graphics g, Viewport vp) {
-        g.drawString("Bodies: " + bodies.size(), 20, 20);
-        g.drawString("Current section: " + scriptedStageManager.getCurrentStageName(), 20, 35);
-        g.drawString("Active bodies: " + scriptedStageManager.getActiveBodiesCount(), 20, 50);
-        g.drawString("Bodies: " + scriptedStageManager.getBodiesCount(), 20, 65);
-        g.drawString("Waiting bodies: " + scriptedStageManager.getWaitingBodiesCount(), 20, 80);
-        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond() + "        ", 20, 95);
+        g.drawString("Bodies: "
+                + bodies.size(), 20, 20);
+        g.drawString("Current section: "
+                + scriptedStageManager.getCurrentStageName(), 20, 35);
+        g.drawString("Active bodies: "
+                + scriptedStageManager.getActiveBodiesCount(), 20, 50);
+        g.drawString("Bodies: "
+                + scriptedStageManager.getBodiesCount(), 20, 65);
+        g.drawString("Waiting bodies: "
+                + scriptedStageManager.getWaitingBodiesCount(), 20, 80);
+        g.drawString("FPS: "
+                + Gdx.graphics.getFramesPerSecond() + "        ", 20, 95);
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {
@@ -110,7 +118,8 @@ public class World {
             if (body.shouldDespawnOOBounds()) {
                 float despawnMarginX = body.getSize().x;
                 float despawnMarginY = body.getSize().y;
-                if (body.getPosition().x < -despawnMarginX || body.getPosition().y < -despawnMarginY ||
+                if (body.getPosition().x < -despawnMarginX ||
+                        body.getPosition().y < -despawnMarginY ||
                         body.getPosition().x > viewArea.x + despawnMarginX ||
                         body.getPosition().y > viewArea.y + despawnMarginY) {
                     i.remove();
