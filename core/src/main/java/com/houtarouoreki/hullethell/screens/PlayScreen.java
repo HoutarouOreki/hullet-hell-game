@@ -80,7 +80,7 @@ public class PlayScreen extends BasicGameScreen {
     }
 
     private void updateSteering() {
-        float speed = 10;
+        float speed = 6;
         Vector2 targetVelocity = new Vector2();
         if (Gdx.input.isKeyPressed(Input.Keys.A))
             targetVelocity.x -= 1;
