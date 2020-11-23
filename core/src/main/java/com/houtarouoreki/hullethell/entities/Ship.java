@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship extends Entity {
-    private final float collisionCooldown = 2;
     private final List<Bullet> registeredBullets = new ArrayList<Bullet>();
+    private float collisionCooldown;
     private float remainingCollisionCooldown = 0;
     private float remainingCollisionCooldownAnimation = 0;
 
@@ -51,9 +51,19 @@ public class Ship extends Entity {
     @Override
     public void onCollision(Body other, CollisionResult collision) {
         super.onCollision(other, collision);
-        setAcceptsCollisions(false);
+        if (collisionCooldown > 0) {
+            setAcceptsCollisions(false);
+        }
         remainingCollisionCooldown = collisionCooldown;
         sprite.setAlpha(0.5f);
+    }
+
+    public float getCollisionCooldown() {
+        return collisionCooldown;
+    }
+
+    public void setCollisionCooldown(float collisionCooldown) {
+        this.collisionCooldown = collisionCooldown;
     }
 
     public void registerBullet(Bullet bullet) {
