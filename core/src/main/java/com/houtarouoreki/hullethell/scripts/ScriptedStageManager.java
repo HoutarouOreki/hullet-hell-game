@@ -54,8 +54,6 @@ public class ScriptedStageManager {
     }
 
     public float getProgression() {
-        System.out.println("getBodiesRemovedAmount() = " + getBodiesRemovedAmount());
-        System.out.println("allBodiesAmount = " + allBodiesAmount);
         return getBodiesRemovedAmount() / (float)allBodiesAmount;
     }
 

@@ -53,9 +53,9 @@ public class Ship extends Entity {
         super.onCollision(other, collision);
         if (collisionCooldown > 0) {
             setAcceptsCollisions(false);
+            remainingCollisionCooldown = collisionCooldown;
+            sprite.setAlpha(0.5f);
         }
-        remainingCollisionCooldown = collisionCooldown;
-        sprite.setAlpha(0.5f);
     }
 
     public float getCollisionCooldown() {
