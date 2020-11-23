@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
-import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
@@ -34,7 +33,6 @@ public class PlayScreen extends BasicGameScreen {
     private Ship player;
     private World world;
     private Viewport viewport;
-    private float asteroidSpawnTimer;
 
     public PlayScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
         this.assetManager = assetManager;
@@ -69,29 +67,9 @@ public class PlayScreen extends BasicGameScreen {
         updateBackground(delta);
         world.update(delta);
         clampPlayerPosition();
-        attemptSpawnAsteroid(delta);
         if (world.isFinished()) {
             screenManager.enterGameScreen(3, new FadeOutTransition(), new FadeInTransition());
         }
-    }
-
-    private void attemptSpawnAsteroid(float delta) {
-        asteroidSpawnTimer += delta;
-        float asteroidSpawnFrequency = 2f;
-        if (asteroidSpawnTimer > asteroidSpawnFrequency) {
-            asteroidSpawnTimer -= asteroidSpawnFrequency;
-            spawnAsteroid();
-        }
-    }
-
-    private void spawnAsteroid() {
-        float size = 0.5f + (float) Math.random() * 2;
-        Environmental asteroid = new Environmental(assetManager, "Asteroid");
-        asteroid.setSize(new Vector2(size, size));
-        asteroid.getCollisionBody().get(0).setRadius(size / 2);
-        asteroid.setPosition(new Vector2(world.viewArea.x + asteroid.getSize().x / 2, (float) Math.random() * world.viewArea.y));
-        asteroid.setVelocity(new Vector2(-4, 0));
-        world.bodies.add(asteroid);
     }
 
     private void clampPlayerPosition() {
@@ -139,7 +117,6 @@ public class PlayScreen extends BasicGameScreen {
 
     @Override
     public void interpolate(GameContainer gc, float alpha) {
-
     }
 
     @Override
@@ -160,6 +137,4 @@ public class PlayScreen extends BasicGameScreen {
     public int getId() {
         return 2;
     }
-
-
 }
