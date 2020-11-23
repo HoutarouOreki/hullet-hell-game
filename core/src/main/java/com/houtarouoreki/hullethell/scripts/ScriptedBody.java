@@ -15,6 +15,7 @@ public class ScriptedBody {
     public Queue<ScriptedAction> waitingActions = new LinkedList<ScriptedAction>();
     public List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
     public Body controlledBody;
+    private int allSubbodiesAmount;
     private AssetManager assetManager;
     private World world;
     private ScriptedSection section;
@@ -24,7 +25,9 @@ public class ScriptedBody {
         name = conf.name;
         configName = conf.configName;
         for (ScriptedActionConfiguration actionConf : conf.actions) {
-            waitingActions.add(ScriptedAction.createScriptedAction(actionConf, this));
+            ScriptedAction action = ScriptedAction.createScriptedAction(actionConf, this);
+            waitingActions.add(action);
+            allSubbodiesAmount += action.bodiesAmount();
         }
     }
 
@@ -77,5 +80,9 @@ public class ScriptedBody {
         } else {
             throw new Error("Error creating body from script");
         }
+    }
+
+    public int getAllSubbodiesAmount() {
+        return allSubbodiesAmount;
     }
 }

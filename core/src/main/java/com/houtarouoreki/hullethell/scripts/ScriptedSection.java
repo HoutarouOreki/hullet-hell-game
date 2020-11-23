@@ -15,15 +15,18 @@ public class ScriptedSection {
     private final AssetManager assetManager;
     private final World world;
     private final String name;
-
+    private int allBodiesAmount;
     private double timePassed;
+    private int bodiesRemovedAmount;
 
     public ScriptedSection(AssetManager assetManager, World world, ScriptedSectionConfiguration conf) {
         this.assetManager = assetManager;
         this.world = world;
         waitingBodies = new PriorityQueue<ScriptedBody>();
         for (ScriptedBodyConfiguration bodyConf : conf.bodies) {
-            waitingBodies.add(new ScriptedBody(bodyConf));
+            ScriptedBody body = new ScriptedBody(bodyConf);
+            waitingBodies.add(body);
+            allBodiesAmount += body.getAllSubbodiesAmount();
         }
         activeBodies = new ArrayList<ScriptedBody>();
         bodies = new ArrayList<Body>();
@@ -79,5 +82,14 @@ public class ScriptedSection {
 
     public void unregisterBody(Body body) {
         bodies.remove(body);
+        bodiesRemovedAmount++;
+    }
+
+    public int getAllBodiesAmount() {
+        return allBodiesAmount;
+    }
+
+    public int getBodiesRemovedAmount() {
+        return bodiesRemovedAmount;
     }
 }

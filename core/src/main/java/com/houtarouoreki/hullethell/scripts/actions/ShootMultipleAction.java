@@ -40,6 +40,7 @@ public class ShootMultipleAction extends ScriptedAction {
 
     @Override
     public int bodiesAmount() {
+        initialiseArguments();
         return amount;
     }
 }

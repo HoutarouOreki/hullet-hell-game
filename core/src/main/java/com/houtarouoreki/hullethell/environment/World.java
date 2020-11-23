@@ -44,6 +44,7 @@ public class World {
         }
         renderCollisions(g, viewport);
         //renderDebugInfo(g, viewport);
+        renderProgressBar(g);
     }
 
     private void renderCollisions(Graphics g, Viewport viewport) {
@@ -82,6 +83,11 @@ public class World {
                 + scriptedStageManager.getWaitingBodiesCount(), 20, 80);
         g.drawString("FPS: "
                 + Gdx.graphics.getFramesPerSecond() + "        ", 20, 95);
+    }
+
+    private void renderProgressBar(Graphics g) {
+        g.setColor(new Color(1, 1, 1, 0.8f));
+        g.fillRect(0, 700, scriptedStageManager.getProgression() * 1280, 20);
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {
