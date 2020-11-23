@@ -92,7 +92,7 @@ public class PlayScreen extends BasicGameScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             targetVelocity.y += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Bullet bullet = new Bullet(assetManager, "Bullet 1");
+            Bullet bullet = new Bullet(assetManager, "Player bullet 1");
             world.bodies.add(bullet);
             bullet.setPosition(player.getPosition());
             bullet.setTeam(CollisionTeam.PLAYER);

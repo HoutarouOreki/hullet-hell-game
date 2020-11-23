@@ -20,40 +20,40 @@ public class Bullet extends Entity {
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
         setShouldDespawnOOBounds(true);
-        Color color;
-        switch (new Random().nextInt(10)) {
-            case 0:
-                color = Color.RED;
-                break;
-            case 1:
-                color = Color.YELLOW;
-                break;
-            case 2:
-                color = Color.GREEN;
-                break;
-            case 3:
-                color = Color.CYAN;
-                break;
-            case 4:
-                color = Color.BLUE;
-                break;
-            case 5:
-                color = Color.PINK;
-                break;
-            case 6:
-                color = Color.PURPLE;
-                break;
-            case 7:
-                color = Color.CORAL;
-                break;
-            case 8:
-                color = Color.GOLD;
-                break;
-            default:
-                color = Color.MAGENTA;
-                break;
-        }
-        sprite.setColor(color);
+//        Color color;
+//        switch (new Random().nextInt(10)) {
+//            case 0:
+//                color = Color.RED;
+//                break;
+//            case 1:
+//                color = Color.YELLOW;
+//                break;
+//            case 2:
+//                color = Color.GREEN;
+//                break;
+//            case 3:
+//                color = Color.CYAN;
+//                break;
+//            case 4:
+//                color = Color.BLUE;
+//                break;
+//            case 5:
+//                color = Color.PINK;
+//                break;
+//            case 6:
+//                color = Color.PURPLE;
+//                break;
+//            case 7:
+//                color = Color.CORAL;
+//                break;
+//            case 8:
+//                color = Color.GOLD;
+//                break;
+//            default:
+//                color = Color.MAGENTA;
+//                break;
+//        }
+//        sprite.setColor(color);
     }
 
     @Override
