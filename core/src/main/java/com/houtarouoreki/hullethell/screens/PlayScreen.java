@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
+import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
@@ -90,6 +91,14 @@ public class PlayScreen extends BasicGameScreen {
             targetVelocity.y -= 1;
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             targetVelocity.y += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            Bullet bullet = new Bullet(assetManager, "Bullet 1");
+            world.bodies.add(bullet);
+            bullet.setPosition(player.getPosition());
+            bullet.setTeam(CollisionTeam.PLAYER);
+            bullet.setVelocity(new Vector2(100, 0));
+            player.registerBullet(bullet);
+        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
 
