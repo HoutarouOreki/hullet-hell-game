@@ -58,4 +58,8 @@ public class ScriptedStageManager {
         System.out.println("allBodiesAmount = " + allBodiesAmount);
         return getBodiesRemovedAmount() / (float)allBodiesAmount;
     }
+
+    public boolean isFinished() {
+        return sections.size() == 0;
+    }
 }

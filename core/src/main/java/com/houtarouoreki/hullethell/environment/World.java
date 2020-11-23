@@ -105,6 +105,10 @@ public class World {
         }
     }
 
+    public boolean isFinished() {
+        return scriptedStageManager.isFinished();
+    }
+
     private void updateAI(float delta) {
         Iterator<CpuPlayer> i = cpus.iterator();
         while (i.hasNext()) {

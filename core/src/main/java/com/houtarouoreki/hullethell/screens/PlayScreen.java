@@ -70,6 +70,9 @@ public class PlayScreen extends BasicGameScreen {
         world.update(delta);
         clampPlayerPosition();
         attemptSpawnAsteroid(delta);
+        if (world.isFinished()) {
+            screenManager.enterGameScreen(3, new FadeOutTransition(), new FadeInTransition());
+        }
     }
 
     private void attemptSpawnAsteroid(float delta) {
