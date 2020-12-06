@@ -32,7 +32,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadConfigs(assetManager, "environmentals", Arrays.asList("Asteroid"));
         loadConfigs(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
-        loadConfigs(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1"));
+        loadConfigs(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 

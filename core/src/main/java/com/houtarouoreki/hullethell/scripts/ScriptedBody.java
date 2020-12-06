@@ -8,7 +8,7 @@ import com.houtarouoreki.hullethell.environment.World;
 
 import java.util.*;
 
-public class ScriptedBody {
+public class ScriptedBody implements Comparable<ScriptedBody> {
     public final String type;
     public final String name;
     public final String configName;
@@ -84,5 +84,17 @@ public class ScriptedBody {
 
     public int getAllSubbodiesAmount() {
         return allSubbodiesAmount;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public int compareTo(ScriptedBody o) {
+        ScriptedAction firstAction = waitingActions.peek();
+        if (firstAction == null)
+            return -1;
+        ScriptedAction otherFirstAction = o.waitingActions.peek();
+        if (otherFirstAction == null)
+            return 1;
+        return (int)Math.signum(firstAction.getScriptedTime() - otherFirstAction.getScriptedTime());
     }
 }

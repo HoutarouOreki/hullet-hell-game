@@ -40,6 +40,8 @@ public class ScriptedSection {
     public void update(double delta) {
         timePassed += delta;
 
+        if (waitingBodies.size() > 0)
+        System.out.println(waitingBodies.peek().waitingActions.element().getScriptedTime() + " <= " + getTimePassed());
         while (waitingBodies.size() > 0 && waitingBodies.peek().waitingActions.element().getScriptedTime() <= getTimePassed()) {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
