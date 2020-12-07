@@ -32,7 +32,7 @@ public class MoveBezier extends ScriptedAction {
 
     @Override
     protected void performAction() {
-        double completion = (section.getTimePassed() - getScriptedTime()) / (getScriptedTime() + duration);
+        double completion = (section.getTimePassed() - getScriptedTime()) / (duration);
         if (completion > 1) {
             completion = 1;
             setFinished();
