@@ -1,4 +1,4 @@
-package com.houtarouoreki.hullethell.environment.collisions;
+package com.houtarouoreki.hullethell.collisions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;

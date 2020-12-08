@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.collisions.CollisionResult;
 
 public class Bullet extends Entity {
     private Ship source;

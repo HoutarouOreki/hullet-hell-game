@@ -7,7 +7,7 @@ import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.helpers.Timer;
 
 public class CpuPlayer {

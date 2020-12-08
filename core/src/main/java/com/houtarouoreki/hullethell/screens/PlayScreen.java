@@ -11,7 +11,7 @@ import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;

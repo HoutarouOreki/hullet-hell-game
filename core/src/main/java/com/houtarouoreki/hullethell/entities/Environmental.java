@@ -3,8 +3,8 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionResult;
-import com.houtarouoreki.hullethell.environment.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 
 public class Environmental extends Entity {
     public Environmental(AssetManager assetManager, String configurationName) {

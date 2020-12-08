@@ -1,4 +1,4 @@
-package com.houtarouoreki.hullethell.environment.collisions;
+package com.houtarouoreki.hullethell.collisions;
 
 public enum CollisionTeam {
     COMPUTER,
