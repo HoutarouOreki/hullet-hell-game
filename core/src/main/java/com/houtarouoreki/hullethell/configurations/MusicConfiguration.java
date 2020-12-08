@@ -19,4 +19,9 @@ public class MusicConfiguration {
         author = keyValues.get("author");
         title = keyValues.get("title");
     }
+
+    @Override
+    public String toString() {
+        return author + " - " + title;
+    }
 }
