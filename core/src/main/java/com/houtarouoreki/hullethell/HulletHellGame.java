@@ -26,7 +26,7 @@ public class HulletHellGame extends ScreenBasedGame {
         AssetManager assetManager = new AssetManager();
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
-        assetManager.setLoader(MusicConfiguration.class, new MusicConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(SongConfiguration.class, new SongConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(StageConfiguration.class, new StageConfigurationLoader(new InternalFileHandleResolver()));
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
@@ -52,7 +52,7 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadMusicAndConfigs(AssetManager am, List<String> names) {
         for (String name : names) {
             am.load("music/" + name + ".mp3", Music.class);
-            am.load("music/" + name + ".cfg", MusicConfiguration.class);
+            am.load("music/" + name + ".cfg", SongConfiguration.class);
         }
     }
 

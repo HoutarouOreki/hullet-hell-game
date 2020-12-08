@@ -1,16 +1,16 @@
 package com.houtarouoreki.hullethell.music;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.houtarouoreki.hullethell.configurations.MusicConfiguration;
+import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class SongNotification {
     private final float length = 5;
-    private final MusicConfiguration song;
+    private final SongConfiguration song;
     private float timeLeft = length;
     private boolean done = false;
 
-    public SongNotification(MusicConfiguration song) {
+    public SongNotification(SongConfiguration song) {
         this.song = song;
     }
 

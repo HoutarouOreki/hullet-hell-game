@@ -2,12 +2,12 @@ package com.houtarouoreki.hullethell.music;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.houtarouoreki.hullethell.configurations.MusicConfiguration;
+import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class MusicManager {
     private final AssetManager assetManager;
-    private MusicConfiguration currentSong;
+    private SongConfiguration currentSong;
     private SongNotification notification;
 
     public MusicManager(AssetManager am) {
