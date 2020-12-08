@@ -6,15 +6,9 @@ import org.mini2Dx.core.graphics.Graphics;
 
 public class SongNotification {
     private final float length = 5;
-    private final SongConfiguration song;
     private float timeLeft = length;
-    private boolean done = false;
 
-    public SongNotification(SongConfiguration song) {
-        this.song = song;
-    }
-
-    public void render(Graphics g) {
+    public void render(Graphics g, SongConfiguration song) {
         float right = g.getViewportWidth();
         float height = 60;
         float top = g.getViewportHeight() - height;
@@ -34,11 +28,5 @@ public class SongNotification {
 
     public void update(float delta) {
         timeLeft -= delta;
-        if (timeLeft < 0)
-            done = true;
-    }
-
-    public boolean isDone() {
-        return done;
     }
 }

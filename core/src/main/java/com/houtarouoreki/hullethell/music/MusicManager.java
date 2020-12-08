@@ -7,32 +7,24 @@ import org.mini2Dx.core.graphics.Graphics;
 
 public class MusicManager {
     private final AssetManager assetManager;
+    private final SongNotification notification;
     private SongConfiguration currentSong;
-    private SongNotification notification;
 
     public MusicManager(AssetManager am) {
         assetManager = am;
+        notification = new SongNotification();
     }
 
     public void setCurrentSong(String fileName) {
         assetManager.get(fileName + ".mp3", Music.class).play();
         currentSong = assetManager.get(fileName + ".cfg");
-        notification = new SongNotification(currentSong);
     }
 
     public void render(Graphics g) {
-        if (notification == null) {
-            return;
-        }
-        notification.render(g);
+        notification.render(g, currentSong);
     }
 
     public void update(float delta) {
-        if (notification == null) {
-            return;
-        }
         notification.update(delta);
-        if (notification.isDone())
-            notification = null;
     }
 }
