@@ -21,9 +21,9 @@ import org.mini2Dx.ui.style.UiTheme;
 
 public class MainMenuScreen extends BasicGameScreen {
     private final AssetManager assetManager;
+    private final ScreenManager<? extends GameScreen> screenManager;
     private UiContainer uiContainer;
     private Div buttonsContainer;
-    private final ScreenManager<? extends GameScreen> screenManager;
 
     public MainMenuScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
         this.assetManager = assetManager;
