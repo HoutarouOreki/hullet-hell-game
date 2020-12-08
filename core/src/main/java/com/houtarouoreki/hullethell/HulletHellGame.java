@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ClasspathFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
@@ -25,14 +26,17 @@ public class HulletHellGame extends ScreenBasedGame {
         AssetManager assetManager = new AssetManager();
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(MusicConfiguration.class, new MusicConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(StageConfiguration.class, new StageConfigurationLoader(new InternalFileHandleResolver()));
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
 
-        loadConfigs(assetManager, "environmentals", Arrays.asList("Asteroid"));
-        loadConfigs(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
-        loadConfigs(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
+        loadMusicAndConfigs(assetManager, Arrays.asList("To Eris - Social Blast"));
+
+        loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList("Asteroid"));
+        loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
+        loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
@@ -45,7 +49,14 @@ public class HulletHellGame extends ScreenBasedGame {
         }
     }
 
-    private void loadConfigs(AssetManager am, String folder, List<String> names) {
+    private void loadMusicAndConfigs(AssetManager am, List<String> names) {
+        for (String name : names) {
+            am.load("music/" + name + ".mp3", Music.class);
+            am.load("music/" + name + ".cfg", MusicConfiguration.class);
+        }
+    }
+
+    private void loadConfigsAndTextures(AssetManager am, String folder, List<String> names) {
         for (String name : names) {
             am.load(folder + "/" + name + ".png", Texture.class);
             am.load(folder + "/" + name + ".cfg", BodyConfiguration.class);
