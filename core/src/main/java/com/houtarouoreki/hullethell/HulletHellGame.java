@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.configurations.*;
+import com.houtarouoreki.hullethell.music.MusicManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
@@ -19,11 +20,14 @@ import java.util.List;
 
 public class HulletHellGame extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.houtarouoreki.hullethell";
+    private MusicManager musicManager;
+    private AssetManager assetManager;
 
     @Override
     public void initialise() {
         FileHandleResolver fileHandleResolver = new FallbackFileHandleResolver(new ClasspathFileHandleResolver(), new InternalFileHandleResolver());
-        AssetManager assetManager = new AssetManager();
+        assetManager = new AssetManager();
+        musicManager = new MusicManager(assetManager);
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(SongConfiguration.class, new SongConfigurationLoader(new InternalFileHandleResolver()));
@@ -40,7 +44,15 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
-        this.addScreen(new LoadingScreen(this, assetManager));
+        this.addScreen(new LoadingScreen(this));
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public MusicManager getMusicManager() {
+        return musicManager;
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {
@@ -66,6 +78,7 @@ public class HulletHellGame extends ScreenBasedGame {
     @Override
     public void update(float delta) {
         getScreenManager().update(this, delta);
+        musicManager.update(delta);
     }
 
     @Override
@@ -76,6 +89,7 @@ public class HulletHellGame extends ScreenBasedGame {
     @Override
     public void render(Graphics g) {
         getScreenManager().render(this, g);
+        musicManager.render(g);
     }
 
     @Override

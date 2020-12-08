@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -20,19 +20,17 @@ import org.mini2Dx.ui.listener.ActionListener;
 import org.mini2Dx.ui.style.UiTheme;
 
 public class MainMenuScreen extends BasicGameScreen {
-    private final AssetManager assetManager;
-    private final ScreenManager<? extends GameScreen> screenManager;
+    private final HulletHellGame game;
     private UiContainer uiContainer;
     private Div buttonsContainer;
 
-    public MainMenuScreen(AssetManager assetManager, ScreenManager<? extends GameScreen> screenManager) {
-        this.assetManager = assetManager;
-        this.screenManager = screenManager;
+    public MainMenuScreen(HulletHellGame game) {
+        this.game = game;
     }
 
     @Override
     public void initialise(GameContainer gc) {
-        uiContainer = new UiContainer(gc, assetManager);
+        uiContainer = new UiContainer(gc, game.getAssetManager());
         Gdx.input.setInputProcessor(uiContainer);
 
         buttonsContainer = new Container(100, 100, 200, gc.getHeight() - 200);
@@ -75,13 +73,16 @@ public class MainMenuScreen extends BasicGameScreen {
     }
 
     private void onPlayButton() {
-        screenManager.enterGameScreen(2, new FadeOutTransition(), new FadeInTransition());
+        game.getScreenManager().enterGameScreen(
+                2, new FadeOutTransition(), new FadeInTransition());
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager, float delta) {
+    public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager,
+                       float delta) {
         if (!UiContainer.isThemeApplied())
-            UiContainer.setTheme(assetManager.get(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class));
+            UiContainer.setTheme(game.getAssetManager().get(UiTheme.DEFAULT_THEME_FILENAME,
+                    UiTheme.class));
         uiContainer.update(delta);
     }
 
