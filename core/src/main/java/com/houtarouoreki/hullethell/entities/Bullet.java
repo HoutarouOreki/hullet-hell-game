@@ -1,17 +1,18 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 
 public class Bullet extends Entity {
     private Ship source;
 
-    public Bullet(AssetManager assetManager, String configurationName) {
-        super(assetManager);
+    public Bullet(HulletHellGame game, String configurationName) {
+        super(game);
         String path = "bullets/" + configurationName;
-        BodyConfiguration c = assetManager.get(path + ".cfg", BodyConfiguration.class);
+        BodyConfiguration c = game.getAssetManager()
+                .get(path + ".cfg", BodyConfiguration.class);
         setTextureName(path + ".png");
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));

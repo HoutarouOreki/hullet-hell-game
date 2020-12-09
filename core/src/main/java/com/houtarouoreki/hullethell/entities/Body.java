@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
@@ -17,20 +17,20 @@ import java.util.List;
 
 public class Body extends PrimitiveBody {
     private final List<CollisionCircle> collisionBody;
-    private CollisionTeam team;
     private final Vector2 acceleration = new Vector2();
+    private CollisionTeam team;
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
     private boolean shouldDespawnOOBounds;
 
-    public Body(AssetManager assetManager, List<CollisionCircle> collisionBody) {
-        super(assetManager);
+    public Body(HulletHellGame game, List<CollisionCircle> collisionBody) {
+        super(game);
         this.collisionBody = collisionBody;
     }
 
-    public Body(AssetManager assetManager) {
-        super(assetManager);
+    public Body(HulletHellGame game) {
+        super(game);
         collisionBody = new ArrayList<CollisionCircle>();
     }
 
@@ -100,7 +100,8 @@ public class Body extends PrimitiveBody {
         this.team = team;
     }
 
-    public void onCollision(Body other, CollisionResult collision) { }
+    public void onCollision(Body other, CollisionResult collision) {
+    }
 
     public boolean isAcceptingCollisions() {
         return acceptsCollisions;

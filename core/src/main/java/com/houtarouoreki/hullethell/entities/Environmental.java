@@ -1,16 +1,17 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 
 public class Environmental extends Entity {
-    public Environmental(AssetManager assetManager, String configurationName) {
-        super(assetManager);
+    public Environmental(HulletHellGame game, String configurationName) {
+        super(game);
         String path = "environmentals/" + configurationName;
-        BodyConfiguration c = assetManager.get(path + ".cfg", BodyConfiguration.class);
+        BodyConfiguration c = game.getAssetManager()
+                .get(path + ".cfg", BodyConfiguration.class);
         setTextureName(path + ".png");
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));

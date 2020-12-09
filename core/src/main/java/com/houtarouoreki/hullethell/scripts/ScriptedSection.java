@@ -1,6 +1,6 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
@@ -12,15 +12,15 @@ public class ScriptedSection {
     private final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
     private final List<Body> bodies;
-    private final AssetManager assetManager;
+    private final HulletHellGame game;
     private final World world;
     private final String name;
     private int allBodiesAmount;
     private double timePassed;
     private int bodiesRemovedAmount;
 
-    public ScriptedSection(AssetManager assetManager, World world, ScriptedSectionConfiguration conf) {
-        this.assetManager = assetManager;
+    public ScriptedSection(HulletHellGame game, World world, ScriptedSectionConfiguration conf) {
+        this.game = game;
         this.world = world;
         waitingBodies = new PriorityQueue<ScriptedBody>();
         for (ScriptedBodyConfiguration bodyConf : conf.bodies) {
@@ -41,11 +41,11 @@ public class ScriptedSection {
         timePassed += delta;
 
         if (waitingBodies.size() > 0)
-        System.out.println(waitingBodies.peek().waitingActions.element().getScriptedTime() + " <= " + getTimePassed());
+            System.out.println(waitingBodies.peek().waitingActions.element().getScriptedTime() + " <= " + getTimePassed());
         while (waitingBodies.size() > 0 && waitingBodies.peek().waitingActions.element().getScriptedTime() <= getTimePassed()) {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
-            body.initialise(assetManager, world, this);
+            body.initialise(game, world, this);
             world.bodies.add(body.controlledBody);
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();

@@ -12,7 +12,7 @@ public class ShootAction extends ScriptedAction {
 
     @Override
     protected void performAction() {
-        Bullet bullet = new Bullet(assetManager, bulletType);
+        Bullet bullet = new Bullet(game, bulletType);
         bullet.setVelocity(bulletInitialVelocity);
         bullet.setPosition(body.getPosition());
         bullet.setTeam(body.getTeam());

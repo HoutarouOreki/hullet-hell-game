@@ -1,6 +1,6 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.*;
@@ -16,7 +16,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
     public Body controlledBody;
     private int allSubbodiesAmount;
-    private AssetManager assetManager;
+    private HulletHellGame game;
     private World world;
     private ScriptedSection section;
 
@@ -45,9 +45,9 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         return false;
     }
 
-    public void initialise(AssetManager assetManager, World world, ScriptedSection section) {
-        controlledBody = createBodyFromScript(type, assetManager);
-        this.assetManager = assetManager;
+    public void initialise(HulletHellGame game, World world, ScriptedSection section) {
+        controlledBody = createBodyFromScript(type, game);
+        this.game = game;
         this.world = world;
         this.section = section;
     }
@@ -56,7 +56,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(assetManager, world, section, controlledBody);
+            action.initialise(game, world, section, controlledBody);
         }
 
         Iterator<ScriptedAction> i = currentActions.iterator();
@@ -69,14 +69,14 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         }
     }
 
-    private Body createBodyFromScript(String bodyClass, AssetManager assetManager) {
+    private Body createBodyFromScript(String bodyClass, HulletHellGame game) {
 
         if (bodyClass.equals("ships")) {
-            return new Ship(assetManager, configName);
+            return new Ship(game.getAssetManager(), configName);
         } else if (bodyClass.equals("bullets")) {
-            return new Bullet(assetManager, configName);
+            return new Bullet(game, configName);
         } else if (bodyClass.equals("environmentals")) {
-            return new Environmental(assetManager, configName);
+            return new Environmental(game, configName);
         } else {
             throw new Error("Error creating body from script");
         }
@@ -95,6 +95,6 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         ScriptedAction otherFirstAction = o.waitingActions.peek();
         if (otherFirstAction == null)
             return 1;
-        return (int)Math.signum(firstAction.getScriptedTime() - otherFirstAction.getScriptedTime());
+        return (int) Math.signum(firstAction.getScriptedTime() - otherFirstAction.getScriptedTime());
     }
 }

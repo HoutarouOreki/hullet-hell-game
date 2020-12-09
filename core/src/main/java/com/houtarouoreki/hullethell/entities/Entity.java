@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
@@ -14,12 +14,12 @@ public class Entity extends Body {
     private final HealthBarsInfo healthBarsInfo = new HealthBarsInfo();
     private float health;
 
-    public Entity(AssetManager assetManager, List<CollisionCircle> collisionBody) {
-        super(assetManager, collisionBody);
+    public Entity(HulletHellGame game, List<CollisionCircle> collisionBody) {
+        super(game, collisionBody);
     }
 
-    public Entity(AssetManager assetManager) {
-        super(assetManager);
+    public Entity(HulletHellGame game) {
+        super(game);
     }
 
     public float getHealth() {

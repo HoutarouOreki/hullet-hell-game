@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
@@ -9,17 +8,16 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public abstract class PrimitiveBody {
-    public final AssetManager assetManager;
-    protected Sprite sprite;
-    private String textureName;
-
-    private double time = 0;
+    public final HulletHellGame game;
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
+    protected Sprite sprite;
+    private String textureName;
+    private double time = 0;
     private Vector2 size = new Vector2();
 
-    public PrimitiveBody(AssetManager assetManager) {
-        this.assetManager = assetManager;
+    public PrimitiveBody(HulletHellGame game) {
+        this.game = game;
         sprite = new Sprite();
     }
 
@@ -73,7 +71,7 @@ public abstract class PrimitiveBody {
 
     public void setTextureName(String textureName) {
         this.textureName = textureName;
-        sprite = new Sprite(assetManager.get(textureName, Texture.class));
+        sprite = new Sprite(game.getAssetManager().get(textureName, Texture.class));
     }
 
     public Vector2 getSize() {

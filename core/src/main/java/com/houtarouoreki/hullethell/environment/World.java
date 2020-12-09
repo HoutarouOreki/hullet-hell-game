@@ -1,16 +1,16 @@
 package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.CollisionManager;
+import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
-import com.houtarouoreki.hullethell.collisions.CollisionManager;
-import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
 import org.mini2Dx.core.graphics.Graphics;
@@ -31,11 +31,11 @@ public class World {
     public float totalTimePassed;
     private float bufferedTime;
 
-    public World(AssetManager assetManager, StageConfiguration script) {
+    public World(HulletHellGame game, StageConfiguration script) {
         bodies = new ArrayList<Body>();
         cpus = new ArrayList<CpuPlayer>();
         collisionManager = new CollisionManager(this);
-        scriptedStageManager = new ScriptedStageManager(this, script, assetManager);
+        scriptedStageManager = new ScriptedStageManager(game, this, script);
     }
 
     public void render(Graphics g, Viewport viewport) {

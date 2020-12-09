@@ -1,6 +1,6 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
@@ -13,9 +13,9 @@ public class ScriptedStageManager {
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 
-    public ScriptedStageManager(World world, StageConfiguration script, AssetManager am) {
+    public ScriptedStageManager(HulletHellGame game, World world, StageConfiguration script) {
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
-            ScriptedSection section = new ScriptedSection(am, world, sectionConfiguration);
+            ScriptedSection section = new ScriptedSection(game, world, sectionConfiguration);
             sections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
         }
@@ -54,7 +54,7 @@ public class ScriptedStageManager {
     }
 
     public float getProgression() {
-        return getBodiesRemovedAmount() / (float)allBodiesAmount;
+        return getBodiesRemovedAmount() / (float) allBodiesAmount;
     }
 
     public boolean isFinished() {
