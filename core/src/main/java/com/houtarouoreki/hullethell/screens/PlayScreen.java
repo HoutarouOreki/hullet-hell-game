@@ -15,7 +15,6 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.graphics.viewport.Viewport;
-import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
@@ -25,9 +24,8 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayScreen extends BasicGameScreen {
+public class PlayScreen extends HulletHellScreen {
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
-    private final HulletHellGame game;
     private StageConfiguration script;
     private Ship player;
     private World world;
@@ -35,7 +33,7 @@ public class PlayScreen extends BasicGameScreen {
     private int shotFrames;
 
     public PlayScreen(HulletHellGame game) {
-        this.game = game;
+        super(game);
     }
 
     public void setStage(StageConfiguration script) {

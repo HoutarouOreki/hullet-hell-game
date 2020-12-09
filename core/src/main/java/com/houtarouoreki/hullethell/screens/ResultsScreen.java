@@ -10,18 +10,14 @@ import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
-public class ResultsScreen extends BasicGameScreen {
-
-    private final HulletHellGame game;
+public class ResultsScreen extends HulletHellScreen {
 
     public ResultsScreen(HulletHellGame game) {
-        this.game = game;
+        super(game);
     }
-
 
     @Override
-    public void initialise(GameContainer gc) {
-    }
+    public void initialise(GameContainer gc) { }
 
     @Override
     public void update(GameContainer gameContainer, ScreenManager<? extends GameScreen> screenManager, float v) {

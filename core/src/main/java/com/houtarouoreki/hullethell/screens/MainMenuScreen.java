@@ -6,7 +6,6 @@ import com.houtarouoreki.hullethell.ui.Button;
 import com.houtarouoreki.hullethell.ui.Menu;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
@@ -17,13 +16,12 @@ import org.mini2Dx.ui.style.UiTheme;
 
 import java.util.Arrays;
 
-public class MainMenuScreen extends BasicGameScreen {
-    private final HulletHellGame game;
+public class MainMenuScreen extends HulletHellScreen {
     private Menu menu;
     private int buttonY = -30;
 
     public MainMenuScreen(HulletHellGame game) {
-        this.game = game;
+        super(game);
     }
 
     @Override
@@ -50,7 +48,9 @@ public class MainMenuScreen extends BasicGameScreen {
         settingsButton.size = buttonSize;
         settingsButton.listener = new Button.ButtonListener() {
             @Override
-            public void onAction() { onSettingsButton(); }
+            public void onAction() {
+                onSettingsButton();
+            }
         };
 
         Button exitButton = new Button();
@@ -59,7 +59,9 @@ public class MainMenuScreen extends BasicGameScreen {
         exitButton.label = "Exit";
         exitButton.listener = new Button.ButtonListener() {
             @Override
-            public void onAction() { System.exit(0); }
+            public void onAction() {
+                System.exit(0);
+            }
         };
         menu.components.addAll(Arrays.asList(playButton, settingsButton, exitButton));
 
