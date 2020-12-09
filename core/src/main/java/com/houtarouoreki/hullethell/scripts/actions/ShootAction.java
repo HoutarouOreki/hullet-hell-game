@@ -1,5 +1,6 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Ship;
@@ -19,6 +20,7 @@ public class ShootAction extends ScriptedAction {
         world.bodies.add(bullet);
         bullet.setSection(section);
         ((Ship)body).registerBullet(bullet);
+        game.getSoundManager().playSound("laser1", 0.3f);
         setFinished();
     }
 

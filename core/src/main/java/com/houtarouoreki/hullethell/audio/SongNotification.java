@@ -1,4 +1,4 @@
-package com.houtarouoreki.hullethell.music;
+package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;

@@ -1,4 +1,4 @@
-package com.houtarouoreki.hullethell.music;
+package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -82,6 +82,7 @@ public class MusicManager {
     }
 
     public void setVolume(float volume) {
-        volume = Math.max(0, Math.min(1, volume));
+        this.volume = Math.max(0, Math.min(1, volume));
+        currentSong.setVolume(getVolume());
     }
 }

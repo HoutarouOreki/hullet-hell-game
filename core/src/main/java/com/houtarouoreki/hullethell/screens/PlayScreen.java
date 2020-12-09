@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
@@ -33,6 +34,7 @@ public class PlayScreen extends BasicGameScreen {
     private Ship player;
     private World world;
     private Viewport viewport;
+    private int shotFrames;
 
     public PlayScreen(HulletHellGame game) {
         this.game = game;
@@ -99,12 +101,16 @@ public class PlayScreen extends BasicGameScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             targetVelocity.y += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Bullet bullet = new Bullet(game, "Player bullet 1");
-            world.bodies.add(bullet);
-            bullet.setPosition(player.getPosition());
-            bullet.setTeam(CollisionTeam.PLAYER);
-            bullet.setVelocity(new Vector2(100, 0));
-            player.registerBullet(bullet);
+            shotFrames++;
+            if (shotFrames % 4 == 0) {
+                Bullet bullet = new Bullet(game, "Player bullet 1");
+                world.bodies.add(bullet);
+                bullet.setPosition(player.getPosition());
+                bullet.setTeam(CollisionTeam.PLAYER);
+                bullet.setVelocity(new Vector2(100, 0));
+                player.registerBullet(bullet);
+                game.getSoundManager().playSound("laser1", 0.3f);
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
             game.getScreenManager().enterGameScreen(1,
