@@ -26,7 +26,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         if (conf.type.equals("moveTo")) {
             a = new MoveToAction();
         } else if (conf.type.equals("moveBezier")) {
-            a = new MoveBezier();
+            a = new MoveBezierAction();
         } else if (conf.type.equals("shoot")) {
             a = new ShootAction();
         } else if (conf.type.equals("shootMultipleRadius")) {

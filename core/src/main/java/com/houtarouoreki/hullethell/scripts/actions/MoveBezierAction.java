@@ -6,7 +6,7 @@ import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveBezier extends ScriptedAction {
+public class MoveBezierAction extends ScriptedAction {
     private final List<Vector2> sourcePoints = new ArrayList<Vector2>();
     private double duration;
 
