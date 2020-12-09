@@ -20,13 +20,17 @@ public class StageConfiguration {
         ScriptedSectionConfiguration currentSection = null;
         for (String line : lines) {
             if (line.matches("! (.*)")) {
-                currentSection = new ScriptedSectionConfiguration(line.replaceFirst("! ", ""));
+                currentSection = new ScriptedSectionConfiguration(line.
+                        replaceFirst("! ", ""));
                 sections.add(currentSection);
+            } else if (line.matches("^\\d+\t.*")) {
+                if (currentSection == null)
+                    throw new NullPointerException("Current section was null");
+                currentSection.actions.add(new ScriptedActionConfiguration(line));
             } else if (line.matches(".*: \".*/.*\"")) {
                 currentBody = new ScriptedBodyConfiguration(line);
-                if (currentSection == null) {
+                if (currentSection == null)
                     throw new NullPointerException("Current section was null");
-                }
                 currentSection.bodies.add(currentBody);
             } else if (line.startsWith("\t")) {
                 if (currentBody == null) {

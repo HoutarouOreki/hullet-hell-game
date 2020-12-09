@@ -11,7 +11,7 @@ public class ScriptedActionConfiguration {
     public final double scriptedTime;
 
     public ScriptedActionConfiguration(String line) {
-        Pattern pattern = Pattern.compile("\\t+(\\d+(?:\\.\\d*)?)\\t+(\\w+):\\t+(.*)");
+        Pattern pattern = Pattern.compile("^\\t*(\\d+(?:\\.\\d*)?)\\t+(\\w+):?\\t+(.*)");
         Matcher match = pattern.matcher(line.split(" // ")[0]);
         if (!match.matches()) {
             throw new Error("Could not find a match for an action: " + line);

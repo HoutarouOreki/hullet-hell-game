@@ -58,6 +58,12 @@ public class PlayScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionOut(Transition transitionOut) {
+        super.preTransitionOut(transitionOut);
+        game.getMusicManager().fadeOut(2);
+    }
+
+    @Override
     public void initialise(GameContainer gc) {
     }
 

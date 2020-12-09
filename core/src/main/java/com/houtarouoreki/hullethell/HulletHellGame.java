@@ -35,6 +35,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
+        assetManager.load("ui/songNotification.png", Texture.class);
 
         loadMusicAndConfigs(assetManager, Arrays.asList("To Eris - Social Blast"));
 

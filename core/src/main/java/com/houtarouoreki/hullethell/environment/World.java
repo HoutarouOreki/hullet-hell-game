@@ -81,8 +81,12 @@ public class World {
                 + scriptedStageManager.getBodiesCount(), 20, 65);
         g.drawString("Waiting bodies: "
                 + scriptedStageManager.getWaitingBodiesCount(), 20, 80);
+        g.drawString("Waiting section actions: "
+                + scriptedStageManager.getSectionWaitingActions(), 20, 95);
+        g.drawString("Current section actions: "
+                + scriptedStageManager.getSectionCurrentActions(), 20, 110);
         g.drawString("FPS: "
-                + Gdx.graphics.getFramesPerSecond() + "        ", 20, 95);
+                + Gdx.graphics.getFramesPerSecond() + "        ", 20, 125);
     }
 
     private void renderProgressBar(Graphics g) {

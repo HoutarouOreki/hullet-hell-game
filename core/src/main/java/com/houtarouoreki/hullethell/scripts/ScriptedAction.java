@@ -33,6 +33,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             a = new ShootMultipleAction();
         } else if (conf.type.equals("shootCircle")) {
             a = new ShootCircleAction();
+        } else if (conf.type.equals("playSong")) {
+            a = new PlaySongAction();
         } else {
             throw new Error("Could not find action of type \"" + conf.type + "\"");
         }

@@ -53,6 +53,14 @@ public class ScriptedStageManager {
                 (sections.peek() != null ? sections.peek().getBodiesRemovedAmount() : 0);
     }
 
+    public int getSectionWaitingActions() {
+        return sections.size() > 0 ? sections.peek().getWaitingActionsCount() : 0;
+    }
+
+    public int getSectionCurrentActions() {
+        return sections.size() > 0 ? sections.peek().getCurrentActionsCount() : 0;
+    }
+
     public float getProgression() {
         return getBodiesRemovedAmount() / (float) allBodiesAmount;
     }
