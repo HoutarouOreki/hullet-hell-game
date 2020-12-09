@@ -1,23 +1,23 @@
 package com.houtarouoreki.hullethell.ui;
 
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.houtarouoreki.hullethell.input.ControlProcessor;
+import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu implements InputProcessor {
+public class Menu implements ControlProcessor {
     public final List<MenuComponent> components;
 
     public Menu() {
         components = new ArrayList<MenuComponent>();
     }
 
-    public void update(float delta) {
+    public void update() {
         for (MenuComponent component : components) {
-            component.update(delta);
+            component.update();
         }
     }
 
@@ -36,62 +36,33 @@ public class Menu implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean handleControl(Controls control) {
         MenuComponent focusedComponent = getCurrentlyFocusedComponent();
-        if (components.size() == 0)
+        if (focusedComponent == null)
             return false;
-        if (keycode == Input.Keys.TAB) {
-            handleTabKey(focusedComponent);
+        if (focusedComponent.handleControl(control))
+            return true;
+
+        MenuComponent newFocusNeighbor = getNeighbor(focusedComponent, control);
+        if (newFocusNeighbor != null) {
+            focusedComponent.unfocus();
+            newFocusNeighbor.focus();
             return true;
         }
-        return focusedComponent.handleKey(keycode);
+        return false;
     }
 
-    private void handleTabKey(MenuComponent focusedComponent) {
-        if (components.size() <= 1)
-            return;
-        if (focusedComponent == null) {
-            components.get(0).setCurrentlyFocused(true);
-            return;
+    private MenuComponent getNeighbor(MenuComponent focusedComponent, Controls control) {
+        switch (control) {
+            case up:
+                return focusedComponent.upperNeighbor;
+            case down:
+                return focusedComponent.lowerNeighbor;
+            case left:
+                return focusedComponent.leftNeighbor;
+            case right:
+                return focusedComponent.rightNeighbor;
         }
-        int indexFocused = components.indexOf(focusedComponent);
-        if (indexFocused == components.size() - 1)
-            components.get(0).setCurrentlyFocused(true);
-        focusedComponent.setCurrentlyFocused(false);
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
+        return null;
     }
 }

@@ -1,7 +1,9 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.ui.Button;
+import com.houtarouoreki.hullethell.ui.Menu;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -11,18 +13,13 @@ import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.ui.UiContainer;
-import org.mini2Dx.ui.element.Container;
-import org.mini2Dx.ui.element.Div;
-import org.mini2Dx.ui.element.TextButton;
-import org.mini2Dx.ui.element.Visibility;
-import org.mini2Dx.ui.event.ActionEvent;
-import org.mini2Dx.ui.listener.ActionListener;
 import org.mini2Dx.ui.style.UiTheme;
+
+import java.util.Arrays;
 
 public class MainMenuScreen extends BasicGameScreen {
     private final HulletHellGame game;
-    private UiContainer uiContainer;
-    private Div buttonsContainer;
+    private Menu menu;
 
     public MainMenuScreen(HulletHellGame game) {
         this.game = game;
@@ -30,46 +27,44 @@ public class MainMenuScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        uiContainer = new UiContainer(gc, game.getAssetManager());
-        Gdx.input.setInputProcessor(uiContainer);
-
-        buttonsContainer = new Container(100, 100, 200, gc.getHeight() - 200);
-        buttonsContainer.setVisibility(Visibility.VISIBLE);
-        uiContainer.add(buttonsContainer);
-
-        createAndAddTextButton("Play", new ActionListener() {
+        menu = new Menu();
+        Button t1 = new Button();
+        t1.position = new Vector2(30, 30);
+        t1.label = "Play";
+        t1.size = new Vector2(200, 30);
+        t1.focus();
+        t1.listener = new Button.ButtonListener() {
             @Override
-            public void onActionBegin(ActionEvent event) {
-            }
-
-            @Override
-            public void onActionEnd(ActionEvent event) {
+            public void onAction() {
                 onPlayButton();
             }
-        });
-
-        createAndAddTextButton("Exit", new ActionListener() {
+        };
+        Button t2 = new Button();
+        t2.position = new Vector2(30, 90);
+        t2.size = new Vector2(200, 30);
+        t2.label = "Exit";
+        t2.listener = new Button.ButtonListener() {
             @Override
-            public void onActionBegin(ActionEvent event) {
-            }
-
-            @Override
-            public void onActionEnd(ActionEvent event) {
+            public void onAction() {
                 System.exit(0);
             }
-        });
+        };
+        menu.components.addAll(Arrays.asList(t1, t2));
+
+        t1.lowerNeighbor = t2;
+        t2.upperNeighbor = t1;
     }
 
     @Override
     public void postTransitionIn(Transition transitionIn) {
         super.postTransitionIn(transitionIn);
-        Gdx.input.setInputProcessor(uiContainer);
+        game.getInputManager().managedProcessors.add(menu);
     }
 
     @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
-        Gdx.input.setInputProcessor(null);
+        game.getInputManager().managedProcessors.remove(menu);
     }
 
     private void onPlayButton() {
@@ -83,34 +78,21 @@ public class MainMenuScreen extends BasicGameScreen {
         if (!UiContainer.isThemeApplied())
             UiContainer.setTheme(game.getAssetManager().get(UiTheme.DEFAULT_THEME_FILENAME,
                     UiTheme.class));
-        uiContainer.update(delta);
+        menu.update();
     }
 
     @Override
     public void interpolate(GameContainer gc, float alpha) {
-        uiContainer.interpolate(alpha);
+        //menu.interpolate(alpha);
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        uiContainer.render(g);
+        menu.render(g);
     }
 
     @Override
     public int getId() {
         return 1;
-    }
-
-    private void createAndAddTextButton(String label, ActionListener actionListener) {
-        TextButton button = new TextButton();
-        button.setVisibility(Visibility.VISIBLE);
-        button.setWidthToContentWidthOf(buttonsContainer);
-        button.setHeight(30);
-        button.setText(label);
-        button.getLabel().setY(-3);
-        button.setY(buttonsContainer.getTotalChildren() * 60);
-        button.setEnabled(true);
-        button.addActionListener(actionListener);
-        buttonsContainer.add(button);
     }
 }

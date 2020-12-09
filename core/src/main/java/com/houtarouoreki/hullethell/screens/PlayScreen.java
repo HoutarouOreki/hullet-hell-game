@@ -1,7 +1,5 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
@@ -12,6 +10,7 @@ import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -91,15 +90,15 @@ public class PlayScreen extends BasicGameScreen {
     private void updateSteering() {
         float speed = 6;
         Vector2 targetVelocity = new Vector2();
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        if (game.getInputManager().isControlActive(Controls.left))
             targetVelocity.x -= 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
+        if (game.getInputManager().isControlActive(Controls.right))
             targetVelocity.x += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
+        if (game.getInputManager().isControlActive(Controls.down))
             targetVelocity.y -= 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
+        if (game.getInputManager().isControlActive(Controls.up))
             targetVelocity.y += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (game.getInputManager().isControlActive(Controls.shoot)) {
             shotFrames++;
             if (shotFrames % 4 == 0) {
                 Bullet bullet = new Bullet(game, "Player bullet 1");
@@ -111,7 +110,7 @@ public class PlayScreen extends BasicGameScreen {
                 game.getSoundManager().playSound("laser1", 0.3f);
             }
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        if (game.getInputManager().isControlActive(Controls.back))
             game.getScreenManager().enterGameScreen(1,
                     new FadeOutTransition(), new FadeInTransition());
 

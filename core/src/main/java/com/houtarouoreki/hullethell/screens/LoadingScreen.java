@@ -41,7 +41,7 @@ public class LoadingScreen extends BasicGameScreen {
             PlayScreen ps = new PlayScreen(game);
             ps.setStage(game.getAssetManager().<StageConfiguration>get("stages/Stage 1.cfg"));
             game.addScreen(ps);
-            game.addScreen(new ResultsScreen());
+            game.addScreen(new ResultsScreen(game));
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }

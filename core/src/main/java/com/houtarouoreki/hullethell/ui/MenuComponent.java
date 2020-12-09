@@ -1,23 +1,38 @@
 package com.houtarouoreki.hullethell.ui;
 
+import com.houtarouoreki.hullethell.input.ControlProcessor;
 import org.mini2Dx.core.graphics.Graphics;
 
-public abstract class MenuComponent {
+public abstract class MenuComponent implements ControlProcessor {
+    public MenuComponent lowerNeighbor;
+    public MenuComponent upperNeighbor;
+    public MenuComponent leftNeighbor;
+    public MenuComponent rightNeighbor;
     private boolean currentlyFocused;
 
-    public void update(float delta) {
+    public void update() {
     }
 
     public void render(Graphics g) {
     }
 
-    public boolean isCurrentlyFocused() {
+    public final boolean isCurrentlyFocused() {
         return currentlyFocused;
     }
 
-    public void setCurrentlyFocused(boolean value) {
-        currentlyFocused = value;
+    public final void focus() {
+        currentlyFocused = true;
+        onFocused();
     }
 
-    public abstract boolean handleKey(int key);
+    public final void unfocus() {
+        currentlyFocused = false;
+        onFocusLost();
+    }
+
+    protected void onFocused() {
+    }
+
+    protected void onFocusLost() {
+    }
 }

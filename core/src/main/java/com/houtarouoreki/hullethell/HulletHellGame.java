@@ -1,5 +1,6 @@
 package com.houtarouoreki.hullethell;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ClasspathFileHandleResolver;
@@ -7,9 +8,10 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.houtarouoreki.hullethell.audio.MusicManager;
 import com.houtarouoreki.hullethell.audio.SoundManager;
 import com.houtarouoreki.hullethell.configurations.*;
-import com.houtarouoreki.hullethell.audio.MusicManager;
+import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
@@ -22,14 +24,16 @@ import java.util.List;
 
 public class HulletHellGame extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.houtarouoreki.hullethell";
-    private MusicManager musicManager;
     private AssetManager assetManager;
+    private InputManager inputManager;
+    private MusicManager musicManager;
     private SoundManager soundManager;
 
     @Override
     public void initialise() {
         FileHandleResolver fileHandleResolver = new FallbackFileHandleResolver(new ClasspathFileHandleResolver(), new InternalFileHandleResolver());
         assetManager = new AssetManager();
+        inputManager = new InputManager();
         musicManager = new MusicManager(assetManager);
         soundManager = new SoundManager(assetManager);
 
@@ -50,11 +54,17 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
+        Gdx.input.setInputProcessor(inputManager);
+
         this.addScreen(new LoadingScreen(this));
     }
 
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    public InputManager getInputManager() {
+        return inputManager;
     }
 
     public MusicManager getMusicManager() {
