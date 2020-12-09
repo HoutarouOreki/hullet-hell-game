@@ -20,6 +20,7 @@ import java.util.Arrays;
 public class MainMenuScreen extends BasicGameScreen {
     private final HulletHellGame game;
     private Menu menu;
+    private int buttonY = -30;
 
     public MainMenuScreen(HulletHellGame game) {
         this.game = game;
@@ -28,31 +29,46 @@ public class MainMenuScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         menu = new Menu();
-        Button t1 = new Button();
-        t1.position = new Vector2(30, 30);
-        t1.label = "Play";
-        t1.size = new Vector2(200, 30);
-        t1.focus();
-        t1.listener = new Button.ButtonListener() {
+        int buttonX = 30;
+        Vector2 buttonSize = new Vector2(200, 30);
+
+        Button playButton = new Button();
+        playButton.position = new Vector2(buttonX, getNextButtonY());
+        playButton.label = "Play";
+        playButton.size = buttonSize;
+        playButton.focus();
+        playButton.listener = new Button.ButtonListener() {
             @Override
             public void onAction() {
                 onPlayButton();
             }
         };
-        Button t2 = new Button();
-        t2.position = new Vector2(30, 90);
-        t2.size = new Vector2(200, 30);
-        t2.label = "Exit";
-        t2.listener = new Button.ButtonListener() {
-            @Override
-            public void onAction() {
-                System.exit(0);
-            }
-        };
-        menu.components.addAll(Arrays.asList(t1, t2));
 
-        t1.lowerNeighbor = t2;
-        t2.upperNeighbor = t1;
+        Button settingsButton = new Button();
+        settingsButton.position = new Vector2(buttonX, getNextButtonY());
+        settingsButton.label = "Settings";
+        settingsButton.size = buttonSize;
+        settingsButton.listener = new Button.ButtonListener() {
+            @Override
+            public void onAction() { onSettingsButton(); }
+        };
+
+        Button exitButton = new Button();
+        exitButton.position = new Vector2(buttonX, getNextButtonY());
+        exitButton.size = buttonSize;
+        exitButton.label = "Exit";
+        exitButton.listener = new Button.ButtonListener() {
+            @Override
+            public void onAction() { System.exit(0); }
+        };
+        menu.components.addAll(Arrays.asList(playButton, settingsButton, exitButton));
+
+        playButton.upperNeighbor = exitButton;
+        playButton.lowerNeighbor = settingsButton;
+        settingsButton.upperNeighbor = playButton;
+        settingsButton.lowerNeighbor = exitButton;
+        exitButton.upperNeighbor = settingsButton;
+        exitButton.lowerNeighbor = playButton;
     }
 
     @Override
@@ -70,6 +86,11 @@ public class MainMenuScreen extends BasicGameScreen {
     private void onPlayButton() {
         game.getScreenManager().enterGameScreen(
                 2, new FadeOutTransition(), new FadeInTransition());
+    }
+
+    private void onSettingsButton() {
+        game.getScreenManager().enterGameScreen(
+                4, new FadeOutTransition(), new FadeInTransition());
     }
 
     @Override
@@ -94,5 +115,9 @@ public class MainMenuScreen extends BasicGameScreen {
     @Override
     public int getId() {
         return 1;
+    }
+
+    private int getNextButtonY() {
+        return buttonY += 60;
     }
 }
