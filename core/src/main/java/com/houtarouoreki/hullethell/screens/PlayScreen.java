@@ -2,7 +2,6 @@ package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
@@ -107,7 +106,7 @@ public class PlayScreen extends BasicGameScreen {
                 world.bodies.add(bullet);
                 bullet.setPosition(player.getPosition());
                 bullet.setTeam(CollisionTeam.PLAYER);
-                bullet.setVelocity(new Vector2(100, 0));
+                bullet.setVelocity(new Vector2(40, 0));
                 player.registerBullet(bullet);
                 game.getSoundManager().playSound("laser1", 0.3f);
             }
