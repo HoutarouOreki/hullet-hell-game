@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Body extends PrimitiveBody {
+    private int lastCollisionTick = -1;
     private final List<CollisionCircle> collisionBody;
     private final Vector2 acceleration = new Vector2();
     private CollisionTeam team;
@@ -101,6 +102,7 @@ public class Body extends PrimitiveBody {
     }
 
     public void onCollision(Body other, CollisionResult collision) {
+        lastCollisionTick = collision.tick;
     }
 
     public boolean isAcceptingCollisions() {
@@ -128,5 +130,9 @@ public class Body extends PrimitiveBody {
 
     public boolean shouldDespawnOOBounds() {
         return shouldDespawnOOBounds;
+    }
+
+    public int getLastCollisionTick() {
+        return lastCollisionTick;
     }
 }

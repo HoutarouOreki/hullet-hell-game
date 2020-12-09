@@ -20,13 +20,15 @@ public class CollisionManager {
     public void RunCollisions() {
         for (int i = 0; i < world.bodies.size() - 1; i++) {
             Body a = world.bodies.get(i);
-            if (!a.isAcceptingCollisions()) {
+            if (!a.isAcceptingCollisions() || a.getLastCollisionTick() == world.getTicksPassed()) {
                 continue;
             }
 
             for (int j = i + 1; j < world.bodies.size(); j++) {
                 Body b = world.bodies.get(j);
-                if (!a.isAcceptingCollisions() || !b.isAcceptingCollisions() || a.getTeam() == b.getTeam()) {
+                if (!a.isAcceptingCollisions() || !b.isAcceptingCollisions()
+                        || a.getTeam() == b.getTeam() || a.getLastCollisionTick() == world.getTicksPassed()
+                || b.getLastCollisionTick() == world.getTicksPassed()) {
                     continue;
                 }
 
@@ -53,7 +55,8 @@ public class CollisionManager {
                         <= ca.getRadius() + cb.getRadius()) {
                     collision.isCollision = true;
                     collision.position = approximateCollisionPosition(a, b, ca, cb);
-                    collision.time = world.totalTimePassed;
+                    collision.time = world.getTimePassed();
+                    collision.tick = world.getTicksPassed();
                     return collision;
                 }
             }

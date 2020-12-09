@@ -24,11 +24,11 @@ public class World {
     public final Vector2 viewArea = new Vector2(36, 20);
     public final List<Body> bodies;
     public final List<CpuPlayer> cpus;
-    private final float time_step_duration = 0.01f;
+    public final float time_step_duration = 0.01f;
     private final CollisionManager collisionManager;
     private final ScriptedStageManager scriptedStageManager;
     private final float collisionEffectDuration = 0.25f;
-    public float totalTimePassed;
+    private int ticksPassed;
     private float bufferedTime;
 
     public World(HulletHellGame game, StageConfiguration script) {
@@ -47,11 +47,19 @@ public class World {
         renderProgressBar(g);
     }
 
+    public float getTimePassed() {
+        return ticksPassed * time_step_duration;
+    }
+
+    public int getTicksPassed() {
+        return ticksPassed;
+    }
+
     private void renderCollisions(Graphics g, Viewport viewport) {
         Iterator<CollisionResult> i = collisionManager.collisions.iterator();
         while (i.hasNext()) {
             CollisionResult collision = i.next();
-            if (collision.time + collisionEffectDuration > totalTimePassed) {
+            if (collision.time + collisionEffectDuration > getTimePassed()) {
                 renderCollision(collision, g, viewport);
             } else {
                 i.remove();
@@ -95,7 +103,7 @@ public class World {
     }
 
     private float getCollisionCompletionPercentage(CollisionResult c) {
-        return (totalTimePassed - c.time) / collisionEffectDuration;
+        return (getTimePassed() - c.time) / collisionEffectDuration;
     }
 
     public void update(float delta) {
@@ -103,7 +111,7 @@ public class World {
         while (bufferedTime >= time_step_duration) {
             physics(viewArea);
             bufferedTime -= time_step_duration;
-            totalTimePassed += time_step_duration;
+            ticksPassed++;
             updateAI(delta);
             scriptedStageManager.update(delta);
         }
