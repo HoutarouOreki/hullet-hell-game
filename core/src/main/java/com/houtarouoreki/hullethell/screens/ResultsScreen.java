@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -12,7 +12,10 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 public class ResultsScreen extends BasicGameScreen {
 
-    public ResultsScreen() {
+    private final HulletHellGame game;
+
+    public ResultsScreen(HulletHellGame game) {
+        this.game = game;
     }
 
 
@@ -22,7 +25,8 @@ public class ResultsScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gameContainer, ScreenManager<? extends GameScreen> screenManager, float v) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        if (game.getInputManager().isControlActive(Controls.select) ||
+                game.getInputManager().isControlActive(Controls.back))
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
     }
 
