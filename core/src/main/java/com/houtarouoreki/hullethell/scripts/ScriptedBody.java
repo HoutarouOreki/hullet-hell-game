@@ -12,8 +12,8 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final String type;
     public final String name;
     public final String configName;
-    public Queue<ScriptedAction> waitingActions = new LinkedList<ScriptedAction>();
-    public List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
+    public final Queue<ScriptedAction> waitingActions = new LinkedList<ScriptedAction>();
+    public final List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
     public Body controlledBody;
     private int allSubbodiesAmount;
     private HulletHellGame game;
@@ -72,7 +72,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     private Body createBodyFromScript(String bodyClass, HulletHellGame game) {
 
         if (bodyClass.equals("ships")) {
-            return new Ship(game.getAssetManager(), configName);
+            return new Ship(game, configName);
         } else if (bodyClass.equals("bullets")) {
             return new Bullet(game, configName);
         } else if (bodyClass.equals("environmentals")) {

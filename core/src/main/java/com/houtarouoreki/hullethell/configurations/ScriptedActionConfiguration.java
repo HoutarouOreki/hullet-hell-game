@@ -1,10 +1,5 @@
 package com.houtarouoreki.hullethell.configurations;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.scripts.ScriptedBody;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;

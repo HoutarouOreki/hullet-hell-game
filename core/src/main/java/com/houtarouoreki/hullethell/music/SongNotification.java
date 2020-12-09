@@ -8,7 +8,13 @@ public class SongNotification {
     private final float length = 5;
     private float timeLeft = length;
 
+    public void show() {
+        timeLeft = length;
+    }
+
     public void render(Graphics g, SongConfiguration song) {
+        if (song == null || timeLeft < 0)
+            return;
         float right = g.getViewportWidth();
         float height = 60;
         float top = g.getViewportHeight() - height;

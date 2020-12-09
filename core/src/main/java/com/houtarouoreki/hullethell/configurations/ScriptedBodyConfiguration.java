@@ -6,10 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ScriptedBodyConfiguration {
+    public final List<ScriptedActionConfiguration> actions = new ArrayList<ScriptedActionConfiguration>();
     public String type;
     public String name;
     public String configName;
-    public List<ScriptedActionConfiguration> actions = new ArrayList<ScriptedActionConfiguration>();
 
     public ScriptedBodyConfiguration(String line) {
         Pattern pattern = Pattern.compile("(.*): \"((.*)/(.*))\"");

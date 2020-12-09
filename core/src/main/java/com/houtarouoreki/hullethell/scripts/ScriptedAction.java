@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
@@ -85,6 +84,6 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
 
     @Override
     public int compareTo(ScriptedAction o) {
-        return (int)Math.signum(getScriptedTime() - o.getScriptedTime());
+        return (int) Math.signum(getScriptedTime() - o.getScriptedTime());
     }
 }

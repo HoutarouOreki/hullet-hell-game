@@ -19,6 +19,7 @@ public class MusicManager {
     public void setCurrentSong(String fileName) {
         currentSong = assetManager.get(fileName + ".mp3", Music.class);
         currentSongInfo = assetManager.get(fileName + ".cfg");
+        notification.show();
     }
 
     public void render(Graphics g) {

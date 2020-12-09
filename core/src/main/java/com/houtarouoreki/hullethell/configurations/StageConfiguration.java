@@ -1,7 +1,6 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +22,7 @@ public class StageConfiguration {
             if (line.matches("! (.*)")) {
                 currentSection = new ScriptedSectionConfiguration(line.replaceFirst("! ", ""));
                 sections.add(currentSection);
-            }
-            else if (line.matches(".*: \".*/.*\"")) {
+            } else if (line.matches(".*: \".*/.*\"")) {
                 currentBody = new ScriptedBodyConfiguration(line);
                 if (currentSection == null) {
                     throw new NullPointerException("Current section was null");

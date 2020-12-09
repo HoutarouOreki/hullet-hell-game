@@ -48,7 +48,7 @@ public class PlayScreen extends BasicGameScreen {
         world = new World(game, script);
         viewport = new FitViewport(1280,
                 1280 * world.viewArea.y / world.viewArea.x);
-        player = new Ship(game.getAssetManager(), "Ship 1");
+        player = new Ship(game, "Ship 1");
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER);
         player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
@@ -113,7 +113,7 @@ public class PlayScreen extends BasicGameScreen {
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar(game.getAssetManager(),
+            BackgroundStar star = new BackgroundStar(game,
                     (float) Math.random() * world.viewArea.x,
                     (float) Math.random() * world.viewArea.y, starSize);
             star.setVelocity(new Vector2(-1, 0));
