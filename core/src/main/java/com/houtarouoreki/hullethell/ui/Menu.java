@@ -15,9 +15,9 @@ public class Menu implements ControlProcessor {
         components = new ArrayList<MenuComponent>();
     }
 
-    public void update() {
+    public void update(float delta) {
         for (MenuComponent component : components) {
-            component.update();
+            component.update(delta);
         }
     }
 

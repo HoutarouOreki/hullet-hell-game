@@ -31,9 +31,9 @@ public class MainMenuScreen extends HulletHellScreen {
         Vector2 buttonSize = new Vector2(200, 30);
 
         Button playButton = new Button();
-        playButton.position = new Vector2(buttonX, getNextButtonY());
+        playButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         playButton.label = "Play";
-        playButton.size = buttonSize;
+        playButton.setSize(buttonSize);
         playButton.focus();
         playButton.listener = new Button.ButtonListener() {
             @Override
@@ -43,9 +43,9 @@ public class MainMenuScreen extends HulletHellScreen {
         };
 
         Button settingsButton = new Button();
-        settingsButton.position = new Vector2(buttonX, getNextButtonY());
+        settingsButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         settingsButton.label = "Settings";
-        settingsButton.size = buttonSize;
+        settingsButton.setSize(buttonSize);
         settingsButton.listener = new Button.ButtonListener() {
             @Override
             public void onAction() {
@@ -54,8 +54,8 @@ public class MainMenuScreen extends HulletHellScreen {
         };
 
         Button exitButton = new Button();
-        exitButton.position = new Vector2(buttonX, getNextButtonY());
-        exitButton.size = buttonSize;
+        exitButton.setPosition(new Vector2(buttonX, getNextButtonY()));
+        exitButton.setSize(buttonSize);
         exitButton.label = "Exit";
         exitButton.listener = new Button.ButtonListener() {
             @Override
@@ -101,12 +101,7 @@ public class MainMenuScreen extends HulletHellScreen {
         if (!UiContainer.isThemeApplied())
             UiContainer.setTheme(game.getAssetManager().get(UiTheme.DEFAULT_THEME_FILENAME,
                     UiTheme.class));
-        menu.update();
-    }
-
-    @Override
-    public void interpolate(GameContainer gc, float alpha) {
-        //menu.interpolate(alpha);
+        menu.update(delta);
     }
 
     @Override
@@ -116,7 +111,7 @@ public class MainMenuScreen extends HulletHellScreen {
 
     @Override
     public int getId() {
-        return 1;
+        return MAIN_MENU_SCREEN;
     }
 
     private int getNextButtonY() {

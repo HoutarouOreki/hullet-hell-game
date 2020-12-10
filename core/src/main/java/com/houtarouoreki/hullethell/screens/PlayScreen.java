@@ -136,10 +136,6 @@ public class PlayScreen extends HulletHellScreen {
     }
 
     @Override
-    public void interpolate(GameContainer gc, float alpha) {
-    }
-
-    @Override
     public void render(GameContainer gc, Graphics g) {
         // tutaj HUD
         viewport.apply(g);
@@ -155,6 +151,6 @@ public class PlayScreen extends HulletHellScreen {
 
     @Override
     public int getId() {
-        return 2;
+        return PLAY_SCREEN;
     }
 }

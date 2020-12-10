@@ -40,13 +40,10 @@ public class LoadingScreen extends HulletHellScreen {
             ps.setStage(game.getAssetManager().<StageConfiguration>get("stages/Stage 1.cfg"));
             game.addScreen(ps);
             game.addScreen(new ResultsScreen(game));
+            game.addScreen(new SettingsScreen(game));
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }
-    }
-
-    @Override
-    public void interpolate(GameContainer gc, float alpha) {
     }
 
     @Override
@@ -64,7 +61,7 @@ public class LoadingScreen extends HulletHellScreen {
 
     @Override
     public int getId() {
-        return 0;
+        return LOADING_SCREEN;
     }
 
     private float getProgressBarPercentage() {
