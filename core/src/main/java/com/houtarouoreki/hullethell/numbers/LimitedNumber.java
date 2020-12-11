@@ -1,11 +1,16 @@
 package com.houtarouoreki.hullethell.numbers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LimitedNumber<T extends Comparable<T>> {
+    private final List<ValueChangeListener<T>> listeners;
     private T min;
     private T max;
     private T value;
 
     public LimitedNumber(T value, T min, T max) {
+        listeners = new ArrayList<ValueChangeListener<T>>();
         this.min = min;
         this.max = max;
         setValue(value);
@@ -38,21 +43,41 @@ public class LimitedNumber<T extends Comparable<T>> {
         return value;
     }
 
-    private void validateMinMax() {
-        if (max.compareTo(min) < 0)
-            throw new Error("max (" + max + ") cannot be lower than min (" + min + ")");
-    }
-
     public void setValue(T value) {
+        T oldValue = getValue();
         if (value.compareTo(max) > 0)
             this.value = max;
         else if (value.compareTo(min) < 0)
             this.value = min;
         else
             this.value = value;
+
+        for (ValueChangeListener<T> listener : listeners)
+            listener.onValueChanged(oldValue, value);
+    }
+
+    private void validateMinMax() {
+        if (max.compareTo(min) < 0)
+            throw new Error("max (" + max + ") cannot be lower than min (" + min + ")");
     }
 
     public final LimitedNumber<T> cpyLimitedNumber() {
         return new LimitedNumber<T>(value, min, max);
+    }
+
+    public void addListener(ValueChangeListener<T> listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(ValueChangeListener<T> listener) {
+        listeners.remove(listener);
+    }
+
+    public void clearListeners() {
+        listeners.clear();
+    }
+
+    public interface ValueChangeListener<T> {
+        void onValueChanged(T oldValue, T newValue);
     }
 }

@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.LimitedNumber;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
 import com.houtarouoreki.hullethell.ui.*;
 import org.mini2Dx.core.game.GameContainer;
@@ -30,11 +31,23 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         Slider musicVolume = new Slider(70, 0,
                 100);
+        musicVolume.value.addListener(new LimitedNumber.ValueChangeListener<Integer>() {
+            @Override
+            public void onValueChanged(Integer oldValue, Integer newValue) {
+                HulletHellGame.getMusicManager().setVolume(newValue / 100f);
+            }
+        });
         settingsComponents.add(new SettingsComponent("Music volume",
                 musicVolume));
 
         Slider sfxVolume = new Slider(70, 0,
                 100);
+        sfxVolume.value.addListener(new LimitedNumber.ValueChangeListener<Integer>() {
+            @Override
+            public void onValueChanged(Integer oldValue, Integer newValue) {
+                HulletHellGame.getSoundManager().setVolume(newValue / 100f);
+            }
+        });
         settingsComponents.add(new SettingsComponent("SFX volume",
                 sfxVolume));
 
