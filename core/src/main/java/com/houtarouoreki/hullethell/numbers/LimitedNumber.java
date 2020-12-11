@@ -1,16 +1,19 @@
 package com.houtarouoreki.hullethell.numbers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class LimitedNumber<T extends Comparable<T>> {
     private final List<ValueChangeListener<T>> listeners;
+    private final HashSet<LimitedNumber<T>> binds;
     private T min;
     private T max;
     private T value;
 
     public LimitedNumber(T value, T min, T max) {
         listeners = new ArrayList<ValueChangeListener<T>>();
+        binds = new HashSet<LimitedNumber<T>>();
         this.min = min;
         this.max = max;
         setValue(value);
@@ -23,8 +26,12 @@ public class LimitedNumber<T extends Comparable<T>> {
     }
 
     public void setMin(T min) {
+        if (min.equals(this.min))
+            return;
         this.min = min;
         setValue(value);
+        for (LimitedNumber<T> bind : binds)
+            bind.setMin(min);
     }
 
     public T getMax() {
@@ -34,8 +41,12 @@ public class LimitedNumber<T extends Comparable<T>> {
     }
 
     public void setMax(T max) {
+        if (max.equals(this.max))
+            return;
         this.max = max;
         setValue(value);
+        for (LimitedNumber<T> bind : binds)
+            bind.setMax(max);
     }
 
     public T getValue() {
@@ -45,6 +56,8 @@ public class LimitedNumber<T extends Comparable<T>> {
 
     public void setValue(T value) {
         T oldValue = getValue();
+        if (oldValue.equals(value))
+            return;
         if (value.compareTo(max) > 0)
             this.value = max;
         else if (value.compareTo(min) < 0)
@@ -54,6 +67,8 @@ public class LimitedNumber<T extends Comparable<T>> {
 
         for (ValueChangeListener<T> listener : listeners)
             listener.onValueChanged(oldValue, value);
+        for (LimitedNumber<T> bind : binds)
+            bind.setValue(value);
     }
 
     private void validateMinMax() {
@@ -75,6 +90,18 @@ public class LimitedNumber<T extends Comparable<T>> {
 
     public void clearListeners() {
         listeners.clear();
+    }
+
+    /**
+     * Mimics limits and value from the target and propagates
+     * any subsequent changes to value, min and max both ways.
+     */
+    public void bindTo(LimitedNumber<T> target) {
+        setMin(target.getMin());
+        setMax(target.getMax());
+        setValue(target.getValue());
+        binds.add(target);
+        target.binds.add(this);
     }
 
     public interface ValueChangeListener<T> {
