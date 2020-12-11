@@ -22,6 +22,8 @@ public class MusicManager {
     }
 
     public void setCurrentSong(String fileName) {
+        if (currentSong != null)
+            currentSong.stop();
         currentSong = assetManager.get("music/" + fileName + ".mp3", Music.class);
         currentSong.setPosition(0);
         currentSong.setVolume(getVolume());
