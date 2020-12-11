@@ -36,8 +36,8 @@ public class HulletHellGame extends ScreenBasedGame {
     public void initialise() {
         FileHandleResolver fileHandleResolver
                 = new FallbackFileHandleResolver(
-                        new ClasspathFileHandleResolver(),
-                        new InternalFileHandleResolver());
+                new ClasspathFileHandleResolver(),
+                new InternalFileHandleResolver());
         container = new WindowSizeContainer();
         assetManager = new AssetManager();
         SongNotification notification = new SongNotification(assetManager);
@@ -115,9 +115,9 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void update(float delta) {
-        getScreenManager().update(this, delta);
         musicManager.update(delta);
         container.update(delta);
+        getScreenManager().update(this, delta);
     }
 
     @Override
@@ -127,8 +127,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void render(Graphics g) {
-        getScreenManager().render(this, g);
         container.render(g);
+        getScreenManager().render(this, g);
     }
 
     @Override
