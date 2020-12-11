@@ -46,7 +46,10 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager.load("ui/songNotification.png", Texture.class);
 
         loadSounds(assetManager, Arrays.asList("laser1", "laser2", "softExpl1"));
-        loadMusicAndConfigs(assetManager, Arrays.asList("To Eris - Social Blast"));
+        loadMusicAndConfigs(assetManager, Arrays.asList(
+                "To Eris - Social Blast",
+                "One Man Symphony - Beat 02"
+        ));
 
         loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList("Asteroid"));
         loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));

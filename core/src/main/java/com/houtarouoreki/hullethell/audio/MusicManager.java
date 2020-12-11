@@ -85,4 +85,12 @@ public class MusicManager {
         this.volume = Math.max(0, Math.min(1, volume));
         currentSong.setVolume(getVolume());
     }
+
+    public void setLooping(boolean looping) {
+        currentSong.setLooping(looping);
+    }
+
+    public boolean isLooping() {
+        return currentSong.isLooping();
+    }
 }

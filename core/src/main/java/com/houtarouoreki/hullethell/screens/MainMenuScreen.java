@@ -77,6 +77,9 @@ public class MainMenuScreen extends HulletHellScreen {
     public void postTransitionIn(Transition transitionIn) {
         super.postTransitionIn(transitionIn);
         game.getInputManager().managedProcessors.add(menu);
+        game.getMusicManager().setCurrentSong("One Man Symphony - Beat 02");
+        game.getMusicManager().setLooping(true);
+        game.getMusicManager().play();
     }
 
     @Override
