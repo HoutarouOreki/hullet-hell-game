@@ -13,9 +13,9 @@ public class ScriptedStageManager {
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 
-    public ScriptedStageManager(HulletHellGame game, World world, StageConfiguration script) {
+    public ScriptedStageManager(World world, StageConfiguration script) {
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
-            ScriptedSection section = new ScriptedSection(game, world, sectionConfiguration);
+            ScriptedSection section = new ScriptedSection(world, sectionConfiguration);
             sections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
         }

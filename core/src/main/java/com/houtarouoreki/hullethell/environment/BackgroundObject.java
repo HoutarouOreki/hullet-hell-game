@@ -1,13 +1,11 @@
 package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.math.Vector2;
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 
 public abstract class BackgroundObject extends PrimitiveBody {
 
-    public BackgroundObject(HulletHellGame game, Vector2 initialPos) {
-        super(game);
+    public BackgroundObject(Vector2 initialPos) {
         setPosition(initialPos);
     }
 

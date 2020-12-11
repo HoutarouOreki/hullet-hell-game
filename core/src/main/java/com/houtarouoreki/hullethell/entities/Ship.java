@@ -1,11 +1,10 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
-import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +15,9 @@ public class Ship extends Entity {
     private float remainingCollisionCooldown = 0;
     private float remainingCollisionCooldownAnimation = 0;
 
-    public Ship(HulletHellGame game, String configurationName) {
-        super(game);
+    public Ship(String configurationName) {
         String path = "ships/" + configurationName;
-        BodyConfiguration c = game.getAssetManager()
+        BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
         setTextureName(path + ".png");
         setHealth(c.getMaxHealth());

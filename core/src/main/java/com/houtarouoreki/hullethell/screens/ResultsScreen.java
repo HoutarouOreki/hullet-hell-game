@@ -10,19 +10,14 @@ import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 public class ResultsScreen extends HulletHellScreen {
-
-    public ResultsScreen(HulletHellGame game) {
-        super(game);
-    }
-
     @Override
     public void initialise(GameContainer gc) {
     }
 
     @Override
     public void update(GameContainer gameContainer, ScreenManager<? extends GameScreen> screenManager, float v) {
-        if (game.getInputManager().isControlActive(Controls.select) ||
-                game.getInputManager().isControlActive(Controls.back))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.select) ||
+                HulletHellGame.getInputManager().isControlActive(Controls.back))
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
     }
 

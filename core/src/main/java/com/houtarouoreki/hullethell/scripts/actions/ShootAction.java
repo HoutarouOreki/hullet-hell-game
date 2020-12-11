@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
@@ -13,14 +13,14 @@ public class ShootAction extends ScriptedAction {
 
     @Override
     protected void performAction() {
-        Bullet bullet = new Bullet(game, bulletType);
+        Bullet bullet = new Bullet(bulletType);
         bullet.setVelocity(bulletInitialVelocity);
         bullet.setPosition(body.getPosition());
         bullet.setTeam(body.getTeam());
         world.bodies.add(bullet);
         bullet.setSection(section);
-        ((Ship)body).registerBullet(bullet);
-        game.getSoundManager().playSound("laser1", 0.3f);
+        ((Ship) body).registerBullet(bullet);
+        HulletHellGame.getSoundManager().playSound("laser1", 0.3f);
         setFinished();
     }
 

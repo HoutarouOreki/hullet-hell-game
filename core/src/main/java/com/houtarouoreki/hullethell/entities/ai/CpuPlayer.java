@@ -51,7 +51,7 @@ public class CpuPlayer {
 
             // 3 shots, 2 breaks
             if (Math.sin((bulletIntervalIndex - 1.5) * Math.PI * 0.4) + 0.5 > 0) {
-                Bullet bullet = new Bullet(entity.game, "Bullet 1");
+                Bullet bullet = new Bullet("Bullet 1");
                 bullet.setPosition(new Vector2(entity.getPosition()));
                 bullet.setTeam(entity.getTeam());
                 bullet.setVelocity(new Vector2(targetShip.getPosition()).add(new Vector2(entity.getPosition()).scl(-1)).setLength(8));

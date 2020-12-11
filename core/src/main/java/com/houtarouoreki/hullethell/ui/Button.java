@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.ui;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -34,9 +35,14 @@ public class Button extends MenuComponent {
     public boolean handleControl(Controls control) {
         if (control == Controls.select && listener != null) {
             listener.onAction();
+            playSound();
             return true;
         }
         return false;
+    }
+
+    private void playSound() {
+        HulletHellGame.getSoundManager().playSound("button1");
     }
 
     @Override

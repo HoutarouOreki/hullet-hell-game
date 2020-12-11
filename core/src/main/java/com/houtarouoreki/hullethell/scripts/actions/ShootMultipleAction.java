@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.helpers.VectorHelpers;
@@ -20,7 +20,7 @@ public class ShootMultipleAction extends ScriptedAction {
             double directionDegrees = this.direction + spread * (-(amount - 1) * 0.5 + i);
             Vector2 initialVelocity = VectorHelpers.unitFromDegrees(directionDegrees)
                     .scl((float) speed);
-            Bullet bullet = new Bullet(game, bulletType);
+            Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);
             bullet.setPosition(body.getPosition());
             bullet.setTeam(body.getTeam());
@@ -29,7 +29,7 @@ public class ShootMultipleAction extends ScriptedAction {
             ((Ship) body).registerBullet(bullet);
         }
         setFinished();
-        game.getSoundManager().playSound("laser2", 0.5f);
+        HulletHellGame.getSoundManager().playSound("laser2", 0.5f);
     }
 
     @Override

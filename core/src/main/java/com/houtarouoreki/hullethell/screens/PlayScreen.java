@@ -32,10 +32,6 @@ public class PlayScreen extends HulletHellScreen {
     private Viewport viewport;
     private int shotFrames;
 
-    public PlayScreen(HulletHellGame game) {
-        super(game);
-    }
-
     public void setStage(StageConfiguration script) {
         this.script = script;
     }
@@ -43,10 +39,10 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void preTransitionIn(Transition transitionIn) {
         super.preTransitionIn(transitionIn);
-        world = new World(game, script);
+        world = new World(script);
         viewport = new FitViewport(1280,
                 1280 * world.viewArea.y / world.viewArea.x);
-        player = new Ship(game, "Ship 1");
+        player = new Ship("Ship 1");
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER);
         player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
@@ -58,7 +54,7 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
-        game.getMusicManager().fadeOut(2);
+        HulletHellGame.getMusicManager().fadeOut(2);
     }
 
     @Override
@@ -88,28 +84,29 @@ public class PlayScreen extends HulletHellScreen {
     private void updateSteering() {
         float speed = 6;
         Vector2 targetVelocity = new Vector2();
-        if (game.getInputManager().isControlActive(Controls.left))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.left))
             targetVelocity.x -= 1;
-        if (game.getInputManager().isControlActive(Controls.right))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.right))
             targetVelocity.x += 1;
-        if (game.getInputManager().isControlActive(Controls.down))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.down))
             targetVelocity.y -= 1;
-        if (game.getInputManager().isControlActive(Controls.up))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.up))
             targetVelocity.y += 1;
-        if (game.getInputManager().isControlActive(Controls.shoot)) {
+        if (HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
             shotFrames++;
             if (shotFrames % 4 == 0) {
-                Bullet bullet = new Bullet(game, "Player bullet 1");
+                Bullet bullet = new Bullet("Player bullet 1");
                 world.bodies.add(bullet);
                 bullet.setPosition(player.getPosition());
                 bullet.setTeam(CollisionTeam.PLAYER);
                 bullet.setVelocity(new Vector2(40, 0));
                 player.registerBullet(bullet);
-                game.getSoundManager().playSound("laser1", 0.3f);
+                HulletHellGame.getSoundManager()
+                        .playSound("laser1", 0.3f);
             }
         }
-        if (game.getInputManager().isControlActive(Controls.back))
-            game.getScreenManager().enterGameScreen(1,
+        if (HulletHellGame.getInputManager().isControlActive(Controls.back))
+            HulletHellGame.getScreensManager().enterGameScreen(1,
                     new FadeOutTransition(), new FadeInTransition());
 
         player.setVelocity(targetVelocity.scl(speed));
@@ -121,8 +118,7 @@ public class PlayScreen extends HulletHellScreen {
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar(game,
-                    (float) Math.random() * world.viewArea.x,
+            BackgroundStar star = new BackgroundStar((float) Math.random() * world.viewArea.x,
                     (float) Math.random() * world.viewArea.y, starSize);
             star.setVelocity(new Vector2(-1, 0));
             stars.add(star);

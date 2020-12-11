@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.*;
@@ -16,7 +15,6 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
     public Body controlledBody;
     private int allSubbodiesAmount;
-    private HulletHellGame game;
     private World world;
     private ScriptedSection section;
 
@@ -45,9 +43,8 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         return false;
     }
 
-    public void initialise(HulletHellGame game, World world, ScriptedSection section) {
-        controlledBody = createBodyFromScript(type, game);
-        this.game = game;
+    public void initialise(World world, ScriptedSection section) {
+        controlledBody = createBodyFromScript(type);
         this.world = world;
         this.section = section;
     }
@@ -56,7 +53,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(game, world, section, controlledBody);
+            action.initialise(world, section, controlledBody);
         }
 
         Iterator<ScriptedAction> i = currentActions.iterator();
@@ -69,14 +66,14 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         }
     }
 
-    private Body createBodyFromScript(String bodyClass, HulletHellGame game) {
+    private Body createBodyFromScript(String bodyClass) {
 
         if (bodyClass.equals("ships")) {
-            return new Ship(game, configName);
+            return new Ship(configName);
         } else if (bodyClass.equals("bullets")) {
-            return new Bullet(game, configName);
+            return new Bullet(configName);
         } else if (bodyClass.equals("environmentals")) {
-            return new Environmental(game, configName);
+            return new Environmental(configName);
         } else {
             throw new Error("Error creating body from script");
         }

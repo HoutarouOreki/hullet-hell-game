@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.ui;
 
 
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.Drawable;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -27,9 +28,14 @@ public class Menu extends Drawable implements ControlProcessor {
         if (newFocusNeighbor != null) {
             focusedComponent.unfocus();
             newFocusNeighbor.focus();
+            playSound();
             return true;
         }
         return false;
+    }
+
+    private void playSound() {
+        HulletHellGame.getSoundManager().playSound("button1");
     }
 
     private MenuComponent getNeighbor(MenuComponent focusedComponent, Controls control) {

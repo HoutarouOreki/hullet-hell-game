@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
@@ -14,7 +13,6 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public ScriptedBody scriptedBody;
     public Body body;
     protected World world;
-    protected HulletHellGame game;
     protected ScriptedSection section;
     private double scriptedTime;
     private double totalTime;
@@ -50,8 +48,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
 
     protected abstract void performAction();
 
-    protected void initialise(HulletHellGame game, World world, ScriptedSection section, Body body) {
-        this.game = game;
+    protected void initialise(World world, ScriptedSection section, Body body) {
         this.world = world;
         this.section = section;
         this.body = body;

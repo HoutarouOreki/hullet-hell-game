@@ -31,11 +31,11 @@ public class World {
     private int ticksPassed;
     private float bufferedTime;
 
-    public World(HulletHellGame game, StageConfiguration script) {
+    public World(StageConfiguration script) {
         bodies = new ArrayList<Body>();
         cpus = new ArrayList<CpuPlayer>();
         collisionManager = new CollisionManager(this);
-        scriptedStageManager = new ScriptedStageManager(game, this, script);
+        scriptedStageManager = new ScriptedStageManager(this, script);
     }
 
     public void render(Graphics g, Viewport viewport) {

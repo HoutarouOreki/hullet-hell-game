@@ -22,28 +22,31 @@ import java.util.List;
 public class SettingsScreen extends HulletHellScreen implements ControlProcessor {
     private final Menu menu;
 
-    public SettingsScreen(HulletHellGame game) {
-        super(game);
+    public SettingsScreen() {
         List<SettingsComponent> settingsComponents = new ArrayList<SettingsComponent>();
         container.add(menu = new Menu());
         menu.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
         menu.setPadding(new Vector2(60, 60));
 
         Slider musicVolume = new Slider(70, 0,
-                100, game.getInputManager());
-        settingsComponents.add(new SettingsComponent("Music volume", musicVolume));
+                100);
+        settingsComponents.add(new SettingsComponent("Music volume",
+                musicVolume));
 
         Slider sfxVolume = new Slider(70, 0,
-                100, game.getInputManager());
-        settingsComponents.add(new SettingsComponent("SFX volume", sfxVolume));
+                100);
+        settingsComponents.add(new SettingsComponent("SFX volume",
+                sfxVolume));
 
-        Switch backgrounds = new Switch(new Switch.SwitchListener() {
+        Switch backgrounds = new Switch();
+        backgrounds.listener = new Switch.SwitchListener() {
             @Override
             public void onValueChanged(boolean newValue) {
             }
-        });
+        };
         backgrounds.setValue(true);
-        settingsComponents.add(new SettingsComponent("Backgrounds", backgrounds));
+        settingsComponents.add(new SettingsComponent("Backgrounds",
+                backgrounds));
 
         generateLayout(settingsComponents);
     }
@@ -55,15 +58,15 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     @Override
     public void postTransitionIn(Transition transitionIn) {
         super.postTransitionIn(transitionIn);
-        game.getInputManager().managedProcessors.add(menu);
-        game.getInputManager().managedProcessors.add(this);
+        HulletHellGame.getInputManager().managedProcessors.add(menu);
+        HulletHellGame.getInputManager().managedProcessors.add(this);
     }
 
     @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
-        game.getInputManager().managedProcessors.remove(menu);
-        game.getInputManager().managedProcessors.remove(this);
+        HulletHellGame.getInputManager().managedProcessors.remove(menu);
+        HulletHellGame.getInputManager().managedProcessors.remove(this);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     @Override
     public boolean handleControl(Controls control) {
         if (control == Controls.back) {
-            game.getScreenManager().enterGameScreen(MAIN_MENU_SCREEN,
+            HulletHellGame.getScreensManager().enterGameScreen(MAIN_MENU_SCREEN,
                     new FadeOutTransition(), new FadeInTransition());
             return true;
         }

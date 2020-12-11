@@ -16,12 +16,6 @@ public abstract class HulletHellScreen extends BasicGameScreen {
     public static final int SETTINGS_SCREEN = 4;
     public final WindowSizeContainer container = new WindowSizeContainer();
 
-    protected final HulletHellGame game;
-
-    public HulletHellScreen(HulletHellGame game) {
-        this.game = game;
-    }
-
     @Override
     public final void interpolate(GameContainer gc, float alpha) {
     }

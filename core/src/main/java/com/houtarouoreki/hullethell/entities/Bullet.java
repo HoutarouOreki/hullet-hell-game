@@ -8,10 +8,9 @@ import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 public class Bullet extends Entity {
     private Ship source;
 
-    public Bullet(HulletHellGame game, String configurationName) {
-        super(game);
+    public Bullet(String configurationName) {
         String path = "bullets/" + configurationName;
-        BodyConfiguration c = game.getAssetManager()
+        BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
         setTextureName(path + ".png");
         setHealth(c.getMaxHealth());

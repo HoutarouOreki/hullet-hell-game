@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.ui;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -14,9 +15,7 @@ public class Switch extends MenuComponent {
     public SwitchListener listener;
     private boolean value;
 
-    public Switch(SwitchListener listener) {
-        this.listener = listener;
-
+    public Switch() {
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
         Rectangle offRect = new Rectangle();
         offRect.setRelativePositionAxes(bothAxes);
@@ -45,15 +44,22 @@ public class Switch extends MenuComponent {
         switch (control) {
             case select:
                 setValue(!value);
+                playSound();
                 return true;
             case left:
                 setValue(false);
+                playSound();
                 return true;
             case right:
                 setValue(true);
+                playSound();
                 return true;
         }
         return false;
+    }
+
+    private void playSound() {
+        HulletHellGame.getSoundManager().playSound("button1");
     }
 
     public boolean getValue() {

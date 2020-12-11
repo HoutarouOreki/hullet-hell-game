@@ -7,10 +7,9 @@ import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 
 public class Environmental extends Entity {
-    public Environmental(HulletHellGame game, String configurationName) {
-        super(game);
+    public Environmental(String configurationName) {
         String path = "environmentals/" + configurationName;
-        BodyConfiguration c = game.getAssetManager()
+        BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
         setTextureName(path + ".png");
         setHealth(c.getMaxHealth());

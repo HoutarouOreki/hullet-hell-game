@@ -18,10 +18,6 @@ public class LoadingScreen extends HulletHellScreen {
     private boolean beganTransition = false;
     private Texture logo;
 
-    public LoadingScreen(HulletHellGame game) {
-        super(game);
-    }
-
     @Override
     public void initialise(GameContainer gc) {
         logo = new Texture("logo.png");
@@ -34,13 +30,13 @@ public class LoadingScreen extends HulletHellScreen {
         if (beganTransition)
             return;
 
-        if (game.getAssetManager().update() && loadingDuration > minimum_loading_time) {
-            game.addScreen(new MainMenuScreen(game));
-            PlayScreen ps = new PlayScreen(game);
-            ps.setStage(game.getAssetManager().<StageConfiguration>get("stages/Stage 1.cfg"));
-            game.addScreen(ps);
-            game.addScreen(new ResultsScreen(game));
-            game.addScreen(new SettingsScreen(game));
+        if (HulletHellGame.getAssetManager().update() && loadingDuration > minimum_loading_time) {
+            HulletHellGame.getScreensManager().addGameScreen(new MainMenuScreen());
+            PlayScreen ps = new PlayScreen();
+            ps.setStage(HulletHellGame.getAssetManager().<StageConfiguration>get("stages/Stage 1.cfg"));
+            HulletHellGame.getScreensManager().addGameScreen(ps);
+            HulletHellGame.getScreensManager().addGameScreen(new ResultsScreen());
+            HulletHellGame.getScreensManager().addGameScreen(new SettingsScreen());
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }
@@ -65,7 +61,7 @@ public class LoadingScreen extends HulletHellScreen {
     }
 
     private float getProgressBarPercentage() {
-        return Math.min(game.getAssetManager().getProgress(),
+        return Math.min(HulletHellGame.getAssetManager().getProgress(),
                 loadingDuration / (minimum_loading_time - 0.5f));
     }
 }

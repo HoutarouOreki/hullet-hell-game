@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
@@ -15,15 +14,13 @@ public class ScriptedSection {
     private final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
     private final List<Body> bodies;
-    private final HulletHellGame game;
     private final World world;
     private final String name;
     private int allBodiesAmount;
     private double timePassed;
     private int bodiesRemovedAmount;
 
-    public ScriptedSection(HulletHellGame game, World world, ScriptedSectionConfiguration conf) {
-        this.game = game;
+    public ScriptedSection(World world, ScriptedSectionConfiguration conf) {
         this.world = world;
         waitingBodies = new PriorityQueue<ScriptedBody>();
         for (ScriptedBodyConfiguration bodyConf : conf.bodies) {
@@ -56,7 +53,7 @@ public class ScriptedSection {
                 .waitingActions.element().getScriptedTime() <= getTimePassed()) {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
-            body.initialise(game, world, this);
+            body.initialise(world, this);
             world.bodies.add(body.controlledBody);
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();
@@ -72,7 +69,7 @@ public class ScriptedSection {
                 && waitingActions.peek().getScriptedTime() <= getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(game, world, this, null);
+            action.initialise(world, this, null);
         }
 
         Iterator<ScriptedAction> j = currentActions.iterator();

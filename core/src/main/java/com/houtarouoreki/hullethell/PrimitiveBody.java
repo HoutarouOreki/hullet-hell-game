@@ -8,7 +8,6 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public abstract class PrimitiveBody {
-    public final HulletHellGame game;
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
     protected Sprite sprite;
@@ -16,8 +15,7 @@ public abstract class PrimitiveBody {
     private double time = 0;
     private Vector2 size = new Vector2();
 
-    public PrimitiveBody(HulletHellGame game) {
-        this.game = game;
+    public PrimitiveBody() {
         sprite = new Sprite();
     }
 
@@ -71,7 +69,8 @@ public abstract class PrimitiveBody {
 
     public void setTextureName(String textureName) {
         this.textureName = textureName;
-        sprite = new Sprite(game.getAssetManager().get(textureName, Texture.class));
+        sprite = new Sprite(HulletHellGame.getAssetManager()
+                .get(textureName, Texture.class));
     }
 
     public Vector2 getSize() {

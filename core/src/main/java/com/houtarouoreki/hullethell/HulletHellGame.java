@@ -18,6 +18,8 @@ import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.screen.GameScreen;
+import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.ui.UiThemeLoader;
 import org.mini2Dx.ui.style.UiTheme;
 
@@ -26,18 +28,14 @@ import java.util.List;
 
 public class HulletHellGame extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.houtarouoreki.hullethell";
-    private WindowSizeContainer container;
-    private AssetManager assetManager;
-    private InputManager inputManager;
-    private MusicManager musicManager;
-    private SoundManager soundManager;
+    private static AssetManager assetManager;
+    private static InputManager inputManager;
+    private static MusicManager musicManager;
+    private static SoundManager soundManager;
+    private static ScreenManager<GameScreen> screenManager;
+    private final WindowSizeContainer container;
 
-    @Override
-    public void initialise() {
-        FileHandleResolver fileHandleResolver
-                = new FallbackFileHandleResolver(
-                new ClasspathFileHandleResolver(),
-                new InternalFileHandleResolver());
+    public HulletHellGame() {
         container = new WindowSizeContainer();
         assetManager = new AssetManager();
         SongNotification notification = new SongNotification(assetManager);
@@ -45,6 +43,36 @@ public class HulletHellGame extends ScreenBasedGame {
         musicManager = new MusicManager(assetManager, notification);
         soundManager = new SoundManager(assetManager);
         container.add(notification);
+    }
+
+    public static AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public static InputManager getInputManager() {
+        return inputManager;
+    }
+
+    public static MusicManager getMusicManager() {
+        return musicManager;
+    }
+
+    public static SoundManager getSoundManager() {
+        return soundManager;
+    }
+
+    public static ScreenManager<GameScreen> getScreensManager() {
+        return screenManager;
+    }
+
+    @Override
+    public void initialise() {
+        FileHandleResolver fileHandleResolver
+                = new FallbackFileHandleResolver(
+                new ClasspathFileHandleResolver(),
+                new InternalFileHandleResolver());
+
+        screenManager = getScreenManager();
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(SongConfiguration.class, new SongConfigurationLoader(new InternalFileHandleResolver()));
@@ -54,7 +82,13 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
         assetManager.load("ui/songNotification.png", Texture.class);
 
-        loadSounds(assetManager, Arrays.asList("laser1", "laser2", "softExpl1"));
+        loadSounds(assetManager, Arrays.asList(
+                "laser1",
+                "laser2",
+                "softExpl1",
+                "button1",
+                "button2"
+        ));
         loadMusicAndConfigs(assetManager, Arrays.asList(
                 "To Eris - Social Blast",
                 "One Man Symphony - Beat 02"
@@ -68,23 +102,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
         Gdx.input.setInputProcessor(inputManager);
 
-        this.addScreen(new LoadingScreen(this));
-    }
-
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-
-    public InputManager getInputManager() {
-        return inputManager;
-    }
-
-    public MusicManager getMusicManager() {
-        return musicManager;
-    }
-
-    public SoundManager getSoundManager() {
-        return soundManager;
+        this.addScreen(new LoadingScreen());
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {
@@ -117,18 +135,18 @@ public class HulletHellGame extends ScreenBasedGame {
     public void update(float delta) {
         musicManager.update(delta);
         container.update(delta);
-        getScreenManager().update(this, delta);
+        getScreensManager().update(this, delta);
     }
 
     @Override
     public void interpolate(float alpha) {
-        getScreenManager().interpolate(this, alpha);
+        //getScreensManager().interpolate(this, alpha);
     }
 
     @Override
     public void render(Graphics g) {
         container.render(g);
-        getScreenManager().render(this, g);
+        getScreensManager().render(this, g);
     }
 
     @Override
