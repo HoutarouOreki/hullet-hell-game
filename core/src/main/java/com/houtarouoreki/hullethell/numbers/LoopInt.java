@@ -1,9 +1,12 @@
 package com.houtarouoreki.hullethell.numbers;
 
-public class LoopInt extends LimitedNumber<Integer> {
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
+
+public class LoopInt extends BindableNumber<Integer> {
     public LoopInt(Integer min, Integer max) {
         super(min, min, max);
     }
+
     public LoopInt(Integer value, Integer min, Integer max) {
         super(value, min, max);
     }

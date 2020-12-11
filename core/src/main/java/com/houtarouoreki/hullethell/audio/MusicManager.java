@@ -2,13 +2,13 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
-import com.houtarouoreki.hullethell.numbers.LimitedNumber;
 
 public class MusicManager {
     private final AssetManager assetManager;
     private final SongNotification notification;
-    private final LimitedNumber<Float> volume;
+    private final BindableNumber<Float> volume;
     private Music currentSong;
     private float fadeOutLeft;
     private float fadeOutDuration;
@@ -17,7 +17,7 @@ public class MusicManager {
     public MusicManager(AssetManager am, SongNotification notification) {
         assetManager = am;
         this.notification = notification;
-        volume = new LimitedNumber<Float>(0.7f, 0f, 1f);
+        volume = new BindableNumber<Float>(0.7f, 0f, 1f);
     }
 
     public SongConfiguration getCurrentSongInfo() {

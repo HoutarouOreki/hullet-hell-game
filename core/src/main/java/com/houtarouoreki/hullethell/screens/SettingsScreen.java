@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
-import com.houtarouoreki.hullethell.numbers.LimitedNumber;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
 import com.houtarouoreki.hullethell.ui.*;
 import org.mini2Dx.core.game.GameContainer;
@@ -31,7 +31,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         Slider musicVolume = new Slider(70, 0,
                 100);
-        musicVolume.value.addListener(new LimitedNumber.ValueChangeListener<Integer>() {
+        musicVolume.value.addListener(new ValueChangeListener<Integer>() {
             @Override
             public void onValueChanged(Integer oldValue, Integer newValue) {
                 HulletHellGame.getMusicManager().setVolume(newValue / 100f);
@@ -42,7 +42,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         Slider sfxVolume = new Slider(70, 0,
                 100);
-        sfxVolume.value.addListener(new LimitedNumber.ValueChangeListener<Integer>() {
+        sfxVolume.value.addListener(new ValueChangeListener<Integer>() {
             @Override
             public void onValueChanged(Integer oldValue, Integer newValue) {
                 HulletHellGame.getSoundManager().setVolume(newValue / 100f);

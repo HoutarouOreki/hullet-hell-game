@@ -1,19 +1,19 @@
-package com.houtarouoreki.hullethell.numbers;
+package com.houtarouoreki.hullethell.bindables;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class LimitedNumber<T extends Comparable<T>> {
+public class BindableNumber<T extends Comparable<T>> {
     private final List<ValueChangeListener<T>> listeners;
-    private final HashSet<LimitedNumber<T>> binds;
+    private final HashSet<BindableNumber<T>> binds;
     private T min;
     private T max;
     private T value;
 
-    public LimitedNumber(T value, T min, T max) {
+    public BindableNumber(T value, T min, T max) {
         listeners = new ArrayList<ValueChangeListener<T>>();
-        binds = new HashSet<LimitedNumber<T>>();
+        binds = new HashSet<BindableNumber<T>>();
         this.min = min;
         this.max = max;
         setValue(value);
@@ -30,7 +30,7 @@ public class LimitedNumber<T extends Comparable<T>> {
             return;
         this.min = min;
         setValue(value);
-        for (LimitedNumber<T> bind : binds)
+        for (BindableNumber<T> bind : binds)
             bind.setMin(min);
     }
 
@@ -45,7 +45,7 @@ public class LimitedNumber<T extends Comparable<T>> {
             return;
         this.max = max;
         setValue(value);
-        for (LimitedNumber<T> bind : binds)
+        for (BindableNumber<T> bind : binds)
             bind.setMax(max);
     }
 
@@ -56,7 +56,7 @@ public class LimitedNumber<T extends Comparable<T>> {
 
     public void setValue(T value) {
         T oldValue = getValue();
-        if (oldValue.equals(value))
+        if (oldValue != null && oldValue.equals(value))
             return;
         if (value.compareTo(max) > 0)
             this.value = max;
@@ -67,7 +67,7 @@ public class LimitedNumber<T extends Comparable<T>> {
 
         for (ValueChangeListener<T> listener : listeners)
             listener.onValueChanged(oldValue, value);
-        for (LimitedNumber<T> bind : binds)
+        for (BindableNumber<T> bind : binds)
             bind.setValue(value);
     }
 
@@ -76,8 +76,8 @@ public class LimitedNumber<T extends Comparable<T>> {
             throw new Error("max (" + max + ") cannot be lower than min (" + min + ")");
     }
 
-    public final LimitedNumber<T> cpyLimitedNumber() {
-        return new LimitedNumber<T>(value, min, max);
+    public final BindableNumber<T> cpyLimitedNumber() {
+        return new BindableNumber<T>(value, min, max);
     }
 
     public void addListener(ValueChangeListener<T> listener) {
@@ -96,15 +96,11 @@ public class LimitedNumber<T extends Comparable<T>> {
      * Mimics limits and value from the target and propagates
      * any subsequent changes to value, min and max both ways.
      */
-    public void bindTo(LimitedNumber<T> target) {
+    public void bindTo(BindableNumber<T> target) {
         setMin(target.getMin());
         setMax(target.getMax());
         setValue(target.getValue());
         binds.add(target);
         target.binds.add(this);
-    }
-
-    public interface ValueChangeListener<T> {
-        void onValueChanged(T oldValue, T newValue);
     }
 }

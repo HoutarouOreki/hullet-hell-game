@@ -6,19 +6,19 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
-import com.houtarouoreki.hullethell.numbers.LimitedNumber;
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
 
 import java.util.EnumSet;
 
 public class Slider extends MenuComponent {
     private final Rectangle onRect;
     private final Label label;
-    public LimitedNumber<Integer> value;
+    public BindableNumber<Integer> value;
     private float leftTimeOut = 0;
     private float rightTimeOut = 0;
 
     public Slider(int startValue, int min, int max) {
-        value = new LimitedNumber<Integer>(startValue, min, max);
+        value = new BindableNumber<Integer>(startValue, min, max);
 
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
         Rectangle offRect = new Rectangle();
