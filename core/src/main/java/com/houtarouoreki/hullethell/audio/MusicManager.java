@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.audio;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
+import com.houtarouoreki.hullethell.numbers.LimitedNumber;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class MusicManager {
@@ -12,17 +13,18 @@ public class MusicManager {
     private Music currentSong;
     private float fadeOutLeft;
     private float fadeOutDuration;
-    private float volume = 1;
+    private final LimitedNumber<Float> volume;
 
     public MusicManager(AssetManager am) {
         assetManager = am;
         notification = new SongNotification(am);
+        volume = new LimitedNumber<Float>(0.7f, 0f, 1f);
     }
 
     public void setCurrentSong(String fileName) {
         currentSong = assetManager.get("music/" + fileName + ".mp3", Music.class);
         currentSong.setPosition(0);
-        currentSong.setVolume(volume);
+        currentSong.setVolume(getVolume());
         currentSongInfo = assetManager.get("music/" + fileName + ".cfg");
         notification.show();
         stopFadeOut();
@@ -32,7 +34,7 @@ public class MusicManager {
         fadeOutLeft = -1;
         fadeOutDuration = 0;
         if (currentSong != null)
-            currentSong.setVolume(volume);
+            currentSong.setVolume(getVolume());
     }
 
     public void render(Graphics g) {
@@ -50,11 +52,11 @@ public class MusicManager {
         float a = fadeOutLeft / fadeOutDuration;
         if (a <= 0) {
             currentSong.stop();
-            currentSong.setVolume(volume);
+            currentSong.setVolume(volume.getValue());
             stopFadeOut();
             return;
         }
-        currentSong.setVolume(a * volume);
+        currentSong.setVolume(a * getVolume());
         fadeOutLeft -= delta;
     }
 
@@ -78,11 +80,11 @@ public class MusicManager {
     }
 
     public float getVolume() {
-        return volume;
+        return volume.getValue();
     }
 
     public void setVolume(float volume) {
-        this.volume = Math.max(0, Math.min(1, volume));
+        this.volume.setValue(volume);
         currentSong.setVolume(getVolume());
     }
 
