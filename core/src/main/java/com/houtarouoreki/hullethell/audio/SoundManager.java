@@ -2,25 +2,27 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
 
 public class SoundManager {
+    public final BindableNumber<Float> volume;
     private final AssetManager assetManager;
-    private float volume = 1;
 
     public SoundManager(AssetManager am) {
         assetManager = am;
+        volume = new BindableNumber<Float>(0.7f, 0f, 1f);
     }
 
     public float getVolume() {
-        return volume;
+        return volume.getValue();
     }
 
     public void setVolume(float volume) {
-        this.volume = Math.min(1, Math.max(0, volume));
+        this.volume.setValue(volume);
     }
 
     public long playSound(String soundName) {
-        return assetManager.get("sounds/" + soundName + ".mp3", Sound.class).play(volume);
+        return assetManager.get("sounds/" + soundName + ".mp3", Sound.class).play(getVolume());
     }
 
     public long playSound(String soundName, float volume) {

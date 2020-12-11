@@ -21,7 +21,7 @@ public final class Bindable<T> {
 
     public void setValue(T value) {
         T oldValue = getValue();
-        if (oldValue.equals(value))
+        if (value != null && value.equals(oldValue))
             return;
         else
             this.value = value;

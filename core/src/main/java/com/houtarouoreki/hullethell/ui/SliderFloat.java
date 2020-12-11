@@ -3,22 +3,25 @@ package com.houtarouoreki.hullethell.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
-import com.houtarouoreki.hullethell.bindables.BindableNumber;
 
 import java.util.EnumSet;
 
-public class Slider extends MenuComponent {
+public class SliderFloat extends MenuComponent {
     private final Rectangle onRect;
     private final Label label;
-    public BindableNumber<Integer> value;
+    public BindableNumber<Float> value;
+    public float step = 0;
+    public SliderTextGenerator textGenerator;
     private float leftTimeOut = 0;
     private float rightTimeOut = 0;
 
-    public Slider(int startValue, int min, int max) {
-        value = new BindableNumber<Integer>(startValue, min, max);
+    public SliderFloat(float startValue, float min, float max) {
+        value = new BindableNumber<Float>(startValue, min, max);
+        step = (max - min) * 0.01f;
 
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
         Rectangle offRect = new Rectangle();
@@ -61,11 +64,11 @@ public class Slider extends MenuComponent {
     }
 
     private void increment() {
-        value.setValue(value.getValue() + 1);
+        value.setValue(value.getValue() + step);
     }
 
     private void decrement() {
-        value.setValue(value.getValue() - 1);
+        value.setValue(value.getValue() - step);
     }
 
     private void playSound() {
@@ -77,9 +80,11 @@ public class Slider extends MenuComponent {
         super.onUpdate(delta);
         if (isCurrentlyFocused())
             applyHeldKeys(delta);
-        label.setText(value.getValue().toString());
+        label.setText(textGenerator == null ?
+                value.getValue().toString() :
+                textGenerator.generateText(value.getValue()));
         float progress = (value.getValue() - value.getMin()) /
-                (float) (value.getMax() - value.getMin());
+                (value.getMax() - value.getMin());
         onRect.setSize(new Vector2(progress, 1f));
     }
 
@@ -99,5 +104,9 @@ public class Slider extends MenuComponent {
             rightTimeOut = holdKeyTimeOutSubsequent;
             playSound();
         }
+    }
+
+    public interface SliderTextGenerator {
+        String generateText(float value);
     }
 }

@@ -3,12 +3,13 @@ package com.houtarouoreki.hullethell.audio;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
+import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 
 public class MusicManager {
+    public final BindableNumber<Float> volume;
     private final AssetManager assetManager;
     private final SongNotification notification;
-    private final BindableNumber<Float> volume;
     private Music currentSong;
     private float fadeOutLeft;
     private float fadeOutDuration;
@@ -18,6 +19,13 @@ public class MusicManager {
         assetManager = am;
         this.notification = notification;
         volume = new BindableNumber<Float>(0.7f, 0f, 1f);
+        volume.addListener(new ValueChangeListener<Float>() {
+            @Override
+            public void onValueChanged(Float oldValue, Float newValue) {
+                if (currentSong != null)
+                    currentSong.setVolume(newValue);
+            }
+        });
     }
 
     public SongConfiguration getCurrentSongInfo() {
@@ -85,7 +93,6 @@ public class MusicManager {
 
     public void setVolume(float volume) {
         this.volume.setValue(volume);
-        currentSong.setVolume(getVolume());
     }
 
     public boolean isLooping() {

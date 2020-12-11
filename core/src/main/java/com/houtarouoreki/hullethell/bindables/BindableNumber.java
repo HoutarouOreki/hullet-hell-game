@@ -50,13 +50,12 @@ public class BindableNumber<T extends Comparable<T>> {
     }
 
     public T getValue() {
-        validateMinMax();
         return value;
     }
 
     public void setValue(T value) {
         T oldValue = getValue();
-        if (oldValue != null && oldValue.equals(value))
+        if (value.equals(oldValue))
             return;
         if (value.compareTo(max) > 0)
             this.value = max;
@@ -68,7 +67,7 @@ public class BindableNumber<T extends Comparable<T>> {
         for (ValueChangeListener<T> listener : listeners)
             listener.onValueChanged(oldValue, value);
         for (BindableNumber<T> bind : binds)
-            bind.setValue(value);
+            bind.setValue(this.value);
     }
 
     private void validateMinMax() {

@@ -1,0 +1,12 @@
+package com.houtarouoreki.hullethell.configurations;
+
+import com.houtarouoreki.hullethell.bindables.Bindable;
+import com.houtarouoreki.hullethell.bindables.BindableNumber;
+
+public class Settings {
+    public BindableNumber<Float> musicVolume
+            = new BindableNumber<Float>(0.7f, 0f, 1f);
+    public BindableNumber<Float> sfxVolume
+            = new BindableNumber<Float>(0.7f, 0f, 1f);
+    public Bindable<Boolean> backgrounds = new Bindable<Boolean>(true);
+}

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
-import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
@@ -29,27 +28,27 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         menu.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
         menu.setPadding(new Vector2(60, 60));
 
-        Slider musicVolume = new Slider(70, 0,
-                100);
-        musicVolume.value.addListener(new ValueChangeListener<Integer>() {
+        SliderFloat.SliderTextGenerator
+            volumeTextGenerator = new SliderFloat.SliderTextGenerator() {
             @Override
-            public void onValueChanged(Integer oldValue, Integer newValue) {
-                HulletHellGame.getMusicManager().setVolume(newValue / 100f);
+            public String generateText(float value) {
+                return ((Integer)Math.round(value * 100)).toString();
             }
-        });
+        };
+
+        SliderFloat musicVolume = new SliderFloat(.7f, 0,
+                1);
+        musicVolume.value.bindTo(HulletHellGame.getSettings().musicVolume);
         settingsComponents.add(new SettingsComponent("Music volume",
                 musicVolume));
+        musicVolume.textGenerator = volumeTextGenerator;
 
-        Slider sfxVolume = new Slider(70, 0,
-                100);
-        sfxVolume.value.addListener(new ValueChangeListener<Integer>() {
-            @Override
-            public void onValueChanged(Integer oldValue, Integer newValue) {
-                HulletHellGame.getSoundManager().setVolume(newValue / 100f);
-            }
-        });
+        SliderFloat sfxVolume = new SliderFloat(0.7f, 0,
+                1);
+        sfxVolume.value.bindTo(HulletHellGame.getSoundManager().volume);
         settingsComponents.add(new SettingsComponent("SFX volume",
                 sfxVolume));
+        sfxVolume.textGenerator = volumeTextGenerator;
 
         Switch backgrounds = new Switch();
         backgrounds.listener = new Switch.SwitchListener() {

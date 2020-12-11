@@ -33,9 +33,11 @@ public class HulletHellGame extends ScreenBasedGame {
     private static MusicManager musicManager;
     private static SoundManager soundManager;
     private static ScreenManager<GameScreen> screenManager;
+    private static Settings settings;
     private final WindowSizeContainer container;
 
     public HulletHellGame() {
+        settings = new Settings();
         container = new WindowSizeContainer();
         assetManager = new AssetManager();
         SongNotification notification = new SongNotification(assetManager);
@@ -63,6 +65,10 @@ public class HulletHellGame extends ScreenBasedGame {
 
     public static ScreenManager<GameScreen> getScreensManager() {
         return screenManager;
+    }
+
+    public static Settings getSettings() {
+        return settings;
     }
 
     @Override
