@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 import com.houtarouoreki.hullethell.ui.Button;
 import com.houtarouoreki.hullethell.ui.Menu;
 import org.mini2Dx.core.game.GameContainer;
@@ -74,7 +75,11 @@ public class MainMenuScreen extends HulletHellScreen {
     public void postTransitionIn(Transition transitionIn) {
         super.postTransitionIn(transitionIn);
         HulletHellGame.getInputManager().managedProcessors.add(menu);
-        HulletHellGame.getMusicManager().setCurrentSong("One Man Symphony - Beat 02");
+        SongConfiguration currSong = HulletHellGame.getMusicManager()
+                .getCurrentSongInfo();
+        String menuSongName = "One Man Symphony - Beat 02";
+        if (currSong == null || !currSong.toString().equals(menuSongName))
+            HulletHellGame.getMusicManager().setCurrentSong(menuSongName);
         HulletHellGame.getMusicManager().setLooping(true);
         HulletHellGame.getMusicManager().play();
     }
@@ -96,7 +101,8 @@ public class MainMenuScreen extends HulletHellScreen {
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager,
+    public void update(GameContainer gc,
+                       ScreenManager<? extends GameScreen> screenManager,
                        float delta) {
         menu.update(delta);
     }

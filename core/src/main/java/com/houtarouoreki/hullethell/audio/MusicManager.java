@@ -12,11 +12,16 @@ public class MusicManager {
     private Music currentSong;
     private float fadeOutLeft;
     private float fadeOutDuration;
+    private SongConfiguration currentSongInfo;
 
     public MusicManager(AssetManager am, SongNotification notification) {
         assetManager = am;
         this.notification = notification;
         volume = new LimitedNumber<Float>(0.7f, 0f, 1f);
+    }
+
+    public SongConfiguration getCurrentSongInfo() {
+        return currentSongInfo;
     }
 
     public void setCurrentSong(String fileName) {
@@ -25,7 +30,7 @@ public class MusicManager {
         currentSong = assetManager.get("music/" + fileName + ".mp3", Music.class);
         currentSong.setPosition(0);
         currentSong.setVolume(getVolume());
-        SongConfiguration currentSongInfo = assetManager.get("music/" + fileName + ".cfg");
+        currentSongInfo = assetManager.get("music/" + fileName + ".cfg");
         notification.show(currentSongInfo);
         stopFadeOut();
     }
