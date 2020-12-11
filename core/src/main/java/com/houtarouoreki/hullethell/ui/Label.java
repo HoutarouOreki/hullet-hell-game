@@ -5,7 +5,7 @@ import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class Label extends MenuComponent {
-    public int alignment = Align.center;
+    public int alignment = Align.topLeft;
     private String text = "";
 
     public String getText() {
@@ -24,12 +24,8 @@ public class Label extends MenuComponent {
     @Override
     public void draw(Graphics g) {
         g.drawString(text, getRenderPosition().x,
-                getRenderPosition().y +
-                        (getRenderSize().y - g.getFont().getCapHeight()) * 0.5f,
+                getRenderPosition().y + (alignment == Align.center ?
+                        (getRenderSize().y - g.getFont().getCapHeight()) * 0.5f : 0),
                 getRenderSize().x, alignment);
-    }
-
-    @Override
-    protected void onUpdate(float delta) {
     }
 }

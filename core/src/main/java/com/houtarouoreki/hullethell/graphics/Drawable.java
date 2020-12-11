@@ -15,6 +15,8 @@ public abstract class Drawable {
     private final Vector2 size = new Vector2(1, 1);
     private final Vector2 padding = new Vector2(0, 0);
     private final Vector2 margin = new Vector2(0, 0);
+    private final Vector2 anchor = new Vector2(0, 0);
+    private final Vector2 origin = new Vector2(0, 0);
     private EnumSet<Axes> relativePositionAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativeSizeAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativePaddingAxes = EnumSet.noneOf(Axes.class);
@@ -70,7 +72,10 @@ public abstract class Drawable {
         renderPos.add(getMargin());
         if (parent == null)
             return renderPos;
-        return renderPos.add(parent.getRenderPosition()).add(parent.getPadding());
+        return renderPos.add(parent.getRenderPosition())
+                .add(parent.getPadding())
+                .add(parent.getContentRenderSize().scl(getAnchor()))
+                .sub(getRenderSize().scl(getOrigin()));
     }
 
     public final void update(float delta) {
@@ -166,5 +171,21 @@ public abstract class Drawable {
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
+    }
+
+    public Vector2 getAnchor() {
+        return anchor.cpy();
+    }
+
+    public void setAnchor(Vector2 anchor) {
+        this.anchor.set(anchor);
+    }
+
+    public Vector2 getOrigin() {
+        return origin.cpy();
+    }
+
+    public void setOrigin(Vector2 origin) {
+        this.origin.set(anchor);
     }
 }

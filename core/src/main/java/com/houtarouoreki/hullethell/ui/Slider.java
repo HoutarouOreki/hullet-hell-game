@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.ui;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -39,6 +40,7 @@ public class Slider extends MenuComponent {
         label.setRelativePositionAxes(bothAxes);
         label.setRelativeSizeAxes(bothAxes);
         label.setSize(new Vector2(1, 1));
+        label.alignment = Align.center;
         add(label);
     }
 

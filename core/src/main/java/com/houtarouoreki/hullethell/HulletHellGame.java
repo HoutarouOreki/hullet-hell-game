@@ -9,10 +9,12 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.audio.MusicManager;
+import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
 import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
+import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Graphics;
@@ -24,6 +26,7 @@ import java.util.List;
 
 public class HulletHellGame extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.houtarouoreki.hullethell";
+    private WindowSizeContainer container;
     private AssetManager assetManager;
     private InputManager inputManager;
     private MusicManager musicManager;
@@ -31,11 +34,17 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void initialise() {
-        FileHandleResolver fileHandleResolver = new FallbackFileHandleResolver(new ClasspathFileHandleResolver(), new InternalFileHandleResolver());
+        FileHandleResolver fileHandleResolver
+                = new FallbackFileHandleResolver(
+                        new ClasspathFileHandleResolver(),
+                        new InternalFileHandleResolver());
+        container = new WindowSizeContainer();
         assetManager = new AssetManager();
+        SongNotification notification = new SongNotification(assetManager);
         inputManager = new InputManager();
-        musicManager = new MusicManager(assetManager);
+        musicManager = new MusicManager(assetManager, notification);
         soundManager = new SoundManager(assetManager);
+        container.add(notification);
 
         assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(SongConfiguration.class, new SongConfigurationLoader(new InternalFileHandleResolver()));
@@ -108,6 +117,7 @@ public class HulletHellGame extends ScreenBasedGame {
     public void update(float delta) {
         getScreenManager().update(this, delta);
         musicManager.update(delta);
+        container.update(delta);
     }
 
     @Override
@@ -118,7 +128,7 @@ public class HulletHellGame extends ScreenBasedGame {
     @Override
     public void render(Graphics g) {
         getScreenManager().render(this, g);
-        musicManager.render(g);
+        container.render(g);
     }
 
     @Override

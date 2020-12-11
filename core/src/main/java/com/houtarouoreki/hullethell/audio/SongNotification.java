@@ -2,56 +2,73 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
-import org.mini2Dx.core.graphics.Graphics;
+import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.Drawable;
+import com.houtarouoreki.hullethell.graphics.Sprite;
+import com.houtarouoreki.hullethell.ui.Label;
 
-public class SongNotification {
+import java.util.EnumSet;
+
+public class SongNotification extends Drawable {
     private final float length = 5;
     private final AssetManager assetManager;
-    private Texture texture;
+    private final Sprite sprite;
+    private final float width = 300;
+    private final Label titleLabel;
+    private final Label artistLabel;
     private float timeLeft = length;
+    private SongConfiguration song;
 
     public SongNotification(AssetManager assetManager) {
         this.assetManager = assetManager;
+        setAnchor(new Vector2(1, 1));
+        setOrigin(new Vector2(0, 1));
+        setSize(new Vector2(width, 80));
+        add(sprite = new Sprite());
+        sprite.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+
+        titleLabel = new Label();
+        titleLabel.setPosition(new Vector2(90, 24));
+        titleLabel.setColor(new Color(0, 0, 143 / 255f, 1));
+        add(titleLabel);
+
+        artistLabel = new Label();
+        artistLabel.setPosition(new Vector2(90, 42));
+        artistLabel.setColor(new Color(15 / 255f, 15 / 255f,
+                96 / 255f, 1));
+        add(artistLabel);
     }
 
-    public void show() {
-        timeLeft = length;
-    }
+    public void onUpdate(float delta) {
+        timeLeft -= delta;
+        if (sprite.texture == null && assetManager
+                .isLoaded("ui/songNotification.png"))
+            sprite.texture = assetManager.get("ui/songNotification.png");
 
-    public void render(Graphics g, SongConfiguration song) {
-        if (song == null || timeLeft < 0 || texture == null)
+        if (song == null || timeLeft < 0)
             return;
 
-        float right = 1280;
-        float height = 80;
-        float bottom = 720;
-        float top = bottom - height;
+        float left = 0;
         float fadeLength = 1;
-        float width = 300;
 
         float nonFadeLength = length - fadeLength;
         if (timeLeft > length - fadeLength) {
             float a = 1 - ((timeLeft - nonFadeLength) / fadeLength);
-            right += Interpolation.sineIn.apply(width + 30, 0, a);
+            left += Interpolation.sineIn.apply(width + 30, 0, a);
         } else if (timeLeft < fadeLength) {
             float a = 1 - (timeLeft / fadeLength);
-            right += Interpolation.sineIn.apply(0, width + 30, a);
+            left += Interpolation.sineIn.apply(0, width + 30, a);
         }
-        float left = right - width;
-        g.setColor(Color.SKY);
-        g.drawTexture(texture, left, top, width, height);
-        g.setColor(new Color(0, 0, 143 / 255f, 1));
-        g.drawString(song.title, left + 90, top + 24);
-        //g.setColor(new Color(15 / 255f, 15 / 255f, 96 / 255f, 1));
-        g.drawString("by " + song.author, left + 90, top + 42);
+        setPosition(new Vector2(left, 0));
     }
 
-    public void update(float delta) {
-        timeLeft -= delta;
-        if (texture == null && assetManager.isLoaded("ui/songNotification.png"))
-            texture = assetManager.get("ui/songNotification.png");
+    public void show(SongConfiguration song) {
+        timeLeft = length;
+        this.song = song;
+        titleLabel.setText(song.title);
+        artistLabel.setText(song.author);
     }
 }
