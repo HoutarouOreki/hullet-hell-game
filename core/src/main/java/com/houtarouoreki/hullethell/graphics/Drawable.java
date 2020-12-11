@@ -186,6 +186,6 @@ public abstract class Drawable {
     }
 
     public void setOrigin(Vector2 origin) {
-        this.origin.set(anchor);
+        this.origin.set(origin);
     }
 }

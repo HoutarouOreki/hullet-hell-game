@@ -27,6 +27,7 @@ public class SongNotification extends Drawable {
         setAnchor(new Vector2(1, 1));
         setOrigin(new Vector2(0, 1));
         setSize(new Vector2(width, 80));
+
         add(sprite = new Sprite());
         sprite.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
 
@@ -48,8 +49,10 @@ public class SongNotification extends Drawable {
                 .isLoaded("ui/songNotification.png"))
             sprite.texture = assetManager.get("ui/songNotification.png");
 
-        if (song == null || timeLeft < 0)
+        if (song == null || timeLeft < 0) {
+            setPosition(new Vector2(0, 0));
             return;
+        }
 
         float left = 0;
         float fadeLength = 1;
@@ -57,11 +60,12 @@ public class SongNotification extends Drawable {
         float nonFadeLength = length - fadeLength;
         if (timeLeft > length - fadeLength) {
             float a = 1 - ((timeLeft - nonFadeLength) / fadeLength);
-            left += Interpolation.sineIn.apply(width + 30, 0, a);
+            left += Interpolation.sineIn.apply(0, -width, a);
         } else if (timeLeft < fadeLength) {
             float a = 1 - (timeLeft / fadeLength);
-            left += Interpolation.sineIn.apply(0, width + 30, a);
-        }
+            left += Interpolation.sineIn.apply(-width, 0, a);
+        } else
+            left += -width;
         setPosition(new Vector2(left, 0));
     }
 
@@ -69,6 +73,6 @@ public class SongNotification extends Drawable {
         timeLeft = length;
         this.song = song;
         titleLabel.setText(song.title);
-        artistLabel.setText(song.author);
+        artistLabel.setText("by " + song.author);
     }
 }
