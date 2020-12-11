@@ -1,12 +1,11 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class Label extends MenuComponent {
-    public int alignment = Align.left;
+    public int alignment = Align.center;
     private String text = "";
 
     public String getText() {
@@ -23,11 +22,14 @@ public class Label extends MenuComponent {
     }
 
     @Override
-    public void render(Graphics g) {
-        super.render(g);
-        g.setColor(Color.WHITE);
-        g.drawString(text, getPosition().x,
-                getPosition().y + (getSize().y - g.getFont().getCapHeight()) * 0.5f,
-                getSize().x, alignment);
+    public void draw(Graphics g) {
+        g.drawString(text, getRenderPosition().x,
+                getRenderPosition().y +
+                        (getRenderSize().y - g.getFont().getCapHeight()) * 0.5f,
+                getRenderSize().x, alignment);
+    }
+
+    @Override
+    protected void onUpdate(float delta) {
     }
 }

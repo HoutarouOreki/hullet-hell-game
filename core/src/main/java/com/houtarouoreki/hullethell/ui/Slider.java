@@ -1,21 +1,45 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.numbers.LimitedNumber;
-import org.mini2Dx.core.graphics.Graphics;
+
+import java.util.EnumSet;
 
 public class Slider extends MenuComponent {
     private final InputManager inputManager;
+    private final Rectangle onRect;
+    private final Label label;
+    public LimitedNumber<Integer> value;
     private float leftTimeOut = 0;
     private float rightTimeOut = 0;
-    public LimitedNumber<Integer> value;
 
     public Slider(int startValue, int min, int max, InputManager inputManager) {
         this.inputManager = inputManager;
         value = new LimitedNumber<Integer>(startValue, min, max);
+
+        EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
+        Rectangle offRect = new Rectangle();
+        offRect.setRelativePositionAxes(bothAxes);
+        offRect.setRelativeSizeAxes(bothAxes);
+        offRect.setSize(new Vector2(1, 1));
+        offRect.setColor(UNACTIVE_COLOR);
+        add(offRect);
+
+        onRect = new Rectangle();
+        onRect.setRelativePositionAxes(bothAxes);
+        onRect.setRelativeSizeAxes(bothAxes);
+        onRect.setColor(ACTIVE_COLOR);
+        add(onRect);
+
+        label = new Label();
+        label.setRelativePositionAxes(bothAxes);
+        label.setRelativeSizeAxes(bothAxes);
+        label.setSize(new Vector2(1, 1));
+        add(label);
     }
 
     @Override
@@ -43,23 +67,14 @@ public class Slider extends MenuComponent {
     }
 
     @Override
-    public void render(Graphics g) {
-        super.render(g);
-        g.setColor(UNACTIVE_COLOR);
-        g.fillRect(getPosition().x, getPosition().y, getSize().x, getSize().y);
-        g.setColor(ACTIVE_COLOR);
-        g.fillRect(getPosition().x, getPosition().y, (value.getValue() / (float)value.getMax())
-                * getSize().x, getSize().y);
-        g.setColor(Color.WHITE);
-        g.drawString(value.getValue().toString(), getPosition().x, getPosition().y
-                + (getSize().y - g.getFont().getCapHeight()) * 0.5f, getSize().x, Align.center);
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void onUpdate(float delta) {
+        super.onUpdate(delta);
         if (isCurrentlyFocused())
             applyHeldKeys(delta);
+        label.setText(value.getValue().toString());
+        float progress = (value.getValue() - value.getMin()) /
+                (float)(value.getMax() - value.getMin());
+        onRect.setSize(new Vector2(progress, 1f));
     }
 
     private void applyHeldKeys(float delta) {

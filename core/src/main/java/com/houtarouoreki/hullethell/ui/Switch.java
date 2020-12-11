@@ -1,16 +1,41 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
-import org.mini2Dx.core.graphics.Graphics;
+
+import java.util.EnumSet;
 
 public class Switch extends MenuComponent {
+    private final Rectangle onRect;
+    private final Label label;
     public SwitchListener listener;
     private boolean value;
 
     public Switch(SwitchListener listener) {
         this.listener = listener;
+
+        EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
+        Rectangle offRect = new Rectangle();
+        offRect.setRelativePositionAxes(bothAxes);
+        offRect.setRelativeSizeAxes(bothAxes);
+        offRect.setSize(new Vector2(1, 1));
+        offRect.setColor(UNACTIVE_COLOR);
+        add(offRect);
+
+        onRect = new Rectangle();
+        onRect.setRelativePositionAxes(bothAxes);
+        onRect.setRelativeSizeAxes(bothAxes);
+        onRect.setSize(new Vector2(0.5f, 1));
+        onRect.setColor(ACTIVE_COLOR);
+        add(onRect);
+
+        label = new Label();
+        label.setRelativePositionAxes(bothAxes);
+        label.setRelativeSizeAxes(bothAxes);
+        label.setSize(new Vector2(0.5f, 1));
+        add(label);
     }
 
     @Override
@@ -36,23 +61,10 @@ public class Switch extends MenuComponent {
     public void setValue(boolean newValue) {
         value = newValue;
         listener.onValueChanged(newValue);
-    }
-
-    @Override
-    public void render(Graphics g) {
-        super.render(g);
-        g.setColor(UNACTIVE_COLOR);
-        float halfWidth = getSize().x * 0.5f;
-        g.fillRect(getPosition().x + (getValue() ? 0 : halfWidth),
-                getPosition().y, halfWidth, getSize().y);
-        g.setColor(ACTIVE_COLOR);
-        g.fillRect(getPosition().x + (!getValue() ? 0 : halfWidth),
-                getPosition().y, halfWidth, getSize().y);
-        g.setColor(Color.WHITE);
-        g.drawString(getValue() ? "ON" : "OFF",
-                getPosition().x + (!getValue() ? 0 : halfWidth),
-                getPosition().y + (getSize().y - g.getFont().getCapHeight()) * 0.5f,
-                halfWidth, Align.center);
+        Vector2 onPosition = new Vector2(newValue ? 0.5f : 0, 0);
+        onRect.setPosition(onPosition);
+        label.setPosition(onPosition);
+        label.setText(newValue ? "ON" : "OFF");
     }
 
     public interface SwitchListener {

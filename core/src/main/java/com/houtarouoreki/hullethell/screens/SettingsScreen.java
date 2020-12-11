@@ -4,32 +4,30 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
 import com.houtarouoreki.hullethell.ui.*;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.screen.GameScreen;
-import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class SettingsScreen extends HulletHellScreen implements ControlProcessor {
-    private Menu menu;
+    private final Menu menu;
 
     public SettingsScreen(HulletHellGame game) {
         super(game);
-    }
-
-    @Override
-    public void initialise(GameContainer gc) {
         List<SettingsComponent> settingsComponents = new ArrayList<SettingsComponent>();
-        menu = new Menu();
+        container.add(menu = new Menu());
+        menu.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        menu.setPadding(new Vector2(60, 60));
 
         Slider musicVolume = new Slider(70, 0,
                 100, game.getInputManager());
@@ -41,12 +39,17 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         Switch backgrounds = new Switch(new Switch.SwitchListener() {
             @Override
-            public void onValueChanged(boolean newValue) {}
+            public void onValueChanged(boolean newValue) {
+            }
         });
         backgrounds.setValue(true);
         settingsComponents.add(new SettingsComponent("Backgrounds", backgrounds));
 
         generateLayout(settingsComponents);
+    }
+
+    @Override
+    public void initialise(GameContainer gc) {
     }
 
     @Override
@@ -61,17 +64,6 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         super.preTransitionOut(transitionOut);
         game.getInputManager().managedProcessors.remove(menu);
         game.getInputManager().managedProcessors.remove(this);
-    }
-
-    @Override
-    public void update(GameContainer gc,
-                       ScreenManager<? extends GameScreen> screenManager, float delta) {
-        menu.update(delta);
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) {
-        menu.render(g);
     }
 
     @Override
@@ -90,19 +82,18 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     }
 
     private void generateLayout(List<SettingsComponent> components) {
-        float margins = 60;
         float spacing = 2;
-        float currentY = margins;
-        Vector2 componentDimensions = new Vector2(1280 - margins * 2, 50);
+        float currentY = 0;
 
         for (LoopInt i = new LoopInt(0, components.size() - 1); ; i.increment()) {
             SettingsComponent component = components.get(i.getValue());
-            component.setPosition(new Vector2(margins, currentY));
-            component.setSize(componentDimensions);
+            component.setPosition(new Vector2(0, currentY));
+            component.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
+            component.setSize(new Vector2(1, 50));
             component.upperNeighbor = components.get(i.decremented());
             component.lowerNeighbor = components.get(i.incremented());
-            menu.components.add(component);
-            currentY += componentDimensions.y + spacing;
+            menu.add(component);
+            currentY += component.getSize().y + spacing;
             if (i.getValue().equals(i.getMax()))
                 break;
         }
@@ -112,34 +103,32 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     private static class SettingsComponent extends MenuComponent {
         private final Label label;
         private final MenuComponent settingControl;
+        private final Rectangle background;
         private boolean layoutValid;
 
         public SettingsComponent(String labelText, MenuComponent settingControl) {
+            background = new Rectangle();
+            background.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+            background.setColor(Color.valueOf("111166"));
+            background.setVisibility(false);
+            background.setMargin(new Vector2(-8, -8));
+            add(background);
+
             label = new Label();
             label.setText(labelText);
             label.alignment = Align.center;
+            add(label);
+
             this.settingControl = settingControl;
+            add(settingControl);
+
+            generateLayout();
         }
 
         @Override
-        public void update(float delta) {
-            super.update(delta);
+        public void onUpdate(float delta) {
             if (!layoutValid)
                 generateLayout();
-            settingControl.update(delta);
-            label.update(delta);
-        }
-
-        @Override
-        public void render(Graphics g) {
-            super.render(g);
-            g.setColor(Color.valueOf("111166"));
-            if (isCurrentlyFocused()) {
-                g.fillRect(getPosition().x, getPosition().y,
-                        getSize().x, getSize().y);
-            }
-            label.render(g);
-            settingControl.render(g);
         }
 
         @Override
@@ -163,12 +152,14 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         protected void onFocused() {
             super.onFocused();
             settingControl.focus();
+            background.setVisibility(true);
         }
 
         @Override
         protected void onFocusLost() {
             super.onFocusLost();
             settingControl.unfocus();
+            background.setVisibility(false);
         }
 
         private void invalidateLayout() {
@@ -176,15 +167,19 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         }
 
         private void generateLayout() {
-            Vector2 padding = new Vector2(8, 8);
+            setPadding(new Vector2(8, 8));
 
-            label.setPosition(getPosition().add(padding));
-            Vector2 halfSize = getSize().scl(new Vector2(0.5f, 1))
-                    .sub(padding.cpy().scl(2));
-            label.setSize(halfSize);
-            settingControl.setPosition(getPosition()
-                    .add(getSize().scl(new Vector2(0.5f, 0))).add(padding));
-            settingControl.setSize(halfSize);
+            label.setRelativePositionAxes(EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL));
+            label.setPosition(new Vector2(0, 0));
+            label.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL));
+            label.setSize(new Vector2(0.5f, 1));
+
+            settingControl.setRelativePositionAxes(EnumSet
+                    .of(Axes.HORIZONTAL, Axes.VERTICAL));
+            settingControl.setPosition(new Vector2(0.5f, 0));
+            settingControl.setRelativeSizeAxes(EnumSet
+                    .of(Axes.HORIZONTAL, Axes.VERTICAL));
+            settingControl.setSize(new Vector2(0.5f, 1));
             layoutValid = true;
         }
     }

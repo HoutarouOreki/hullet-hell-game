@@ -1,36 +1,16 @@
 package com.houtarouoreki.hullethell.ui;
 
 
+import com.houtarouoreki.hullethell.graphics.Drawable;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
-import org.mini2Dx.core.graphics.Graphics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Menu implements ControlProcessor {
-    public final List<MenuComponent> components;
-
-    public Menu() {
-        components = new ArrayList<MenuComponent>();
-    }
-
-    public void update(float delta) {
-        for (MenuComponent component : components) {
-            component.update(delta);
-        }
-    }
-
-    public void render(Graphics g) {
-        for (MenuComponent component : components) {
-            component.render(g);
-        }
-    }
-
+public class Menu extends Drawable implements ControlProcessor {
     public MenuComponent getCurrentlyFocusedComponent() {
-        for (MenuComponent component : components) {
-            if (component.isCurrentlyFocused())
-                return component;
+        for (Drawable component : children) {
+            if (component instanceof MenuComponent
+                    && ((MenuComponent) component).isCurrentlyFocused())
+                return (MenuComponent) component;
         }
         return null;
     }

@@ -32,7 +32,7 @@ public class MainMenuScreen extends HulletHellScreen {
 
         Button playButton = new Button();
         playButton.setPosition(new Vector2(buttonX, getNextButtonY()));
-        playButton.label = "Play";
+        playButton.setText("Play");
         playButton.setSize(buttonSize);
         playButton.focus();
         playButton.listener = new Button.ButtonListener() {
@@ -44,7 +44,7 @@ public class MainMenuScreen extends HulletHellScreen {
 
         Button settingsButton = new Button();
         settingsButton.setPosition(new Vector2(buttonX, getNextButtonY()));
-        settingsButton.label = "Settings";
+        settingsButton.setText("Settings");
         settingsButton.setSize(buttonSize);
         settingsButton.listener = new Button.ButtonListener() {
             @Override
@@ -56,14 +56,14 @@ public class MainMenuScreen extends HulletHellScreen {
         Button exitButton = new Button();
         exitButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         exitButton.setSize(buttonSize);
-        exitButton.label = "Exit";
+        exitButton.setText("Exit");
         exitButton.listener = new Button.ButtonListener() {
             @Override
             public void onAction() {
                 System.exit(0);
             }
         };
-        menu.components.addAll(Arrays.asList(playButton, settingsButton, exitButton));
+        menu.addAll(Arrays.asList(playButton, settingsButton, exitButton));
 
         playButton.upperNeighbor = exitButton;
         playButton.lowerNeighbor = settingsButton;
