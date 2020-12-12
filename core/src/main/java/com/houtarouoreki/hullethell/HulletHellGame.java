@@ -57,6 +57,12 @@ public class HulletHellGame extends ScreenBasedGame {
                 inputManager.clearPressedKeys();
             }
         });
+        settings.renderFPS.addListener(new ValueChangeListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean oldValue, Boolean newValue) {
+                fpsText.setVisibility(newValue);
+            }
+        });
     }
 
     public static AssetManager getAssetManager() {
