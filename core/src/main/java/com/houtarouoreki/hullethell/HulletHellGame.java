@@ -16,6 +16,7 @@ import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.graphics.Fonts;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
+import com.houtarouoreki.hullethell.ui.Label;
 import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
@@ -37,6 +38,7 @@ public class HulletHellGame extends ScreenBasedGame {
     private static ScreenManager<GameScreen> screenManager;
     private static Settings settings;
     private final WindowSizeContainer container;
+    private Label fpsText;
 
     public HulletHellGame() {
         settings = new Settings();
@@ -166,13 +168,19 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void render(Graphics g) {
-        if (Fonts.defaultFont == null)
+        if (Fonts.defaultFont == null) {
             Fonts.defaultFont = g.getFont();
-        container.render(g);
+            fpsText = new Label();
+            container.add(fpsText);
+        }
+        fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         getScreensManager().render(this, g);
-        g.clearScaling();
         g.setTranslation(0, 0);
-        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond(), 0, 0);
+        g.clearScaling();
+        g.clearBlendFunction();
+        g.clearShaderProgram();
+        g.removeClip();
+        container.render(g);
     }
 
     @Override
