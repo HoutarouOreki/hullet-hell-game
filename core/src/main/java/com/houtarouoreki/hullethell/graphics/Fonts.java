@@ -22,11 +22,12 @@ public final class Fonts {
         if (generators.containsKey(fileName))
             g = generators.get(fileName);
         else {
-            g = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
+            g = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + fileName + ".ttf"));
             generators.put(fileName, g);
         }
-        parameters.flip = false;
+        parameters.flip = !parameters.flip;
         com.badlogic.gdx.graphics.g2d.BitmapFont temp = g.generateFont(parameters);
+        parameters.flip = !parameters.flip;
         return new BitmapFont(temp.getData(), temp.getRegion(), temp.usesIntegerPositions());
     }
 }
