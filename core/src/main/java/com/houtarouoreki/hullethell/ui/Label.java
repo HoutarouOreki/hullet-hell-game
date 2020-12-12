@@ -30,6 +30,8 @@ public class Label extends MenuComponent {
 
     @Override
     public void draw(Graphics g) {
+        if (font == null)
+            return;
         g.setFont(font);
         g.drawString(text, getRenderPosition().x,
                 getRenderPosition().y + (alignment == Align.center ?

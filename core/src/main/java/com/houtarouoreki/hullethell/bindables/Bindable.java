@@ -36,6 +36,12 @@ public final class Bindable<T> {
         listeners.add(listener);
     }
 
+    public void addListener(ValueChangeListener<T> listener, boolean runImmediately) {
+        addListener(listener);
+        if (runImmediately)
+            listener.onValueChanged(getValue(), getValue());
+    }
+
     public void removeListener(ValueChangeListener<T> listener) {
         listeners.remove(listener);
     }

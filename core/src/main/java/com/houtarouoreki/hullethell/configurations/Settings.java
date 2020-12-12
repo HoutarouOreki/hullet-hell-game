@@ -11,5 +11,5 @@ public class Settings {
     public Bindable<Boolean> backgrounds = new Bindable<Boolean>(true);
     public Bindable<Boolean> debugging = new Bindable<Boolean>(false);
     public Bindable<Boolean> renderFPS = new Bindable<Boolean>(false);
-    public Bindable<Boolean> fullScreen = new Bindable<Boolean>(false);
+    public Bindable<Boolean> fullScreen = new Bindable<Boolean>(true);
 }

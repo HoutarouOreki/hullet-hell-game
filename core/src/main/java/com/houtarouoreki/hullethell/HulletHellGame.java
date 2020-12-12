@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.audio.MusicManager;
 import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
@@ -46,23 +47,6 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager = new AssetManager();
         inputManager = new InputManager();
         soundManager = new SoundManager(assetManager);
-        settings.fullScreen.addListener(new ValueChangeListener<Boolean>() {
-            @Override
-            public void onValueChanged(Boolean oldValue, Boolean newValue) {
-                com.badlogic.gdx.Graphics.DisplayMode dm = Gdx.graphics.getDisplayMode();
-                if (newValue)
-                    Gdx.graphics.setFullscreenMode(dm);
-                else
-                    Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
-                inputManager.clearPressedKeys();
-            }
-        });
-        settings.renderFPS.addListener(new ValueChangeListener<Boolean>() {
-            @Override
-            public void onValueChanged(Boolean oldValue, Boolean newValue) {
-                fpsText.setVisibility(newValue);
-            }
-        });
     }
 
     public static AssetManager getAssetManager() {
@@ -132,7 +116,32 @@ public class HulletHellGame extends ScreenBasedGame {
 
         Gdx.input.setInputProcessor(inputManager);
 
+        fpsText = new Label();
+        fpsText.setPosition(new Vector2(0, 2));
+
         this.addScreen(new LoadingScreen());
+
+        addSettingsListeners();
+    }
+
+    private void addSettingsListeners() {
+        settings.fullScreen.addListener(new ValueChangeListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean oldValue, Boolean newValue) {
+                com.badlogic.gdx.Graphics.DisplayMode dm = Gdx.graphics.getDisplayMode();
+                if (newValue)
+                    Gdx.graphics.setFullscreenMode(dm);
+                else
+                    Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
+                inputManager.clearPressedKeys();
+            }
+        }, true);
+        settings.renderFPS.addListener(new ValueChangeListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean oldValue, Boolean newValue) {
+                fpsText.setVisibility(newValue);
+            }
+        }, true);
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {
@@ -177,7 +186,7 @@ public class HulletHellGame extends ScreenBasedGame {
     public void render(Graphics g) {
         if (Fonts.defaultFont == null) {
             Fonts.defaultFont = g.getFont();
-            fpsText = new Label();
+            fpsText.font = g.getFont();
             container.add(fpsText);
         }
         fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());

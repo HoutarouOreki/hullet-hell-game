@@ -45,9 +45,7 @@ public class Switch extends MenuComponent {
             public void onValueChanged(Boolean oldValue, Boolean newValue) {
                 generateLayout();
             }
-        });
-
-        generateLayout();
+        }, true);
     }
 
     @Override
