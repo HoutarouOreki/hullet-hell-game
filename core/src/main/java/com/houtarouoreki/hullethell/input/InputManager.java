@@ -3,17 +3,17 @@ package com.houtarouoreki.hullethell.input;
 import com.badlogic.gdx.InputProcessor;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class InputManager implements InputProcessor {
-    public final List<ControlProcessor> managedProcessors;
+    public final HashSet<ControlProcessor> managedProcessors;
     private final KeyBindingManager keyBindingManager;
-    private final List<Integer> pressedKeys;
+    private final HashSet<Integer> pressedKeys;
 
     public InputManager() {
-        managedProcessors = new ArrayList<ControlProcessor>();
+        managedProcessors = new HashSet<ControlProcessor>();
         keyBindingManager = new KeyBindingManager();
-        pressedKeys = new ArrayList<Integer>();
+        pressedKeys = new HashSet<Integer>();
     }
 
     public void update(float delta) {
@@ -40,7 +40,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        pressedKeys.remove((Integer) keycode);
+        pressedKeys.remove(keycode);
         return false;
     }
 
