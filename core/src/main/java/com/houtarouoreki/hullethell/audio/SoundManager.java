@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
 
 public class SoundManager {
@@ -11,6 +12,7 @@ public class SoundManager {
     public SoundManager(AssetManager am) {
         assetManager = am;
         volume = new BindableNumber<Float>(0.7f, 0f, 1f);
+        volume.bindTo(HulletHellGame.getSettings().sfxVolume);
     }
 
     public float getVolume() {

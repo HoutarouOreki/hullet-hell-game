@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
 import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
@@ -26,6 +27,7 @@ public class MusicManager {
                     currentSong.setVolume(newValue);
             }
         });
+        volume.bindTo(HulletHellGame.getSettings().musicVolume);
     }
 
     public SongConfiguration getCurrentSongInfo() {

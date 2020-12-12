@@ -29,10 +29,10 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         menu.setPadding(new Vector2(60, 60));
 
         SliderFloat.SliderTextGenerator
-            volumeTextGenerator = new SliderFloat.SliderTextGenerator() {
+                volumeTextGenerator = new SliderFloat.SliderTextGenerator() {
             @Override
             public String generateText(float value) {
-                return ((Integer)Math.round(value * 100)).toString();
+                return ((Integer) Math.round(value * 100)).toString();
             }
         };
 
@@ -45,18 +45,13 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         SliderFloat sfxVolume = new SliderFloat(0.7f, 0,
                 1);
-        sfxVolume.value.bindTo(HulletHellGame.getSoundManager().volume);
+        sfxVolume.value.bindTo(HulletHellGame.getSettings().sfxVolume);
         settingsComponents.add(new SettingsComponent("SFX volume",
                 sfxVolume));
         sfxVolume.textGenerator = volumeTextGenerator;
 
         Switch backgrounds = new Switch();
-        backgrounds.listener = new Switch.SwitchListener() {
-            @Override
-            public void onValueChanged(boolean newValue) {
-            }
-        };
-        backgrounds.setValue(true);
+        backgrounds.value.bindTo(HulletHellGame.getSettings().backgrounds);
         settingsComponents.add(new SettingsComponent("Backgrounds",
                 backgrounds));
 

@@ -3,6 +3,8 @@ package com.houtarouoreki.hullethell.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.bindables.Bindable;
+import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -10,12 +12,12 @@ import com.houtarouoreki.hullethell.input.Controls;
 import java.util.EnumSet;
 
 public class Switch extends MenuComponent {
+    public final Bindable<Boolean> value;
     private final Rectangle onRect;
     private final Label label;
-    public SwitchListener listener;
-    private boolean value;
 
     public Switch() {
+        value = new Bindable<Boolean>(false);
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
         Rectangle offRect = new Rectangle();
         offRect.setRelativePositionAxes(bothAxes);
@@ -37,13 +39,22 @@ public class Switch extends MenuComponent {
         label.setSize(new Vector2(0.5f, 1));
         label.alignment = Align.center;
         add(label);
+
+        value.addListener(new ValueChangeListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean oldValue, Boolean newValue) {
+                generateLayout();
+            }
+        });
+
+        generateLayout();
     }
 
     @Override
     public boolean handleControl(Controls control) {
         switch (control) {
             case select:
-                setValue(!value);
+                setValue(!value.getValue());
                 playSound();
                 return true;
             case left:
@@ -63,19 +74,17 @@ public class Switch extends MenuComponent {
     }
 
     public boolean getValue() {
-        return value;
+        return value.getValue();
     }
 
     public void setValue(boolean newValue) {
-        value = newValue;
-        listener.onValueChanged(newValue);
-        Vector2 onPosition = new Vector2(newValue ? 0.5f : 0, 0);
-        onRect.setPosition(onPosition);
-        label.setPosition(onPosition);
-        label.setText(newValue ? "ON" : "OFF");
+        value.setValue(newValue);
     }
 
-    public interface SwitchListener {
-        void onValueChanged(boolean newValue);
+    private void generateLayout() {
+        Vector2 onPosition = new Vector2(value.getValue() ? 0.5f : 0, 0);
+        onRect.setPosition(onPosition);
+        label.setPosition(onPosition);
+        label.setText(value.getValue() ? "ON" : "OFF");
     }
 }
