@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.audio.MusicManager;
 import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
+import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
@@ -45,6 +46,16 @@ public class HulletHellGame extends ScreenBasedGame {
         musicManager = new MusicManager(assetManager, notification);
         soundManager = new SoundManager(assetManager);
         container.add(notification);
+        settings.fullScreen.addListener(new ValueChangeListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean oldValue, Boolean newValue) {
+                com.badlogic.gdx.Graphics.DisplayMode dm = Gdx.graphics.getDisplayMode();
+                if (newValue)
+                    Gdx.graphics.setFullscreenMode(dm);
+                else
+                    Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
+            }
+        });
     }
 
     public static AssetManager getAssetManager() {
@@ -155,6 +166,9 @@ public class HulletHellGame extends ScreenBasedGame {
     public void render(Graphics g) {
         container.render(g);
         getScreensManager().render(this, g);
+        g.clearScaling();
+        g.setTranslation(0, 0);
+        g.drawString("FPS: " + Gdx.graphics.getFramesPerSecond(), 0, 0);
     }
 
     @Override

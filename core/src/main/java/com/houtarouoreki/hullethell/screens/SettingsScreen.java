@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.bindables.Bindable;
+import com.houtarouoreki.hullethell.configurations.Settings;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
@@ -24,6 +26,9 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
     public SettingsScreen() {
         List<SettingsComponent> settingsComponents = new ArrayList<SettingsComponent>();
+
+        Settings settings = HulletHellGame.getSettings();
+
         container.add(menu = new Menu());
         menu.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
         menu.setPadding(new Vector2(60, 60));
@@ -38,29 +43,38 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         SliderFloat musicVolume = new SliderFloat(.7f, 0,
                 1);
-        musicVolume.value.bindTo(HulletHellGame.getSettings().musicVolume);
+        musicVolume.value.bindTo(settings.musicVolume);
         settingsComponents.add(new SettingsComponent("Music volume",
                 musicVolume));
         musicVolume.textGenerator = volumeTextGenerator;
 
         SliderFloat sfxVolume = new SliderFloat(0.7f, 0,
                 1);
-        sfxVolume.value.bindTo(HulletHellGame.getSettings().sfxVolume);
+        sfxVolume.value.bindTo(settings.sfxVolume);
         settingsComponents.add(new SettingsComponent("SFX volume",
                 sfxVolume));
         sfxVolume.textGenerator = volumeTextGenerator;
 
-        Switch backgrounds = new Switch();
-        backgrounds.value.bindTo(HulletHellGame.getSettings().backgrounds);
-        settingsComponents.add(new SettingsComponent("Backgrounds",
-                backgrounds));
+        settingsComponents.add(generateSwitch("Fullscreen",
+                settings.fullScreen));
 
-        Switch debugging = new Switch();
-        debugging.value.bindTo(HulletHellGame.getSettings().debugging);
-        settingsComponents.add(new SettingsComponent("Debug rendering",
-                debugging));
+        settingsComponents.add(generateSwitch("Backgrounds",
+                settings.backgrounds));
+
+        settingsComponents.add(generateSwitch("Debug rendering",
+                settings.debugging));
+
+        settingsComponents.add(generateSwitch("Show FPS",
+                settings.renderFPS));
 
         generateLayout(settingsComponents);
+    }
+
+    private SettingsComponent generateSwitch(String label,
+                                             Bindable<Boolean> setting) {
+        Switch toggle = new Switch();
+        toggle.value.bindTo(setting);
+        return new SettingsComponent(label, toggle);
     }
 
     @Override

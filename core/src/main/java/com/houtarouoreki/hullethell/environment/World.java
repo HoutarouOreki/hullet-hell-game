@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.environment;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -94,8 +93,6 @@ public class World {
                 + scriptedStageManager.getSectionWaitingActions(), 20, 95);
         g.drawString("Current section actions: "
                 + scriptedStageManager.getSectionCurrentActions(), 20, 110);
-        g.drawString("FPS: "
-                + Gdx.graphics.getFramesPerSecond() + "        ", 20, 125);
     }
 
     private void renderProgressBar(Graphics g) {

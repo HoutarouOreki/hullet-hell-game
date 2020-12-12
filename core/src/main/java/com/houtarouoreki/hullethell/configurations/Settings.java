@@ -10,4 +10,6 @@ public class Settings {
             = new BindableNumber<Float>(0.7f, 0f, 1f);
     public Bindable<Boolean> backgrounds = new Bindable<Boolean>(true);
     public Bindable<Boolean> debugging = new Bindable<Boolean>(false);
+    public Bindable<Boolean> renderFPS = new Bindable<Boolean>(false);
+    public Bindable<Boolean> fullScreen = new Bindable<Boolean>(false);
 }
