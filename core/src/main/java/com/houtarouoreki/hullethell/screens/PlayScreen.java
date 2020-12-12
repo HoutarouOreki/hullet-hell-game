@@ -120,7 +120,7 @@ public class PlayScreen extends HulletHellScreen {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
             BackgroundStar star = new BackgroundStar((float) Math.random() * world.viewArea.x,
                     (float) Math.random() * world.viewArea.y, starSize);
-            star.setVelocity(new Vector2(-1, 0));
+            star.setVelocity(new Vector2((float)Math.random() * -0.2f - 0.2f, 0));
             stars.add(star);
         }
     }
@@ -135,7 +135,8 @@ public class PlayScreen extends HulletHellScreen {
     public void render(GameContainer gc, Graphics g) {
         // tutaj HUD
         viewport.apply(g);
-        drawBackground(g);
+        if (HulletHellGame.getSettings().backgrounds.getValue())
+            drawBackground(g);
         world.render(g, viewport);
     }
 
