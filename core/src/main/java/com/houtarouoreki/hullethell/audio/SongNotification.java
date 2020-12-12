@@ -26,7 +26,7 @@ public class SongNotification extends Drawable {
         this.assetManager = assetManager;
         setAnchor(new Vector2(1, 1));
         setOrigin(new Vector2(0, 1));
-        setSize(new Vector2(width, 80));
+        setSize(new Vector2(width, 50));
 
         add(sprite = new Sprite());
         sprite.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
