@@ -14,7 +14,7 @@ public class SliderFloat extends MenuComponent {
     private final Rectangle onRect;
     private final Label label;
     public BindableNumber<Float> value;
-    public float step = 0;
+    public float step;
     public SliderTextGenerator textGenerator;
     private float leftTimeOut = 0;
     private float rightTimeOut = 0;
