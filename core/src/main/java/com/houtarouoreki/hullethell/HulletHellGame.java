@@ -13,6 +13,7 @@ import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
 import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.*;
+import com.houtarouoreki.hullethell.graphics.Fonts;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
 import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
@@ -164,6 +165,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void render(Graphics g) {
+        if (Fonts.defaultFont == null)
+            Fonts.defaultFont = g.getFont();
         container.render(g);
         getScreensManager().render(this, g);
         g.clearScaling();
