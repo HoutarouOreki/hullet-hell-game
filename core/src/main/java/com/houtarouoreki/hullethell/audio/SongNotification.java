@@ -39,17 +39,17 @@ public class SongNotification extends Drawable {
         fontParameters.borderWidth = 0.3f;
         fontParameters.borderColor = Color.BLACK;
 
-        fontParameters.size = 16;
+        fontParameters.size = 18;
         titleLabel = new Label();
-        titleLabel.setPosition(new Vector2(55, 12));
+        titleLabel.setPosition(new Vector2(89, 24));
         titleLabel.setColor(new Color(0, 0, 143 / 255f, 1));
         titleLabel.font = Fonts.getFont("acme", fontParameters);
         add(titleLabel);
 
-        fontParameters.size = 14;
+        fontParameters.size = 16;
         fontParameters.borderWidth = 0.2f;
         artistLabel = new Label();
-        artistLabel.setPosition(new Vector2(55, 27));
+        artistLabel.setPosition(new Vector2(90, 42));
         artistLabel.setColor(new Color(15 / 255f, 15 / 255f,
                 96 / 255f, 1));
         artistLabel.font = Fonts.getFont("acme", fontParameters);
