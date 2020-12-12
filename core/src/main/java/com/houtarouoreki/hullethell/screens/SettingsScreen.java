@@ -55,6 +55,11 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         settingsComponents.add(new SettingsComponent("Backgrounds",
                 backgrounds));
 
+        Switch debugging = new Switch();
+        debugging.value.bindTo(HulletHellGame.getSettings().debugging);
+        settingsComponents.add(new SettingsComponent("Debug rendering",
+                debugging));
+
         generateLayout(settingsComponents);
     }
 

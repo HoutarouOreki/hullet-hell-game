@@ -43,7 +43,8 @@ public class World {
             body.render(g, viewport, viewArea);
         }
         renderCollisions(g, viewport);
-        //renderDebugInfo(g, viewport);
+        if (HulletHellGame.getSettings().debugging.getValue())
+            renderDebugInfo(g, viewport);
         renderProgressBar(g);
     }
 

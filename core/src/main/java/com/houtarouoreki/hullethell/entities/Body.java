@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
@@ -60,7 +61,8 @@ public class Body extends PrimitiveBody {
     @Override
     public void render(Graphics g, Viewport vp, Vector2 viewArea) {
         super.render(g, vp, viewArea);
-        //renderCollisionBody(g, vp, viewArea);
+        if (HulletHellGame.getSettings().debugging.getValue())
+            renderCollisionBody(g, vp, viewArea);
     }
 
     private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {
