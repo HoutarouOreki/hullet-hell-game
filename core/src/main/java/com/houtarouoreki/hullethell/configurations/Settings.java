@@ -9,4 +9,5 @@ public class Settings {
     public BindableNumber<Float> sfxVolume
             = new BindableNumber<Float>(0.7f, 0f, 1f);
     public Bindable<Boolean> backgrounds = new Bindable<Boolean>(true);
+    public Bindable<Boolean> debugging = new Bindable<Boolean>(false);
 }
