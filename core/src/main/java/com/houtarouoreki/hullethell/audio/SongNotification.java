@@ -2,11 +2,13 @@ package com.houtarouoreki.hullethell.audio;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Drawable;
+import com.houtarouoreki.hullethell.graphics.Fonts;
 import com.houtarouoreki.hullethell.graphics.Sprite;
 import com.houtarouoreki.hullethell.ui.Label;
 
@@ -31,15 +33,26 @@ public class SongNotification extends Drawable {
         add(sprite = new Sprite());
         sprite.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
 
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters
+                = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameters.shadowColor = Color.BLACK;
+        fontParameters.borderWidth = 0.3f;
+        fontParameters.borderColor = Color.BLACK;
+
+        fontParameters.size = 16;
         titleLabel = new Label();
-        titleLabel.setPosition(new Vector2(90, 24));
+        titleLabel.setPosition(new Vector2(55, 12));
         titleLabel.setColor(new Color(0, 0, 143 / 255f, 1));
+        titleLabel.font = Fonts.getFont("acme", fontParameters);
         add(titleLabel);
 
+        fontParameters.size = 14;
+        fontParameters.borderWidth = 0.2f;
         artistLabel = new Label();
-        artistLabel.setPosition(new Vector2(90, 42));
+        artistLabel.setPosition(new Vector2(55, 27));
         artistLabel.setColor(new Color(15 / 255f, 15 / 255f,
                 96 / 255f, 1));
+        artistLabel.font = Fonts.getFont("acme", fontParameters);
         add(artistLabel);
     }
 
@@ -55,12 +68,12 @@ public class SongNotification extends Drawable {
         }
 
         float left = 0;
-        float fadeLength = 1;
+        float fadeLength = 0.5f;
 
         float nonFadeLength = length - fadeLength;
         if (timeLeft > length - fadeLength) {
             float a = 1 - ((timeLeft - nonFadeLength) / fadeLength);
-            left += Interpolation.sineIn.apply(0, -width, a);
+            left += Interpolation.sineOut.apply(0, -width, a);
         } else if (timeLeft < fadeLength) {
             float a = 1 - (timeLeft / fadeLength);
             left += Interpolation.sineIn.apply(-width, 0, a);

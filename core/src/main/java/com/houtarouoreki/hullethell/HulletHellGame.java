@@ -42,11 +42,8 @@ public class HulletHellGame extends ScreenBasedGame {
         settings = new Settings();
         container = new WindowSizeContainer();
         assetManager = new AssetManager();
-        SongNotification notification = new SongNotification(assetManager);
         inputManager = new InputManager();
-        musicManager = new MusicManager(assetManager, notification);
         soundManager = new SoundManager(assetManager);
-        container.add(notification);
         settings.fullScreen.addListener(new ValueChangeListener<Boolean>() {
             @Override
             public void onValueChanged(Boolean oldValue, Boolean newValue) {
@@ -85,6 +82,10 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void initialise() {
+        SongNotification notification = new SongNotification(assetManager);
+        musicManager = new MusicManager(assetManager, notification);
+        container.add(notification);
+
         FileHandleResolver fileHandleResolver
                 = new FallbackFileHandleResolver(
                 new ClasspathFileHandleResolver(),
