@@ -54,6 +54,7 @@ public class HulletHellGame extends ScreenBasedGame {
                     Gdx.graphics.setFullscreenMode(dm);
                 else
                     Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
+                inputManager.clearPressedKeys();
             }
         });
     }

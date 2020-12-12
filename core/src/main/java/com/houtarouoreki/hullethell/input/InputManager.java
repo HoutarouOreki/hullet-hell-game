@@ -16,6 +16,10 @@ public class InputManager implements InputProcessor {
         pressedKeys = new HashSet<Integer>();
     }
 
+    public void clearPressedKeys() {
+        pressedKeys.clear();
+    }
+
     public void update(float delta) {
     }
 
