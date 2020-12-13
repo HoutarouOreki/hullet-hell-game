@@ -18,10 +18,12 @@ public class WorldRenderingManager {
     private final List<Ship> ships = new ArrayList<Ship>();
     private final List<Body> otherBodies = new ArrayList<Body>();
     private final List<CollisionIndicator> collisions = new ArrayList<CollisionIndicator>();
+    private final List<Explosion> explosions = new ArrayList<Explosion>();
 
     public void update(float delta) {
         updateList(delta, bulletIndicators);
         updateList(delta, collisions);
+        updateList(delta, explosions);
     }
 
     private <E extends Updatable & Finishable> void updateList(float delta, List<E> list) {
@@ -37,6 +39,8 @@ public class WorldRenderingManager {
     public void render(Graphics g) {
         for (Body otherBody : otherBodies)
             otherBody.render(g);
+        for (Explosion explosion : explosions)
+            explosion.render(g);
         for (Bullet bullet : bullets)
             bullet.render(g);
         for (Ship ship : ships)
@@ -59,10 +63,17 @@ public class WorldRenderingManager {
 
     public void unregisterBody(Body body) {
         if (body instanceof Ship)
-            ships.remove(body);
+            removeShip((Ship) body);
         else if (body instanceof Bullet)
             bullets.remove(body);
         otherBodies.remove(body);
+    }
+
+    private void removeShip(Ship ship) {
+        ships.remove(ship);
+        if (ship.getHealth() <= 0) {
+            explosions.add(new Explosion(ship.getPosition()));
+        }
     }
 
     public void addCollision(CollisionResult collisionResult) {

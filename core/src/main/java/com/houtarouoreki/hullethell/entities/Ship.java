@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
+import org.mini2Dx.core.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +36,20 @@ public class Ship extends Entity {
             float collisionCooldownAnimation = 0.2f;
             if (remainingCollisionCooldownAnimation <= 0) {
                 remainingCollisionCooldownAnimation = collisionCooldownAnimation;
-                sprite.setAlpha(1f - 0.7f * interpolation);
+                for (Sprite sprite : sprites) {
+                    sprite.setAlpha(1f - 0.7f * interpolation);
+                }
             } else if (remainingCollisionCooldownAnimation <= 0.5f * collisionCooldownAnimation) {
-                sprite.setAlpha(0.5f - 0.5f * interpolation);
+                for (Sprite sprite : sprites) {
+                    sprite.setAlpha(0.5f - 0.5f * interpolation);
+                }
             }
 
             if (remainingCollisionCooldown <= 0) {
                 setAcceptsCollisions(true);
-                sprite.setAlpha(1);
+                for (Sprite sprite : sprites) {
+                    sprite.setAlpha(1);
+                }
             }
         }
     }
@@ -53,7 +60,9 @@ public class Ship extends Entity {
         if (collisionCooldown > 0) {
             setAcceptsCollisions(false);
             remainingCollisionCooldown = collisionCooldown;
-            sprite.setAlpha(0.5f);
+            for (Sprite sprite : sprites) {
+                sprite.setAlpha(0.5f);
+            }
         }
     }
 

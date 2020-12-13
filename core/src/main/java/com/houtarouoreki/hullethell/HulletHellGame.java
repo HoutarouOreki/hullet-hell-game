@@ -113,6 +113,7 @@ public class HulletHellGame extends ScreenBasedGame {
         loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
 
         loadEffects(assetManager, Arrays.asList("blurredCircle"));
+        loadAnimatedEffect(assetManager, "Explosion", 6);
 
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
@@ -175,6 +176,12 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadEffects(AssetManager am, List<String> names) {
         for (String name : names) {
             am.load("effects/" + name + ".png", Texture.class);
+        }
+    }
+
+    private void loadAnimatedEffect(AssetManager am, String name, int frames) {
+        for (int i = 0; i < frames; i++) {
+            am.load("effects/" + name + "-" + i + ".png", Texture.class);
         }
     }
 

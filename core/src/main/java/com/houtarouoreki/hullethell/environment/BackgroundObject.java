@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
+import org.mini2Dx.core.graphics.Sprite;
 
 public abstract class BackgroundObject extends PrimitiveBody {
 
@@ -12,7 +13,8 @@ public abstract class BackgroundObject extends PrimitiveBody {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (sprite != null)
+        for (Sprite sprite : sprites) {
             sprite.rotate(2);
+        }
     }
 }

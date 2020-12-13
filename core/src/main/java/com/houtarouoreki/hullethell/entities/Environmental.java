@@ -5,6 +5,7 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
+import org.mini2Dx.core.graphics.Sprite;
 
 public class Environmental extends Entity {
     public Environmental(String configurationName) {
@@ -29,6 +30,8 @@ public class Environmental extends Entity {
 
     public void update(float delta) {
         super.update(delta);
-        sprite.rotate(2);
+        for (Sprite sprite : sprites) {
+            sprite.rotate(2);
+        }
     }
 }
