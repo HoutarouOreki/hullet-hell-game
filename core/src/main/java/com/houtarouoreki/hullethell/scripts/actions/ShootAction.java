@@ -17,7 +17,7 @@ public class ShootAction extends ScriptedAction {
         bullet.setVelocity(bulletInitialVelocity);
         bullet.setPosition(body.getPosition());
         bullet.setTeam(body.getTeam());
-        world.bodies.add(bullet);
+        world.addBody(bullet);
         bullet.setSection(section);
         ((Ship) body).registerBullet(bullet);
         HulletHellGame.getSoundManager().playSound("laser1", 0.3f);

@@ -2,18 +2,20 @@ package com.houtarouoreki.hullethell;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.environment.Updatable;
+import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.Renderable;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
-import org.mini2Dx.core.graphics.viewport.Viewport;
 
-public abstract class PrimitiveBody {
+public abstract class PrimitiveBody implements Renderable, Updatable {
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
+    private final Vector2 size = new Vector2();
     protected Sprite sprite;
     private String textureName;
     private double time = 0;
-    private Vector2 size = new Vector2();
 
     public PrimitiveBody() {
         sprite = new Sprite();
@@ -39,23 +41,25 @@ public abstract class PrimitiveBody {
         this.velocity.set(velocity);
     }
 
-    public void physics(float delta, Vector2 viewArea) {
+    public void update(float delta) {
         setPosition(getPosition().add(new Vector2(getVelocity()).scl(delta)));
         time += delta;
     }
 
-    public Vector2 getRenderPosition(Viewport vp, Vector2 viewArea) {
-        return RenderHelpers.translateToRenderPosition(position, vp, viewArea);
+    public Vector2 getRenderPosition() {
+        return RenderHelpers.translateToRenderPosition(position);
     }
 
-    public Vector2 getRenderSize(Viewport vp, Vector2 viewArea) {
-        return new Vector2(size).scl(vp.getWidth(), vp.getHeight()).scl(1 / viewArea.x, 1 / viewArea.y);
+    public Vector2 getRenderSize() {
+        return new Vector2(size).scl(RenderHelpers.getViewport())
+                .scl(1 / World.viewArea.x, 1 / World.viewArea.y);
     }
 
-    public void render(Graphics g, Viewport vp, Vector2 viewArea) {
+    public void render(Graphics g) {
         if (sprite.getTexture() != null) {
-            Vector2 renderSize = getRenderSize(vp, viewArea);
-            Vector2 topLeft = new Vector2(getRenderPosition(vp, viewArea)).add(new Vector2(renderSize).scl(-0.5f));
+            Vector2 renderSize = getRenderSize();
+            Vector2 topLeft = new Vector2(getRenderPosition())
+                    .add(new Vector2(renderSize).scl(-0.5f));
             sprite.setOriginCenter();
             sprite.setSize(renderSize.x, renderSize.y);
             sprite.setPosition(topLeft.x, topLeft.y);
@@ -74,10 +78,10 @@ public abstract class PrimitiveBody {
     }
 
     public Vector2 getSize() {
-        return size;
+        return size.cpy();
     }
 
     public void setSize(Vector2 size) {
-        this.size = size;
+        this.size.set(size);
     }
 }

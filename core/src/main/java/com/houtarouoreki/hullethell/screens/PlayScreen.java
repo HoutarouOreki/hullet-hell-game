@@ -25,12 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayScreen extends HulletHellScreen {
+    public static Viewport viewport;
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
     private StageConfiguration script;
     private Ship player;
     private World world;
-    private Viewport viewport;
     private int shotFrames;
+
+    public PlayScreen() {
+        viewport = new FitViewport(1280,
+                1280 * World.viewArea.y / World.viewArea.x);
+    }
 
     public void setStage(StageConfiguration script) {
         this.script = script;
@@ -40,13 +45,11 @@ public class PlayScreen extends HulletHellScreen {
     public void preTransitionIn(Transition transitionIn) {
         super.preTransitionIn(transitionIn);
         world = new World(script);
-        viewport = new FitViewport(1280,
-                1280 * world.viewArea.y / world.viewArea.x);
         player = new Ship("Ship 1");
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER);
-        player.setPosition(new Vector2(world.viewArea.x * 0.1f, world.viewArea.y * 0.5f));
-        world.bodies.add(player);
+        player.setPosition(new Vector2(World.viewArea.x * 0.1f, World.viewArea.y * 0.5f));
+        world.addBody(player);
 
         initialiseBackground();
     }
@@ -77,8 +80,8 @@ public class PlayScreen extends HulletHellScreen {
     private void clampPlayerPosition() {
         player.setPosition(
                 new Vector2(
-                        MathUtils.clamp(player.getPosition().x, 0, world.viewArea.x),
-                        MathUtils.clamp(player.getPosition().y, 0, world.viewArea.y)));
+                        MathUtils.clamp(player.getPosition().x, 0, World.viewArea.x),
+                        MathUtils.clamp(player.getPosition().y, 0, World.viewArea.y)));
     }
 
     private void updateSteering() {
@@ -96,7 +99,7 @@ public class PlayScreen extends HulletHellScreen {
             shotFrames++;
             if (shotFrames % 4 == 0) {
                 Bullet bullet = new Bullet("Player bullet 1");
-                world.bodies.add(bullet);
+                world.addBody(bullet);
                 bullet.setPosition(player.getPosition());
                 bullet.setTeam(CollisionTeam.PLAYER);
                 bullet.setVelocity(new Vector2(40, 0));
@@ -118,16 +121,16 @@ public class PlayScreen extends HulletHellScreen {
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {
             float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar((float) Math.random() * world.viewArea.x,
-                    (float) Math.random() * world.viewArea.y, starSize);
-            star.setVelocity(new Vector2((float)Math.random() * -0.2f - 0.2f, 0));
+            BackgroundStar star = new BackgroundStar((float) Math.random() * World.viewArea.x,
+                    (float) Math.random() * World.viewArea.y, starSize);
+            star.setVelocity(new Vector2((float) Math.random() * -0.2f - 0.2f, 0));
             stars.add(star);
         }
     }
 
     private void updateBackground(float delta) {
         for (BackgroundObject star : stars) {
-            star.physics(delta, world.viewArea);
+            star.update(delta);
         }
     }
 
@@ -137,12 +140,12 @@ public class PlayScreen extends HulletHellScreen {
         viewport.apply(g);
         if (HulletHellGame.getSettings().backgrounds.getValue())
             drawBackground(g);
-        world.render(g, viewport);
+        world.render(g);
     }
 
     private void drawBackground(Graphics g) {
         for (BackgroundObject star : stars) {
-            star.render(g, viewport, world.viewArea);
+            star.render(g);
         }
     }
 

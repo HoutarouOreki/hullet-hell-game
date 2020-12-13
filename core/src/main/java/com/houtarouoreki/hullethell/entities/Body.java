@@ -6,16 +6,17 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.environment.Updatable;
+import com.houtarouoreki.hullethell.graphics.Renderable;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Body extends PrimitiveBody {
+public class Body extends PrimitiveBody implements Renderable, Updatable {
     private final List<CollisionCircle> collisionBody;
     private final Vector2 acceleration = new Vector2();
     private int lastCollisionTick = -1;
@@ -43,8 +44,8 @@ public class Body extends PrimitiveBody {
     }
 
     @Override
-    public void physics(float delta, Vector2 viewArea) {
-        super.physics(delta, viewArea);
+    public void update(float delta) {
+        super.update(delta);
         setVelocity(getVelocity().add(new Vector2(getAcceleration()).scl(delta)));
     }
 
@@ -59,18 +60,18 @@ public class Body extends PrimitiveBody {
     }
 
     @Override
-    public void render(Graphics g, Viewport vp, Vector2 viewArea) {
-        super.render(g, vp, viewArea);
+    public void render(Graphics g) {
+        super.render(g);
         if (HulletHellGame.getSettings().debugging.getValue())
-            renderCollisionBody(g, vp, viewArea);
+            renderCollisionBody(g);
     }
 
-    private void renderCollisionBody(Graphics g, Viewport vp, Vector2 viewArea) {
+    private void renderCollisionBody(Graphics g) {
         g.setColor(Color.YELLOW);
         for (CollisionCircle circle : getCollisionBody()) {
             RenderHelpers.drawWorldCircle(
                     new Vector2(getPosition()).add(new Vector2(circle.getX(), circle.getY())),
-                    circle.getRadius(), g, vp, viewArea);
+                    circle.getRadius(), g);
         }
     }
 

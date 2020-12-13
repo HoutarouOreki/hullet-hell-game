@@ -25,9 +25,8 @@ public class Ship extends Entity {
         setCollisionBody(c.getCollisionCircles());
     }
 
-    @Override
-    public void physics(float delta, Vector2 viewArea) {
-        super.physics(delta, viewArea);
+    public void update(float delta) {
+        super.update(delta);
         if (remainingCollisionCooldown > 0) {
             remainingCollisionCooldown -= delta;
             remainingCollisionCooldownAnimation -= delta;

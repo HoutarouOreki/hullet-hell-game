@@ -37,7 +37,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
             return true;
         }
         if (currentActions.size() == 0 && waitingActions.size() == 0) {
-            world.bodies.remove(controlledBody);
+            world.removeBody(controlledBody);
             return true;
         }
         return false;

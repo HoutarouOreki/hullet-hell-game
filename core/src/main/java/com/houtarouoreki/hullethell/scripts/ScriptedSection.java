@@ -54,7 +54,7 @@ public class ScriptedSection {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
             body.initialise(world, this);
-            world.bodies.add(body.controlledBody);
+            world.addBody(body.controlledBody);
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();
         while (i.hasNext()) {

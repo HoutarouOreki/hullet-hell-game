@@ -112,6 +112,8 @@ public class HulletHellGame extends ScreenBasedGame {
         loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
         loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
 
+        loadEffects(assetManager, Arrays.asList("blurredCircle"));
+
         loadStages(assetManager, Arrays.asList("Stage 1"));
 
         Gdx.input.setInputProcessor(inputManager);
@@ -167,6 +169,12 @@ public class HulletHellGame extends ScreenBasedGame {
         for (String name : names) {
             am.load(folder + "/" + name + ".png", Texture.class);
             am.load(folder + "/" + name + ".cfg", BodyConfiguration.class);
+        }
+    }
+
+    private void loadEffects(AssetManager am, List<String> names) {
+        for (String name : names) {
+            am.load("effects/" + name + ".png", Texture.class);
         }
     }
 

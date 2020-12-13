@@ -27,9 +27,8 @@ public class Environmental extends Entity {
         }
     }
 
-    @Override
-    public void physics(float delta, Vector2 viewArea) {
-        super.physics(delta, viewArea);
+    public void update(float delta) {
+        super.update(delta);
         sprite.rotate(2);
     }
 }

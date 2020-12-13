@@ -2,8 +2,8 @@ package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public class BackgroundStar extends BackgroundObject {
     public BackgroundStar(float initialX, float initialY, float size) {
@@ -16,19 +16,20 @@ public class BackgroundStar extends BackgroundObject {
     }
 
     @Override
-    public void render(Graphics g, Viewport vp, Vector2 viewArea) {
+    public void render(Graphics g) {
         g.setColor(Color.GRAY);
-        g.fillRect(getPosition().x / viewArea.x * vp.getWidth(),
-                getPosition().y / viewArea.y * vp.getHeight(),
-                getSize().x / viewArea.x * vp.getWidth(),
-                getSize().y / viewArea.y * vp.getHeight());
+        Vector2 viewArea = World.viewArea;
+        Vector2 vp = RenderHelpers.getViewport();
+        g.fillRect(getPosition().x / viewArea.x * vp.x,
+                getPosition().y / viewArea.y * vp.y,
+                getSize().x / viewArea.x * vp.x,
+                getSize().y / viewArea.y * vp.y);
     }
 
-    @Override
-    public void physics(float delta, Vector2 viewArea) {
-        super.physics(delta, viewArea);
+    public void update(float delta) {
+        super.update(delta);
         if (getPosition().x + getSize().x < 0) {
-            setPosition(new Vector2(viewArea.x, getPosition().y));
+            setPosition(new Vector2(World.viewArea.x, getPosition().y));
         }
     }
 }

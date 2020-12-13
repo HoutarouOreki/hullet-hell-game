@@ -9,23 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionManager {
-    public final List<CollisionResult> collisions;
+    public final List<CollisionResult> currentStepCollisions;
     private final World world;
 
     public CollisionManager(World world) {
         this.world = world;
-        collisions = new ArrayList<CollisionResult>();
+        currentStepCollisions = new ArrayList<CollisionResult>();
     }
 
     public void RunCollisions() {
-        for (int i = 0; i < world.bodies.size() - 1; i++) {
-            Body a = world.bodies.get(i);
+        currentStepCollisions.clear();
+        for (int i = 0; i < world.getBodies().size() - 1; i++) {
+            Body a = world.getBodies().get(i);
             if (!a.isAcceptingCollisions() || a.getLastCollisionTick() == world.getTicksPassed()) {
                 continue;
             }
 
-            for (int j = i + 1; j < world.bodies.size(); j++) {
-                Body b = world.bodies.get(j);
+            for (int j = i + 1; j < world.getBodies().size(); j++) {
+                Body b = world.getBodies().get(j);
                 if (!a.isAcceptingCollisions() || !b.isAcceptingCollisions()
                         || a.getTeam() == b.getTeam() || a.getLastCollisionTick() == world.getTicksPassed()
                 || b.getLastCollisionTick() == world.getTicksPassed()) {
@@ -37,7 +38,7 @@ public class CollisionManager {
                 if (centerDistance <= a.getFarthestPointDistance() + b.getFarthestPointDistance()) {
                     CollisionResult collision = isCollision(a, b);
                     if (collision.isCollision) {
-                        collisions.add(collision);
+                        currentStepCollisions.add(collision);
                         a.onCollision(b, collision);
                         b.onCollision(a, collision);
                     }

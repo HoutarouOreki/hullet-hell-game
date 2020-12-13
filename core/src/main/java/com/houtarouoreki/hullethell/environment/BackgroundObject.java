@@ -10,8 +10,8 @@ public abstract class BackgroundObject extends PrimitiveBody {
     }
 
     @Override
-    public void physics(float delta, Vector2 viewArea) {
-        super.physics(delta, viewArea);
+    public void update(float delta) {
+        super.update(delta);
         if (sprite != null)
             sprite.rotate(2);
     }

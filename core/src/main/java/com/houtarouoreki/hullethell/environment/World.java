@@ -1,50 +1,62 @@
 package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionManager;
-import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
-import com.houtarouoreki.hullethell.entities.ai.CpuPlayer;
-import com.houtarouoreki.hullethell.helpers.RenderHelpers;
+import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 public class World {
-    public final Vector2 viewArea = new Vector2(36, 20);
-    public final List<Body> bodies;
-    public final List<CpuPlayer> cpus;
-    public final float time_step_duration = 0.01f;
+    public final static Vector2 viewArea = new Vector2(36, 20);
+    public final static float time_step_duration = 0.01f;
+    private final List<Body> bodies;
     private final CollisionManager collisionManager;
     private final ScriptedStageManager scriptedStageManager;
-    private final float collisionEffectDuration = 0.25f;
+    private final WorldRenderingManager renderingManager;
     private int ticksPassed;
     private float bufferedTime;
 
     public World(StageConfiguration script) {
         bodies = new ArrayList<Body>();
-        cpus = new ArrayList<CpuPlayer>();
         collisionManager = new CollisionManager(this);
         scriptedStageManager = new ScriptedStageManager(this, script);
+        renderingManager = new WorldRenderingManager();
     }
 
-    public void render(Graphics g, Viewport viewport) {
-        for (Body body : bodies) {
-            body.render(g, viewport, viewArea);
-        }
-        renderCollisions(g, viewport);
+    public List<Body> getBodies() {
+        return Collections.unmodifiableList(bodies);
+    }
+
+    public void render(Graphics g) {
+        renderingManager.render(g);
         if (HulletHellGame.getSettings().debugging.getValue())
-            renderDebugInfo(g, viewport);
+            renderDebugInfo(g);
         renderProgressBar(g);
+    }
+
+    public void addBody(Body body) {
+        bodies.add(body);
+        renderingManager.registerBody(body);
+    }
+
+    public void removeBody(Body body) {
+        bodies.remove(body);
+        unregisterBody(body);
+    }
+
+    private void unregisterBody(Body body) {
+        body.setRemoved();
+        renderingManager.unregisterBody(body);
     }
 
     public float getTimePassed() {
@@ -55,30 +67,7 @@ public class World {
         return ticksPassed;
     }
 
-    private void renderCollisions(Graphics g, Viewport viewport) {
-        Iterator<CollisionResult> i = collisionManager.collisions.iterator();
-        while (i.hasNext()) {
-            CollisionResult collision = i.next();
-            if (collision.time + collisionEffectDuration > getTimePassed()) {
-                renderCollision(collision, g, viewport);
-            } else {
-                i.remove();
-            }
-        }
-    }
-
-    private void renderCollision(CollisionResult collision, Graphics g, Viewport vp) {
-        //Gdx.gl.glEnable(GL20.GL_BLEND);
-        g.setColor(new Color(1, 1, 1,
-                Interpolation.sineIn.apply(1, -0.2f,
-                        getCollisionCompletionPercentage(collision))));
-        RenderHelpers.fillWorldCircle(collision.position,
-                0.5f * Interpolation.pow3Out
-                        .apply(getCollisionCompletionPercentage(collision)),
-                g, vp, viewArea);
-    }
-
-    private void renderDebugInfo(Graphics g, Viewport vp) {
+    private void renderDebugInfo(Graphics g) {
         g.drawString("Bodies: "
                 + bodies.size(), 20, 20);
         g.drawString("Current section: "
@@ -100,18 +89,14 @@ public class World {
         g.fillRect(0, 700, scriptedStageManager.getProgression() * 1280, 20);
     }
 
-    private float getCollisionCompletionPercentage(CollisionResult c) {
-        return (getTimePassed() - c.time) / collisionEffectDuration;
-    }
-
     public void update(float delta) {
         bufferedTime += delta;
         while (bufferedTime >= time_step_duration) {
-            physics(viewArea);
+            physics();
             bufferedTime -= time_step_duration;
             ticksPassed++;
-            updateAI(delta);
             scriptedStageManager.update(delta);
+            renderingManager.update(delta);
         }
     }
 
@@ -119,19 +104,7 @@ public class World {
         return scriptedStageManager.isFinished();
     }
 
-    private void updateAI(float delta) {
-        Iterator<CpuPlayer> i = cpus.iterator();
-        while (i.hasNext()) {
-            CpuPlayer cpu = i.next();
-            if (!cpu.entity.isAlive()) {
-                i.remove();
-            } else {
-                cpu.update(delta);
-            }
-        }
-    }
-
-    protected void physics(Vector2 viewArea) {
+    protected void physics() {
         Iterator<Body> i = bodies.iterator();
         while (i.hasNext()) {
             Body body = i.next();
@@ -143,17 +116,18 @@ public class World {
                         body.getPosition().x > viewArea.x + despawnMarginX ||
                         body.getPosition().y > viewArea.y + despawnMarginY) {
                     i.remove();
-                    body.setRemoved();
+                    unregisterBody(body);
                     continue;
                 }
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();
-                body.setRemoved();
+                unregisterBody(body);
                 continue;
             }
-            body.physics(time_step_duration, viewArea);
+            body.update(time_step_duration);
         }
         collisionManager.RunCollisions();
+        renderingManager.addCollisions(collisionManager.currentStepCollisions);
     }
 }

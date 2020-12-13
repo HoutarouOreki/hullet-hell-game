@@ -24,7 +24,7 @@ public class ShootMultipleAction extends ScriptedAction {
             bullet.setVelocity(initialVelocity);
             bullet.setPosition(body.getPosition());
             bullet.setTeam(body.getTeam());
-            world.bodies.add(bullet);
+            world.addBody(bullet);
             bullet.setSection(section);
             ((Ship) body).registerBullet(bullet);
         }
