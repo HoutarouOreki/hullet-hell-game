@@ -55,6 +55,7 @@ public class PlayScreen extends HulletHellScreen {
         player.setTeam(CollisionTeam.PLAYER);
         player.setPosition(new Vector2(World.viewArea.x * 0.1f, World.viewArea.y * 0.5f));
         world.addBody(player);
+        dialogueBox.reset();
 
         initialiseBackground();
     }

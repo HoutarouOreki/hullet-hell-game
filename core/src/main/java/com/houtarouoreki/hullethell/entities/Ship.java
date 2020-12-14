@@ -86,10 +86,10 @@ public class Ship extends Entity {
     @Override
     public void applyDamage(float damage) {
         super.applyDamage(damage);
-        if (!isAlive()) {
-            for (Bullet bullet : registeredBullets) {
-                bullet.applyDamage(bullet.getHealth());
-            }
-        }
+//        if (!isAlive()) {
+//            for (Bullet bullet : registeredBullets) {
+//                bullet.applyDamage(bullet.getHealth());
+//            }
+//        }
     }
 }

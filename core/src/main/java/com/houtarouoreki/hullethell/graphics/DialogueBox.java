@@ -13,6 +13,7 @@ import java.util.EnumSet;
 
 public class DialogueBox extends Drawable implements ControlProcessor {
     private final Label label;
+    private final float size;
     String fullText = "";
     private float timePassed;
     private float maxDuration;
@@ -22,7 +23,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     private float liveTime;
 
     public DialogueBox() {
-        float size = 300;
+        size = 300;
 
         setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
         setOrigin(new Vector2(0.5f, 1));
@@ -124,5 +125,13 @@ public class DialogueBox extends Drawable implements ControlProcessor {
             disappearTime = liveTime;
         if (listener != null)
             listener.onAction();
+    }
+
+    public void reset() {
+        appearTime = 0;
+        disappearTime = 0;
+        fullText = "";
+        liveTime = 0;
+        setPosition(new Vector2(0, size + 60));
     }
 }
