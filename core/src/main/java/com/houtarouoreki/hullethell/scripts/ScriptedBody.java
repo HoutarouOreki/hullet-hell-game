@@ -4,6 +4,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.*;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.DialogueBox;
 
 import java.util.*;
 
@@ -18,12 +19,13 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     private World world;
     private ScriptedSection section;
 
-    public ScriptedBody(ScriptedBodyConfiguration conf) {
+    public ScriptedBody(ScriptedBodyConfiguration conf, DialogueBox dialogueBox) {
         type = conf.type;
         name = conf.name;
         configName = conf.configName;
         for (ScriptedActionConfiguration actionConf : conf.actions) {
-            ScriptedAction action = ScriptedAction.createScriptedAction(actionConf, this);
+            ScriptedAction action = ScriptedAction
+                    .createScriptedAction(actionConf, this, dialogueBox);
             waitingActions.add(action);
             allSubbodiesAmount += action.bodiesAmount();
         }

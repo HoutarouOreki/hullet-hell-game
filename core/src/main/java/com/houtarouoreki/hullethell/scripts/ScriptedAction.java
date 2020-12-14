@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
 
 import java.util.List;
@@ -12,14 +13,16 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public List<String> arguments;
     public ScriptedBody scriptedBody;
     public Body body;
+    public double scriptedTime;
     protected World world;
     protected ScriptedSection section;
-    private double scriptedTime;
     private double totalTime;
     private int ticks;
     private boolean finished;
 
-    public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf, ScriptedBody body) {
+    public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf,
+                                                      ScriptedBody body,
+                                                      DialogueBox dialogueBox) {
         ScriptedAction a;
         if (conf.type.equals("moveTo")) {
             a = new MoveToAction();
@@ -33,6 +36,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             a = new ShootCircleAction();
         } else if (conf.type.equals("playSong")) {
             a = new PlaySongAction();
+        } else if (conf.type.equals("dialogue")) {
+            a = new DialogueAction(dialogueBox);
         } else {
             throw new Error("Could not find action of type \"" + conf.type + "\"");
         }

@@ -10,6 +10,8 @@ import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.PaddingMargin;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -27,6 +29,7 @@ import java.util.List;
 public class PlayScreen extends HulletHellScreen {
     public static Viewport viewport;
     private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
+    private final DialogueBox dialogueBox;
     private StageConfiguration script;
     private Ship player;
     private World world;
@@ -35,6 +38,8 @@ public class PlayScreen extends HulletHellScreen {
     public PlayScreen() {
         viewport = new FitViewport(1280,
                 1280 * World.viewArea.y / World.viewArea.x);
+        container.setPadding(new PaddingMargin(50, 50));
+        container.add(dialogueBox = new DialogueBox());
     }
 
     public void setStage(StageConfiguration script) {
@@ -44,7 +49,7 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void preTransitionIn(Transition transitionIn) {
         super.preTransitionIn(transitionIn);
-        world = new World(script);
+        world = new World(script, dialogueBox);
         player = new Ship("Ship 1");
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER);
@@ -68,6 +73,7 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager,
                        float delta) {
+        super.update(gc, screenManager, delta);
         updateSteering();
 
         updateBackground(delta);
@@ -137,11 +143,12 @@ public class PlayScreen extends HulletHellScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        // tutaj HUD
         viewport.apply(g);
         if (HulletHellGame.getSettings().backgrounds.getValue())
             drawBackground(g);
         world.render(g);
+        viewport.unapply(g);
+        super.render(gc, g);
     }
 
     private void drawBackground(Graphics g) {

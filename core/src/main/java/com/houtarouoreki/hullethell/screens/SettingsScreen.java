@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.bindables.Bindable;
 import com.houtarouoreki.hullethell.configurations.SerializableSettings;
 import com.houtarouoreki.hullethell.configurations.Settings;
 import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.PaddingMargin;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
@@ -34,7 +35,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
 
         container.add(menu = new Menu());
         menu.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
-        menu.setPadding(new Vector2(60, 60));
+        menu.setPadding(new PaddingMargin(60, 60));
 
         SliderFloat.SliderTextGenerator
                 volumeTextGenerator = new SliderFloat.SliderTextGenerator() {
@@ -150,7 +151,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
             background.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
             background.setColor(Color.valueOf("111166"));
             background.setVisibility(false);
-            background.setMargin(new Vector2(-8, -8));
+            background.setMargin(new PaddingMargin(-8, -8));
             add(background);
 
             label = new Label();
@@ -206,7 +207,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         }
 
         private void generateLayout() {
-            setPadding(new Vector2(8, 8));
+            setPadding(new PaddingMargin(8, 8));
 
             label.setRelativePositionAxes(EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL));
             label.setPosition(new Vector2(0, 0));

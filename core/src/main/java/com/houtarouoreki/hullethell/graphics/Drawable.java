@@ -13,8 +13,8 @@ public abstract class Drawable {
     public final List<Drawable> children = new ArrayList<Drawable>();
     private final Vector2 position = new Vector2(0, 0);
     private final Vector2 size = new Vector2(1, 1);
-    private final Vector2 padding = new Vector2(0, 0);
-    private final Vector2 margin = new Vector2(0, 0);
+    private final PaddingMargin padding = new PaddingMargin();
+    private final PaddingMargin margin = new PaddingMargin();
     private final Vector2 anchor = new Vector2(0, 0);
     private final Vector2 origin = new Vector2(0, 0);
     private EnumSet<Axes> relativePositionAxes = EnumSet.noneOf(Axes.class);
@@ -43,13 +43,13 @@ public abstract class Drawable {
     public Vector2 getContentRenderSize() {
         Vector2 contentSize = getRenderSize().cpy();
         if (relativePaddingAxes.contains(Axes.HORIZONTAL))
-            contentSize.x -= 2 * padding.x * getSize().x;
+            contentSize.x -= padding.getTotalHorizontal() * getRenderSize().x;
         else
-            contentSize.x -= 2 * padding.x;
+            contentSize.x -= padding.getTotalHorizontal();
         if (relativePaddingAxes.contains(Axes.VERTICAL))
-            contentSize.y -= 2 * padding.y * getSize().y;
+            contentSize.y -= padding.getTotalVertical() * getRenderSize().y;
         else
-            contentSize.y -= 2 * padding.y;
+            contentSize.y -= padding.getTotalVertical();
         return contentSize;
     }
 
@@ -59,7 +59,7 @@ public abstract class Drawable {
             renderSize.x *= parent.getContentRenderSize().x;
         if (relativeSizeAxes.contains(Axes.VERTICAL))
             renderSize.y *= parent.getContentRenderSize().y;
-        renderSize.sub(getMargin().scl(2));
+        renderSize.sub(getMargin().getTotal());
         return renderSize;
     }
 
@@ -69,11 +69,11 @@ public abstract class Drawable {
             renderPos.x *= parent.getContentRenderSize().x;
         if (relativeSizeAxes.contains(Axes.VERTICAL))
             renderPos.y *= parent.getContentRenderSize().y;
-        renderPos.add(getMargin());
+        renderPos.add(getMargin().getLeftTop());
         if (parent == null)
             return renderPos;
         return renderPos.add(parent.getRenderPosition())
-                .add(parent.getPadding())
+                .add(parent.getPadding().getLeftTop())
                 .add(parent.getContentRenderSize().scl(getAnchor()))
                 .sub(getRenderSize().scl(getOrigin()));
     }
@@ -141,19 +141,19 @@ public abstract class Drawable {
         this.color = color;
     }
 
-    public Vector2 getPadding() {
+    public PaddingMargin getPadding() {
         return padding.cpy();
     }
 
-    public void setPadding(Vector2 padding) {
+    public void setPadding(PaddingMargin padding) {
         this.padding.set(padding);
     }
 
-    public Vector2 getMargin() {
+    public PaddingMargin getMargin() {
         return margin.cpy();
     }
 
-    public void setMargin(Vector2 margin) {
+    public void setMargin(PaddingMargin margin) {
         this.margin.set(margin);
     }
 

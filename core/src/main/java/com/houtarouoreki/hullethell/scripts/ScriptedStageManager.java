@@ -1,9 +1,9 @@
 package com.houtarouoreki.hullethell.scripts;
 
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.DialogueBox;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,9 +13,13 @@ public class ScriptedStageManager {
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 
-    public ScriptedStageManager(World world, StageConfiguration script) {
+    public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) {
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
-            ScriptedSection section = new ScriptedSection(world, sectionConfiguration);
+            ScriptedSection section;
+            if (sectionConfiguration.isDialogueSection)
+                section = new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);
+            else
+                section = new ScriptedSection(world, sectionConfiguration, dialogueBox);
             sections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
         }

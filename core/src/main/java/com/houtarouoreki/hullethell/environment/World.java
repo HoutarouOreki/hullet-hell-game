@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.collisions.CollisionManager;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
+import com.houtarouoreki.hullethell.graphics.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
 import org.mini2Dx.core.graphics.Graphics;
@@ -28,11 +29,11 @@ public class World {
     private int ticksPassed;
     private float bufferedTime;
 
-    public World(StageConfiguration script) {
+    public World(StageConfiguration script, DialogueBox dialogueBox) {
         bodies = new ArrayList<Body>();
         collisionManager = new CollisionManager(this);
         collisionSoundManager = new CollisionSoundManager(collisionManager);
-        scriptedStageManager = new ScriptedStageManager(this, script);
+        scriptedStageManager = new ScriptedStageManager(this, script, dialogueBox);
         renderingManager = new WorldRenderingManager();
     }
 
