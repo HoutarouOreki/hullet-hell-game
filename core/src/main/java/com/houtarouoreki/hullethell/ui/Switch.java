@@ -56,10 +56,14 @@ public class Switch extends MenuComponent {
                 playSound();
                 return true;
             case left:
+                if (!getValue())
+                    return false;
                 setValue(false);
                 playSound();
                 return true;
             case right:
+                if (getValue())
+                    return false;
                 setValue(true);
                 playSound();
                 return true;
@@ -68,7 +72,7 @@ public class Switch extends MenuComponent {
     }
 
     private void playSound() {
-        HulletHellGame.getSoundManager().playSound("button1");
+        HulletHellGame.getSoundManager().playSound("button1", 0.5f);
     }
 
     public boolean getValue() {

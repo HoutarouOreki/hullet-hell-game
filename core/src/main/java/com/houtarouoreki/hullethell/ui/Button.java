@@ -42,7 +42,7 @@ public class Button extends MenuComponent {
     }
 
     private void playSound() {
-        HulletHellGame.getSoundManager().playSound("button1");
+        HulletHellGame.getSoundManager().playSound("button1", 0.5f);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class Menu extends Drawable implements ControlProcessor {
     }
 
     private void playSound() {
-        HulletHellGame.getSoundManager().playSound("button1");
+        HulletHellGame.getSoundManager().playSound("button1", 0.5f);
     }
 
     private MenuComponent getNeighbor(MenuComponent focusedComponent, Controls control) {
