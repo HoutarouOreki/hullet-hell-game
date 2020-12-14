@@ -57,8 +57,8 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
-        //world.stop();
-        //HulletHellGame.getMusicManager().fadeOut(2);
+        world.stop();
+        HulletHellGame.getMusicManager().fadeOut(1);
     }
 
     @Override
