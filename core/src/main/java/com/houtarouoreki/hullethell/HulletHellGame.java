@@ -19,9 +19,11 @@ import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
 import com.houtarouoreki.hullethell.ui.Label;
 import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.FallbackFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.playerdata.PlayerDataException;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.ui.UiThemeLoader;
@@ -75,6 +77,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
     @Override
     public void initialise() {
+        loadSettings();
+
         SongNotification notification = new SongNotification(assetManager);
         musicManager = new MusicManager(assetManager, notification);
         container.add(notification);
@@ -128,6 +132,17 @@ public class HulletHellGame extends ScreenBasedGame {
         this.addScreen(new LoadingScreen());
 
         addSettingsListeners();
+    }
+
+    private void loadSettings() {
+        try {
+            if (!Mdx.playerData.hasFile("playerData.json"))
+                Mdx.playerData.writeJson(new SerializableSettings(), "playerData.json");
+            settings.setSettings(Mdx.playerData
+                    .readJson(SerializableSettings.class, "playerData.json"));
+        } catch (PlayerDataException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addSettingsListeners() {

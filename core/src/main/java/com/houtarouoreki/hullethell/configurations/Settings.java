@@ -12,4 +12,13 @@ public class Settings {
     public Bindable<Boolean> debugging = new Bindable<Boolean>(false);
     public Bindable<Boolean> renderFPS = new Bindable<Boolean>(false);
     public Bindable<Boolean> fullScreen = new Bindable<Boolean>(true);
+
+    public void setSettings(SerializableSettings settings) {
+        musicVolume.setValue(settings.musicVolume);
+        sfxVolume.setValue(settings.sfxVolume);
+        backgrounds.setValue(settings.backgrounds);
+        debugging.setValue(settings.debugging);
+        renderFPS.setValue(settings.renderFPS);
+        fullScreen.setValue(settings.fullScreen);
+    }
 }

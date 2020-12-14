@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.Bindable;
+import com.houtarouoreki.hullethell.configurations.SerializableSettings;
 import com.houtarouoreki.hullethell.configurations.Settings;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
@@ -12,7 +13,9 @@ import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
 import com.houtarouoreki.hullethell.ui.*;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
+import org.mini2Dx.core.playerdata.PlayerDataException;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
@@ -93,6 +96,13 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         super.preTransitionOut(transitionOut);
         HulletHellGame.getInputManager().managedProcessors.remove(menu);
         HulletHellGame.getInputManager().managedProcessors.remove(this);
+        try {
+            Mdx.playerData.writeJson(
+                    new SerializableSettings(HulletHellGame.getSettings()),
+                    "playerData.json");
+        } catch (PlayerDataException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
