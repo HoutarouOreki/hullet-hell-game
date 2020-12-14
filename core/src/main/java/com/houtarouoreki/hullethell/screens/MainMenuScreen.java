@@ -88,6 +88,7 @@ public class MainMenuScreen extends HulletHellScreen {
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
         HulletHellGame.getInputManager().managedProcessors.remove(menu);
+        HulletHellGame.getMusicManager().fadeOut(0.5f);
     }
 
     private void onPlayButton() {
