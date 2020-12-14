@@ -24,11 +24,32 @@ public class SoundManager {
     }
 
     public long playSound(String soundName) {
-        return assetManager.get("sounds/" + soundName + ".mp3", Sound.class).play(getVolume());
+        return assetManager.get(getSoundPath(soundName), Sound.class).play(getVolume());
     }
 
     public long playSound(String soundName, float volume) {
-        return assetManager.get("sounds/" + soundName + ".mp3", Sound.class)
+        return assetManager.get(getSoundPath(soundName), Sound.class)
                 .play(getVolume() * volume);
+    }
+
+    public void setLooping(String soundName, long id, boolean looping) {
+        assetManager.get(getSoundPath(soundName), Sound.class).setLooping(id, looping);
+    }
+
+    public void setVolume(String soundName, long id, float volume) {
+        assetManager.get(getSoundPath(soundName), Sound.class)
+                .setVolume(id, volume * getVolume());
+    }
+
+    public void stopSound(String soundName) {
+        assetManager.get(getSoundPath(soundName), Sound.class).stop();
+    }
+
+    public void stopSound(String soundName, long id) {
+        assetManager.get(getSoundPath(soundName), Sound.class).stop(id);
+    }
+
+    private String getSoundPath(String soundName) {
+        return "sounds/" + soundName + ".mp3";
     }
 }

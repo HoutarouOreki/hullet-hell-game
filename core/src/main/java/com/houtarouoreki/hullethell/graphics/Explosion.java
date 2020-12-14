@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.graphics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.environment.Finishable;
@@ -20,6 +21,7 @@ public class Explosion extends PrimitiveBody implements Finishable {
         });
         setPosition(position);
         setSize(new Vector2(5, 5));
+        HulletHellGame.getSoundManager().playSound("kick-gritty");
     }
 
     public boolean isDone() {

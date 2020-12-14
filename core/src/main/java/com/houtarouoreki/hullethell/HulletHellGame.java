@@ -101,7 +101,10 @@ public class HulletHellGame extends ScreenBasedGame {
                 "button1",
                 "button2",
                 "noteLow",
-                "noteHigh"
+                "noteHigh",
+                "kick-gritty",
+                "hihat-808",
+                "collision-loop"
         ));
         loadMusicAndConfigs(assetManager, Arrays.asList(
                 "To Eris - Social Blast",

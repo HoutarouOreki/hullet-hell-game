@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.environment;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.audio.CollisionSoundManager;
 import com.houtarouoreki.hullethell.collisions.CollisionManager;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
@@ -21,6 +22,7 @@ public class World {
     public final static float time_step_duration = 0.01f;
     private final List<Body> bodies;
     private final CollisionManager collisionManager;
+    private final CollisionSoundManager collisionSoundManager;
     private final ScriptedStageManager scriptedStageManager;
     private final WorldRenderingManager renderingManager;
     private int ticksPassed;
@@ -29,6 +31,7 @@ public class World {
     public World(StageConfiguration script) {
         bodies = new ArrayList<Body>();
         collisionManager = new CollisionManager(this);
+        collisionSoundManager = new CollisionSoundManager(collisionManager);
         scriptedStageManager = new ScriptedStageManager(this, script);
         renderingManager = new WorldRenderingManager();
     }
@@ -93,6 +96,7 @@ public class World {
         bufferedTime += delta;
         while (bufferedTime >= time_step_duration) {
             physics();
+            collisionSoundManager.update(delta);
             bufferedTime -= time_step_duration;
             ticksPassed++;
             scriptedStageManager.update(delta);
@@ -129,5 +133,9 @@ public class World {
         }
         collisionManager.RunCollisions();
         renderingManager.addCollisions(collisionManager.currentStepCollisions);
+    }
+
+    public void stop() {
+        collisionSoundManager.stop();
     }
 }
