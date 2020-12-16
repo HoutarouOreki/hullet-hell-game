@@ -55,9 +55,7 @@ public class LevelSelectScreen extends HulletHellScreen {
         List<Button> stageButtons = new ArrayList<Button>();
         Array<StageConfiguration> h = new Array<StageConfiguration>();
         HulletHellGame.getAssetManager().getAll(StageConfiguration.class, h);
-        System.out.println("HHHHHHHHH");
         for (final StageConfiguration stage : h) {
-            System.out.println("stage.name = " + stage.name);
             Button button = new Button();
             button.setText(stage.name);
             button.addListener(createButtonSelectListener(stage));
