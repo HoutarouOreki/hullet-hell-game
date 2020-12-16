@@ -2,7 +2,13 @@ package com.houtarouoreki.hullethell.numbers;
 
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
 
+import java.util.Collection;
+
 public class LoopInt extends BindableNumber<Integer> {
+    public <E> LoopInt(Collection<E> collection) {
+        super(0, 0, collection.size() - 1);
+    }
+
     public LoopInt(Integer min, Integer max) {
         super(min, min, max);
     }
