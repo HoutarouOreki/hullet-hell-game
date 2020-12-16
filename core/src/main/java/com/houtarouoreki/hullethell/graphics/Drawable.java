@@ -124,8 +124,10 @@ public abstract class Drawable {
         children.add(child);
     }
 
-    public void addAll(Collection<? extends Drawable> asList) {
-        children.addAll(asList);
+    public void addAll(Collection<? extends Drawable> collection) {
+        for (Drawable child : collection) {
+            add(child);
+        }
     }
 
     public void remove(Drawable child) {
