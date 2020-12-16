@@ -37,6 +37,7 @@ public class LoadingScreen extends HulletHellScreen {
             HulletHellGame.getScreensManager().addGameScreen(ps);
             HulletHellGame.getScreensManager().addGameScreen(new ResultsScreen());
             HulletHellGame.getScreensManager().addGameScreen(new SettingsScreen());
+            HulletHellGame.getScreensManager().addGameScreen(new LevelSelectScreen());
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
             beganTransition = true;
         }

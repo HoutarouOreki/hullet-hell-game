@@ -92,7 +92,8 @@ public class MainMenuScreen extends HulletHellScreen {
 
     private void onPlayButton() {
         HulletHellGame.getScreensManager().enterGameScreen(
-                2, new FadeOutTransition(), new FadeInTransition());
+                HulletHellScreen.LEVEL_SELECT_SCREEN,
+                new FadeOutTransition(), new FadeInTransition());
         HulletHellGame.getMusicManager().fadeOut(0.5f);
     }
 
