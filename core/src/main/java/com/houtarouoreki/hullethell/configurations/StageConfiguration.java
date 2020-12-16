@@ -8,12 +8,15 @@ import java.util.List;
 
 public class StageConfiguration {
     public final List<ScriptedSectionConfiguration> sections;
+    public final String name;
 
     public StageConfiguration(FileHandle file) {
-        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
+        this(file.nameWithoutExtension(),
+                Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
     }
 
-    public StageConfiguration(List<String> lines) {
+    public StageConfiguration(String name, List<String> lines) {
+        this.name = name;
         sections = new ArrayList<ScriptedSectionConfiguration>();
 
         ScriptedBodyConfiguration currentBody = null;
