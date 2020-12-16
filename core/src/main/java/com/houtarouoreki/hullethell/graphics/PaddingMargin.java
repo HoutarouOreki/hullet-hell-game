@@ -22,6 +22,10 @@ public class PaddingMargin {
         setVertical(vertical);
     }
 
+    public PaddingMargin(float allSides) {
+        this(allSides, allSides);
+    }
+
     public float getTotalHorizontal() {
         return left + right;
     }
