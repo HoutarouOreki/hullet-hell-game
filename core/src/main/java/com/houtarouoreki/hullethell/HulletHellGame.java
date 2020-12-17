@@ -97,6 +97,7 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
         assetManager.load("ui/songNotification.png", Texture.class);
+        assetManager.load("ui/dialogueOverlay.png", Texture.class);
 
         loadSounds(assetManager, Arrays.asList(
                 "laser1",
@@ -121,6 +122,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadEffects(assetManager, Arrays.asList("blurredCircle"));
         loadAnimatedEffect(assetManager, "Explosion", 6);
+
+        loadCharacters(assetManager, Arrays.asList("Temp"));
 
         loadStages(assetManager, Arrays.asList("Stage 1", "Stage 2"));
 
@@ -194,6 +197,12 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadEffects(AssetManager am, List<String> names) {
         for (String name : names) {
             am.load("effects/" + name + ".png", Texture.class);
+        }
+    }
+
+    private void loadCharacters(AssetManager am, List<String> names) {
+        for (String name : names) {
+            am.load("characters/" + name + ".png", Texture.class);
         }
     }
 
