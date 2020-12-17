@@ -11,7 +11,6 @@ import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.DialogueBox;
-import com.houtarouoreki.hullethell.graphics.PaddingMargin;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -38,7 +37,6 @@ public class PlayScreen extends HulletHellScreen {
     public PlayScreen() {
         viewport = new FitViewport(1280,
                 1280 * World.viewArea.y / World.viewArea.x);
-        container.setPadding(new PaddingMargin(50, 50));
         container.add(dialogueBox = new DialogueBox());
     }
 
