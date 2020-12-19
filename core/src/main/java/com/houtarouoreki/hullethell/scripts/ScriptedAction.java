@@ -38,6 +38,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             a = new PlaySongAction();
         } else if (conf.type.equals("dialogue")) {
             a = new DialogueAction(dialogueBox);
+        } else if (conf.type.equals("randomAsteroid")) {
+            a = new RandomAsteroidAction();
         } else {
             throw new Error("Could not find action of type \"" + conf.type + "\"");
         }
