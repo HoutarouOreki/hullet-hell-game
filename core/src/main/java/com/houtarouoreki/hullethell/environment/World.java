@@ -18,13 +18,14 @@ import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class World {
     public final static Vector2 viewArea = new Vector2(36, 20);
     public final static float time_step_duration = 0.01f;
     private final List<Body> bodies;
+    private final List<Body> bodiesToAdd;
+    private final List<Body> bodiesToRemove;
     private final CollisionManager collisionManager;
     private final CollisionSoundManager collisionSoundManager;
     private final ScriptedStageManager scriptedStageManager;
@@ -38,6 +39,8 @@ public class World {
         statistics = new Statistics();
         questManager = new QuestManager();
         bodies = new ArrayList<Body>();
+        bodiesToAdd = new ArrayList<Body>();
+        bodiesToRemove = new ArrayList<Body>();
         collisionManager = new CollisionManager(this);
         collisionSoundManager = new CollisionSoundManager(collisionManager);
         scriptedStageManager = new ScriptedStageManager(this, script, dialogueBox);
@@ -56,13 +59,15 @@ public class World {
     }
 
     public void addBody(Body body) {
-        bodies.add(body);
-        renderingManager.registerBody(body);
+        bodiesToAdd.add(body);
     }
 
     public void removeBody(Body body) {
-        bodies.remove(body);
-        unregisterBody(body);
+        bodiesToRemove.add(body);
+    }
+
+    private void registerBody(Body body) {
+        renderingManager.registerBody(body);
     }
 
     private void unregisterBody(Body body) {
@@ -104,6 +109,8 @@ public class World {
         bufferedTime += delta;
         while (bufferedTime >= time_step_duration) {
             physics();
+            addBodies();
+            removeBodies();
             collisionSoundManager.update(delta);
             bufferedTime -= time_step_duration;
             ticksPassed++;
@@ -112,14 +119,28 @@ public class World {
         }
     }
 
+    private void addBodies() {
+        for (Body body : bodiesToAdd) {
+            bodies.add(body);
+            registerBody(body);
+        }
+        bodiesToAdd.clear();
+    }
+
+    private void removeBodies() {
+        for (Body body : bodiesToRemove) {
+            bodies.remove(body);
+            unregisterBody(body);
+        }
+        bodiesToRemove.clear();
+    }
+
     public boolean isFinished() {
         return scriptedStageManager.isFinished();
     }
 
     protected void physics() {
-        Iterator<Body> i = bodies.iterator();
-        while (i.hasNext()) {
-            Body body = i.next();
+        for (Body body : bodies) {
             if (body.shouldDespawnOOBounds()) {
                 float despawnMarginX = body.getSize().x;
                 float despawnMarginY = body.getSize().y;
@@ -127,19 +148,17 @@ public class World {
                         body.getPosition().y < -despawnMarginY ||
                         body.getPosition().x > viewArea.x + despawnMarginX ||
                         body.getPosition().y > viewArea.y + despawnMarginY) {
-                    i.remove();
-                    unregisterBody(body);
+                    removeBody(body);
                     continue;
                 }
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
-                i.remove();
+                removeBody(body);
                 for (String itemName : ((Entity) body).itemDrops) {
                     Item itemDrop = new Item(itemName);
                     itemDrop.setPosition(body.getPosition());
                     addBody(itemDrop);
                 }
-                unregisterBody(body);
                 continue;
             }
             body.update(time_step_duration);
