@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.collisions.CollisionManager;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
+import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.graphics.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
@@ -133,6 +134,8 @@ public class World {
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();
+                for (String itemName : ((Entity) body).itemDrops)
+                    addBody(new Item(itemName));
                 unregisterBody(body);
                 continue;
             }
