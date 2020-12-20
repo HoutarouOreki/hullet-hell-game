@@ -157,6 +157,7 @@ public class World {
                 for (String itemName : ((Entity) body).itemDrops) {
                     Item itemDrop = new Item(itemName);
                     itemDrop.setPosition(body.getPosition());
+                    itemDrop.setVelocity(body.getVelocity().scl(0.5f));
                     addBody(itemDrop);
                 }
                 continue;
