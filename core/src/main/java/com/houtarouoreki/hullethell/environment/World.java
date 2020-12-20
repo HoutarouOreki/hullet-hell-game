@@ -134,8 +134,11 @@ public class World {
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 i.remove();
-                for (String itemName : ((Entity) body).itemDrops)
-                    addBody(new Item(itemName));
+                for (String itemName : ((Entity) body).itemDrops) {
+                    Item itemDrop = new Item(itemName);
+                    itemDrop.setPosition(body.getPosition());
+                    addBody(itemDrop);
+                }
                 unregisterBody(body);
                 continue;
             }
