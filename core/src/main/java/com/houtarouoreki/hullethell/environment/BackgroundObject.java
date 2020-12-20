@@ -13,8 +13,8 @@ public abstract class BackgroundObject extends PrimitiveBody {
     @Override
     public void update(float delta) {
         super.update(delta);
-        for (Sprite sprite : sprites) {
-            sprite.rotate(2);
-        }
+        if (spritesLayers.isEmpty())
+            return;
+        spritesLayers.get(0).rotation += delta * 100;
     }
 }

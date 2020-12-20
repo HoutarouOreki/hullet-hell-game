@@ -12,7 +12,7 @@ public class Bullet extends Entity {
         String path = "bullets/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
-        setTextureName(path + ".png");
+        addTexture(path + ".png");
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());

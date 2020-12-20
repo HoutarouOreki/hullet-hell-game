@@ -5,14 +5,13 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
-import org.mini2Dx.core.graphics.Sprite;
 
 public class Environmental extends Entity {
     public Environmental(String configurationName) {
         String path = "environmentals/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
-        setTextureName(path + ".png");
+        addTexture(path + ".png");
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
@@ -30,8 +29,8 @@ public class Environmental extends Entity {
 
     public void update(float delta) {
         super.update(delta);
-        for (Sprite sprite : sprites) {
-            sprite.rotate(2);
-        }
+        if (spritesLayers.isEmpty())
+            return;
+        spritesLayers.get(0).rotation += 40 * delta;
     }
 }

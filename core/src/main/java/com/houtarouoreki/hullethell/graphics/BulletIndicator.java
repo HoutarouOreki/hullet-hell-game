@@ -14,7 +14,7 @@ public class BulletIndicator extends PrimitiveBody implements Finishable {
     public BulletIndicator(Bullet bullet) {
         this.bullet = bullet;
         timeLeft = length;
-        setTextureName("effects/blurredCircle.png");
+        addTexture("effects/blurredCircle.png");
     }
 
     public void update(float delta) {

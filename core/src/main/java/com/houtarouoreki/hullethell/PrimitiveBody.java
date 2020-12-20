@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.Renderable;
+import com.houtarouoreki.hullethell.graphics.SpriteLayer;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
-import com.houtarouoreki.hullethell.numbers.LoopInt;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 
@@ -14,18 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PrimitiveBody implements Renderable, Updatable {
-    protected final List<Sprite> sprites;
-    protected final LoopInt frameIndex;
+    protected final List<SpriteLayer> spritesLayers;
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
     private final Vector2 size = new Vector2();
-    protected float frameLength;
-    private String textureName;
     private double time = 0;
 
     public PrimitiveBody() {
-        sprites = new ArrayList<Sprite>();
-        frameIndex = new LoopInt(0, 0);
+        spritesLayers = new ArrayList<SpriteLayer>();
     }
 
     public double getTime() {
@@ -51,7 +47,13 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     public void update(float delta) {
         setPosition(getPosition().add(new Vector2(getVelocity()).scl(delta)));
         time += delta;
-        frameIndex.setValue((int) (time / frameLength));
+        updateSpriteLayers();
+    }
+
+    private void updateSpriteLayers() {
+        for (SpriteLayer layer : spritesLayers) {
+            layer.frameIndex.setValue((int) (time / layer.frameLength));
+        }
     }
 
     public Vector2 getRenderPosition() {
@@ -64,39 +66,44 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     }
 
     public void render(Graphics g) {
-        if (sprites.size() == 0)
+        for (SpriteLayer spriteLayer : spritesLayers) {
+            renderSpriteLayer(g, spriteLayer);
+        }
+    }
+
+    private void renderSpriteLayer(Graphics g, SpriteLayer layer) {
+        if (layer.size() == 0)
             return;
-        Vector2 renderSize = getRenderSize();
-        Vector2 topLeft = new Vector2(getRenderPosition())
+        Vector2 renderSize = getRenderSize().scl(layer.scale);
+        Vector2 renderPos = RenderHelpers.translateToRenderPosition(getPosition()
+                .add(layer.offset));
+        Vector2 topLeft = new Vector2(renderPos)
                 .add(new Vector2(renderSize).scl(-0.5f));
-        Sprite sprite = sprites.get(frameIndex.getValue());
+        Sprite sprite = layer.get(layer.frameIndex.getValue());
         sprite.setOriginCenter();
         sprite.setSize(renderSize.x, renderSize.y);
         sprite.setPosition(topLeft.x, topLeft.y);
+        sprite.setRotation(layer.rotation);
         g.drawSprite(sprite);
     }
 
-    public String getTextureName() {
-        return textureName;
-    }
-
-    public void setTextureName(String textureName) {
-        this.textureName = textureName;
-        sprites.clear();
-        sprites.add(new Sprite(HulletHellGame.getAssetManager()
+    public void addTexture(String textureName) {
+        SpriteLayer newLayer = new SpriteLayer();
+        spritesLayers.add(newLayer);
+        newLayer.add(new Sprite(HulletHellGame.getAssetManager()
                 .get(textureName, Texture.class)));
-        frameIndex.setMax(0);
     }
 
-    public void setAnimation(String textureName, int frames, float fps) {
-        sprites.clear();
+    public void addAnimation(String textureName, int frames, float fps) {
+        SpriteLayer newLayer = new SpriteLayer();
+        spritesLayers.add(newLayer);
         for (int i = 0; i < frames; i++) {
             Sprite sprite = new Sprite(HulletHellGame
                     .getAssetManager().<Texture>get(textureName + "-" + i + ".png"));
-            sprites.add(sprite);
+            newLayer.add(sprite);
         }
-        frameLength = 1 / fps;
-        frameIndex.setMax(frames - 1);
+        newLayer.frameLength = 1 / fps;
+        newLayer.frameIndex.setMax(frames - 1);
     }
 
     public Vector2 getSize() {

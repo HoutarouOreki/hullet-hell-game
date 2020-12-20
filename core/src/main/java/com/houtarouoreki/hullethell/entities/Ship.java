@@ -22,7 +22,7 @@ public class Ship extends Entity {
         String path = "ships/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
-        setTextureName(path + ".png");
+        addTexture(path + ".png");
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
@@ -34,22 +34,24 @@ public class Ship extends Entity {
             remainingCollisionCooldown -= delta;
             remainingCollisionCooldownAnimation -= delta;
 
+            if (spritesLayers.isEmpty())
+                return;
             float interpolation = Interpolation.sineIn.apply(remainingCollisionCooldown / collisionCooldown);
             float collisionCooldownAnimation = 0.2f;
             if (remainingCollisionCooldownAnimation <= 0) {
                 remainingCollisionCooldownAnimation = collisionCooldownAnimation;
-                for (Sprite sprite : sprites) {
+                for (Sprite sprite : spritesLayers.get(0)) {
                     sprite.setAlpha(1f - 0.7f * interpolation);
                 }
             } else if (remainingCollisionCooldownAnimation <= 0.5f * collisionCooldownAnimation) {
-                for (Sprite sprite : sprites) {
+                for (Sprite sprite : spritesLayers.get(0)) {
                     sprite.setAlpha(0.5f - 0.5f * interpolation);
                 }
             }
 
             if (remainingCollisionCooldown <= 0) {
                 setAcceptsCollisions(true);
-                for (Sprite sprite : sprites) {
+                for (Sprite sprite : spritesLayers.get(0)) {
                     sprite.setAlpha(1);
                 }
             }
@@ -68,7 +70,7 @@ public class Ship extends Entity {
         if (collisionCooldown > 0) {
             setAcceptsCollisions(false);
             remainingCollisionCooldown = collisionCooldown;
-            for (Sprite sprite : sprites) {
+            for (Sprite sprite : spritesLayers.get(0)) {
                 sprite.setAlpha(0.5f);
             }
         }

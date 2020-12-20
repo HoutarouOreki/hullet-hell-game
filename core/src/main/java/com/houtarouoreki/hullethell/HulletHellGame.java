@@ -125,7 +125,10 @@ public class HulletHellGame extends ScreenBasedGame {
         loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
         loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
 
-        loadEffects(assetManager, Arrays.asList("blurredCircle"));
+        loadEffects(assetManager, Arrays.asList(
+                "blurredCircle",
+                "star"
+                ));
         loadAnimatedEffect(assetManager, "Explosion", 6);
 
         loadCharacters(assetManager, Arrays.asList("Temp"));

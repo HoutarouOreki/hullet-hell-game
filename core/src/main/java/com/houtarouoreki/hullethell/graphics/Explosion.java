@@ -10,8 +10,8 @@ public class Explosion extends PrimitiveBody implements Finishable {
     private boolean done;
 
     public Explosion(Vector2 position) {
-        setAnimation("effects/Explosion", 6, 5);
-        frameIndex.addListener(new ValueChangeListener<Integer>() {
+        addAnimation("effects/Explosion", 6, 5);
+        spritesLayers.get(0).frameIndex.addListener(new ValueChangeListener<Integer>() {
             @Override
             public void onValueChanged(Integer oldValue, Integer newValue) {
                 if (oldValue == 5 && newValue == 0) {
@@ -27,7 +27,7 @@ public class Explosion extends PrimitiveBody implements Finishable {
     @Override
     public void setSize(Vector2 size) {
         super.setSize(size);
-        frameLength = size.len() * 0.03f;
+        spritesLayers.get(0).frameLength = size.len() * 0.03f;
     }
 
     public boolean isDone() {
