@@ -24,6 +24,12 @@ public class Explosion extends PrimitiveBody implements Finishable {
         HulletHellGame.getSoundManager().playSound("kick-gritty");
     }
 
+    @Override
+    public void setSize(Vector2 size) {
+        super.setSize(size);
+        frameLength = size.len() * 0.03f;
+    }
+
     public boolean isDone() {
         return done;
     }

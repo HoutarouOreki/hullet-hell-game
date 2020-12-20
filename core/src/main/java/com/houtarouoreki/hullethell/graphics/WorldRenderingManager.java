@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.graphics;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Bullet;
+import com.houtarouoreki.hullethell.entities.Environmental;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.Finishable;
 import com.houtarouoreki.hullethell.environment.Updatable;
@@ -66,6 +67,8 @@ public class WorldRenderingManager {
             removeShip((Ship) body);
         else if (body instanceof Bullet)
             bullets.remove(body);
+        else if (body instanceof Environmental)
+            onRemoveEnvironmental((Environmental) body);
         otherBodies.remove(body);
     }
 
@@ -73,6 +76,14 @@ public class WorldRenderingManager {
         ships.remove(ship);
         if (ship.getHealth() <= 0) {
             explosions.add(new Explosion(ship.getPosition()));
+        }
+    }
+
+    private void onRemoveEnvironmental(Environmental environmental) {
+        if (environmental.getHealth() <= 0) {
+            Explosion explosion = new Explosion(environmental.getPosition());
+            explosion.setSize(environmental.getSize().scl(2));
+            explosions.add(explosion);
         }
     }
 
