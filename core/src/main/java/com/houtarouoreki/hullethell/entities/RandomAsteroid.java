@@ -14,7 +14,7 @@ public class RandomAsteroid extends Environmental {
                 random.nextFloat() * 2.2f - 1.1f
         );
         setHealth(10 * scale);
-        setVelocity(velocity);
+        setVelocity(velocity.scl(1 / scale));
         scale(scale);
         Vector2 startingPosition = new Vector2(
                 1,
