@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
-    public final List<String> itemDrops = new ArrayList<String>();
     private final List<CollisionCircle> collisionBody;
     private final Vector2 acceleration = new Vector2();
     private int lastCollisionTick = -1;

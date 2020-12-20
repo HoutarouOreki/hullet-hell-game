@@ -6,9 +6,11 @@ import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Entity extends Body {
+    public final List<String> itemDrops = new ArrayList<String>();
     private final HealthBarsInfo healthBarsInfo = new HealthBarsInfo();
     private float health;
 
