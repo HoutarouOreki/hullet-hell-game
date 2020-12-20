@@ -22,38 +22,48 @@ public class StageConfiguration {
         ScriptedBodyConfiguration currentBody = null;
         ScriptedSectionConfiguration currentSection = null;
         boolean isDialogueSection = false;
+        int i = 1;
         for (String line : lines) {
-            if (line.matches("! (.*)")) {
+            if (line.matches("(?:^!$|^! (.*)?)")) {
                 currentSection = new ScriptedSectionConfiguration(line.
-                        replaceFirst("! ", ""));
+                        replaceFirst("! ?", ""));
                 isDialogueSection = false;
                 sections.add(currentSection);
-            } else if (line.matches("!dialogue (.*)")) {
+            } else if (line.matches("!while (.*)")) {
                 currentSection = new ScriptedSectionConfiguration(line
-                        .replaceFirst("!dialogue ", ""));
-                currentSection.isDialogueSection = true;
+                        .replaceFirst("!while ", ""));
+                currentSection.type = "while";
+                isDialogueSection = false;
+                sections.add(currentSection);
+            } else if (line.matches("!dialogue ?(.*)?")) {
+                currentSection = new ScriptedSectionConfiguration(line
+                        .replaceFirst("!dialogue ?", ""));
+                currentSection.type = "dialogue";
                 isDialogueSection = true;
                 sections.add(currentSection);
             } else if (isDialogueSection && line.matches("^.*:$")) {
-            } else if (isDialogueSection && line.matches("\\d+\\t+.*$")) {
+            } else if (isDialogueSection && line.matches("(?:\\d+(?:\\.\\d+)?)?\\t+.*$")) {
                 currentSection.actions.add(new ScriptedActionConfiguration(line));
-            } else if (isDialogueSection && line.matches("^\\d+")) {
+            } else if (isDialogueSection && line.matches("^\\d+(?:\\.\\d+)?")) {
                 currentSection.actions.add(new ScriptedActionConfiguration(line));
-            } else if (line.matches("^\\d+\\t+.*\\t+.*")) {
+            } else if (line.matches("^\\d+(?:\\.\\d+)?\\t+.*\\t+.*")) {
                 if (currentSection == null)
                     throw new NullPointerException("Current section was null");
                 currentSection.actions.add(new ScriptedActionConfiguration(line));
             } else if (line.matches(".*: \".*/.*\"")) {
                 currentBody = new ScriptedBodyConfiguration(line);
                 if (currentSection == null)
-                    throw new NullPointerException("Current section was null");
+                    throw new NullPointerException("Current section was null\n"
+                            + name + ", line " + i);
                 currentSection.bodies.add(currentBody);
             } else if (line.startsWith("\t")) {
                 if (currentBody == null) {
-                    throw new NullPointerException("Current body was null");
+                    throw new NullPointerException("Current body was null\n"
+                            + name + ", line " + i);
                 }
                 currentBody.actions.add(new ScriptedActionConfiguration(line));
             }
+            i++;
         }
     }
 }

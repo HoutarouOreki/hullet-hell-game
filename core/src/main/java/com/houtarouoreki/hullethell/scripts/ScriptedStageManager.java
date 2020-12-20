@@ -16,8 +16,10 @@ public class ScriptedStageManager {
     public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) {
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
             ScriptedSection section;
-            if (sectionConfiguration.isDialogueSection)
+            if (sectionConfiguration.type.equals("dialogue"))
                 section = new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);
+            else if (sectionConfiguration.type.equals("while"))
+                section = new ScriptedWhileSection(world, sectionConfiguration, dialogueBox);
             else
                 section = new ScriptedSection(world, sectionConfiguration, dialogueBox);
             sections.add(section);

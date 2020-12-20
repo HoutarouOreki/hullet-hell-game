@@ -13,12 +13,12 @@ public class ScriptedSection {
     public final Queue<ScriptedAction> waitingActions;
     public final List<ScriptedAction> currentActions;
     protected final World world;
-    private final Queue<ScriptedBody> waitingBodies;
+    protected final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
     private final List<Body> bodies;
     private final String name;
     protected double timePassed;
-    private int allBodiesAmount;
+    protected int allBodiesAmount;
     private int bodiesRemovedAmount;
 
     public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {

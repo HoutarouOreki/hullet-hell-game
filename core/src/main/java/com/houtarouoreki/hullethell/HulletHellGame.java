@@ -125,7 +125,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadCharacters(assetManager, Arrays.asList("Temp"));
 
-        loadStages(assetManager, Arrays.asList("Stage 1", "Stage 2"));
+        loadStages(assetManager, Arrays.asList("Stage 1", "Stage 2",
+                "Act 1"));
 
         Gdx.input.setInputProcessor(inputManager);
 

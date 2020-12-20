@@ -7,11 +7,13 @@ import java.util.regex.Pattern;
 
 public class ScriptedBodyConfiguration {
     public final List<ScriptedActionConfiguration> actions = new ArrayList<ScriptedActionConfiguration>();
+    public final String line;
     public String type;
     public String name;
     public String configName;
 
     public ScriptedBodyConfiguration(String line) {
+        this.line = line;
         Pattern pattern = Pattern.compile("(.*): \"((.*)/(.*))\"");
         Matcher matcher = pattern.matcher(line);
         if (!matcher.matches()) {

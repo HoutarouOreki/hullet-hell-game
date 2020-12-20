@@ -11,6 +11,8 @@ import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.graphics.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
+import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
+import com.houtarouoreki.hullethell.scripts.quests.Statistics;
 import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
@@ -26,10 +28,14 @@ public class World {
     private final CollisionSoundManager collisionSoundManager;
     private final ScriptedStageManager scriptedStageManager;
     private final WorldRenderingManager renderingManager;
+    public final QuestManager questManager;
+    public final Statistics statistics;
     private int ticksPassed;
     private float bufferedTime;
 
     public World(StageConfiguration script, DialogueBox dialogueBox) {
+        statistics = new Statistics();
+        questManager = new QuestManager();
         bodies = new ArrayList<Body>();
         collisionManager = new CollisionManager(this);
         collisionSoundManager = new CollisionSoundManager(collisionManager);

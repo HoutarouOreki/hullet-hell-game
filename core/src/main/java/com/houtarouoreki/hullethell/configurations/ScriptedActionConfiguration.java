@@ -19,7 +19,7 @@ public class ScriptedActionConfiguration {
             arguments = Arrays.asList(match.group(3).split(", "));
         }
         else {
-            pattern = Pattern.compile("(\\d+)(?:\\t+(.*))?$");
+            pattern = Pattern.compile("^(\\d*\\.?\\d*)(?:\\t*(.*))?$");
             match = pattern.matcher(line.split(" // ")[0]);
             if (match.matches()) {
                 String text = match.groupCount() == 2 ? match.group(2) : "h";

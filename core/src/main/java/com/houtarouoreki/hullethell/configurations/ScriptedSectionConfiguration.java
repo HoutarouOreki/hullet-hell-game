@@ -7,7 +7,7 @@ public class ScriptedSectionConfiguration {
     public final List<ScriptedBodyConfiguration> bodies = new ArrayList<ScriptedBodyConfiguration>();
     public final List<ScriptedActionConfiguration> actions = new ArrayList<ScriptedActionConfiguration>();
     public final String name;
-    public boolean isDialogueSection;
+    public String type = "";
 
     public ScriptedSectionConfiguration(String name) {
         this.name = name;

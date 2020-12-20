@@ -20,7 +20,8 @@ public class DialogueAction extends ScriptedAction {
             text = arguments.get(0).replace(",\\", ",");
         else
             text = "";
-        maxDuration = Float.parseFloat(arguments.get(1));
+        maxDuration = arguments.get(1).isEmpty() ?
+                Float.POSITIVE_INFINITY : Float.parseFloat(arguments.get(1));
     }
 
     @Override
