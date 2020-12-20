@@ -93,6 +93,15 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
         this.acceleration.set(acceleration);
     }
 
+    public void scale(float scale) {
+        setSize(getSize().scl(scale));
+        for (CollisionCircle circle : collisionBody) {
+            circle.setRadius(circle.getRadius() * scale);
+            circle.setCenter(circle.getCenterX() * scale,
+                    circle.getCenterY() * scale);
+        }
+    }
+
     public CollisionTeam getTeam() {
         return team;
     }
