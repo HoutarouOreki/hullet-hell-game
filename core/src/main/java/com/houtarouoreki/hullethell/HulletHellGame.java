@@ -116,6 +116,11 @@ public class HulletHellGame extends ScreenBasedGame {
                 "One Man Symphony - Beat 02"
         ));
 
+        loadItems(assetManager, Arrays.asList(
+                "copperOre",
+                "ironOre"
+        ));
+
         loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList("Asteroid"));
         loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
         loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
@@ -178,6 +183,12 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadSounds(AssetManager am, List<String> names) {
         for (String name : names) {
             am.load("sounds/" + name + ".mp3", Sound.class);
+        }
+    }
+
+    private void loadItems(AssetManager am, List<String> names) {
+        for (String name : names) {
+            am.load("items/" + name + ".png", Texture.class);
         }
     }
 
