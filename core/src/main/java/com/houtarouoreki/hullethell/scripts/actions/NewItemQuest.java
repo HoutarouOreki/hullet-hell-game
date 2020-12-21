@@ -22,7 +22,7 @@ public class NewItemQuest extends ScriptedAction {
 
     @Override
     protected void performAction() {
-        world.questManager.quests.add(new ItemQuest(name, world.statistics, items));
+        world.questManager.registerQuest(new ItemQuest(name, world.statistics, items));
         setFinished();
     }
 

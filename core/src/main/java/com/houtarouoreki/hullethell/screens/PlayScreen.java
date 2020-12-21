@@ -6,11 +6,13 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Bullet;
+import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -47,12 +49,21 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public void preTransitionIn(Transition transitionIn) {
         super.preTransitionIn(transitionIn);
+        if (world != null)
+            container.remove(world.questManager);
         world = new World(script, dialogueBox);
         player = new Ship("Ship 1");
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER);
         player.setPosition(new Vector2(World.viewArea.x * 0.1f, World.viewArea.y * 0.5f));
+        player.onItemCollected = new BasicObjectListener<Item>() {
+            @Override
+            public void onAction(Item item) {
+                world.statistics.addItem(item.name);
+            }
+        };
         world.addBody(player);
+        container.add(world.questManager);
         dialogueBox.reset();
 
         initialiseBackground();

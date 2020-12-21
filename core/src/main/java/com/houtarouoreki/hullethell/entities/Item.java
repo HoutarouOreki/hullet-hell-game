@@ -16,7 +16,7 @@ public class Item extends Body {
 
     public Item(String itemName) {
         name = itemName;
-        new CollisionCircle(0.5f);
+        getCollisionBody().add(new CollisionCircle(0.5f));
         setSize(new Vector2(1, 1));
         addTexture("items/" + itemName + ".png");
         setVelocity(new Vector2(-1, 0));

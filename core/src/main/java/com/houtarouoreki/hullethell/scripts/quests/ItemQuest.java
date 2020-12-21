@@ -19,4 +19,23 @@ public class ItemQuest extends Quest {
         }
         return true;
     }
+
+    @Override
+    public String getTitle() {
+        return "Item collection";
+    }
+
+    @Override
+    public String getDescription() {
+        StringBuilder s = new StringBuilder();
+        for (String itemName : items.keySet()) {
+            s.append(itemName)
+                    .append(": ")
+                    .append(statistics.getItemAmount(itemName))
+                    .append("/")
+                    .append(items.get(itemName))
+                    .append('\n');
+        }
+        return s.toString();
+    }
 }

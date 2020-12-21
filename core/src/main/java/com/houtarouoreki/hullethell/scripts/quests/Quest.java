@@ -12,4 +12,8 @@ public abstract class Quest implements Finishable {
     }
 
     public abstract boolean isDone();
+
+    public abstract String getTitle();
+
+    public abstract String getDescription();
 }
