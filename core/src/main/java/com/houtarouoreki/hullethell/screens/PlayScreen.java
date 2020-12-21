@@ -11,7 +11,7 @@ import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;

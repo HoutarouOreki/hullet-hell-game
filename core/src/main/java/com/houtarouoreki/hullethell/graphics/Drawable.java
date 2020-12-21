@@ -17,6 +17,7 @@ public abstract class Drawable {
     private final PaddingMargin margin = new PaddingMargin();
     private final Vector2 anchor = new Vector2(0, 0);
     private final Vector2 origin = new Vector2(0, 0);
+    private float time = 0;
     private EnumSet<Axes> relativePositionAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativeSizeAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativePaddingAxes = EnumSet.noneOf(Axes.class);
@@ -30,6 +31,14 @@ public abstract class Drawable {
 
     public void setPosition(Vector2 position) {
         this.position.set(position);
+    }
+
+    public void setX(float x) {
+        this.position.x = x;
+    }
+
+    public void setY(float y) {
+        this.position.y = y;
     }
 
     public Vector2 getSize() {
@@ -82,6 +91,7 @@ public abstract class Drawable {
         for (Drawable child : children)
             child.update(delta);
         onUpdate(delta);
+        time += delta;
     }
 
     protected void onUpdate(float delta) {
@@ -189,5 +199,9 @@ public abstract class Drawable {
 
     public void setOrigin(Vector2 origin) {
         this.origin.set(origin);
+    }
+
+    public float getTime() {
+        return time;
     }
 }

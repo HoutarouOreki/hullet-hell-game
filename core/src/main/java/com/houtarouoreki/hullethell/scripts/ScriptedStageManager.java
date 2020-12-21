@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
 import java.util.LinkedList;
 import java.util.Queue;

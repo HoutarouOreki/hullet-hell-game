@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
 
 import java.util.List;

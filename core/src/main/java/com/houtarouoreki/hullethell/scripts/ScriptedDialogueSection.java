@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.scripts;
 import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.DialogueAction;
 
 import java.util.Iterator;
@@ -27,7 +27,7 @@ public class ScriptedDialogueSection extends ScriptedSection {
     public void update(double delta) {
         timePassed += delta;
 
-        while (currentActions.size() == 0 && waitingActions.size() > 0) {
+        while (waitingActions.size() > 0) {
             ScriptedAction action = waitingActions.remove();
             action.initialise(world, this, null);
             currentActions.add(action);

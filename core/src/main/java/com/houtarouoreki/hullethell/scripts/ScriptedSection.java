@@ -5,7 +5,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
 import java.util.*;
 

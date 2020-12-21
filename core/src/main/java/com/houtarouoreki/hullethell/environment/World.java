@@ -9,8 +9,8 @@ import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.Item;
-import com.houtarouoreki.hullethell.graphics.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
+import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
 import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
 import com.houtarouoreki.hullethell.scripts.quests.Statistics;
@@ -23,6 +23,8 @@ import java.util.List;
 public class World {
     public final static Vector2 viewArea = new Vector2(36, 20);
     public final static float time_step_duration = 0.01f;
+    public final QuestManager questManager;
+    public final Statistics statistics;
     private final List<Body> bodies;
     private final List<Body> bodiesToAdd;
     private final List<Body> bodiesToRemove;
@@ -30,8 +32,6 @@ public class World {
     private final CollisionSoundManager collisionSoundManager;
     private final ScriptedStageManager scriptedStageManager;
     private final WorldRenderingManager renderingManager;
-    public final QuestManager questManager;
-    public final Statistics statistics;
     private int ticksPassed;
     private float bufferedTime;
 
