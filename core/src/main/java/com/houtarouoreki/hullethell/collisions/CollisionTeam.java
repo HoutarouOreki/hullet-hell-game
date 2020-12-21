@@ -2,6 +2,8 @@ package com.houtarouoreki.hullethell.collisions;
 
 public enum CollisionTeam {
     COMPUTER,
-    PLAYER,
-    ENVIRONMENT
+    PLAYER_SHIP,
+    PLAYER_BULLETS,
+    ENVIRONMENT,
+    ITEMS
 }

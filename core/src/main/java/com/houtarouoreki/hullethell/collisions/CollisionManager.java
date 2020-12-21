@@ -27,9 +27,12 @@ public class CollisionManager {
 
             for (int j = i + 1; j < world.getBodies().size(); j++) {
                 Body b = world.getBodies().get(j);
-                if (!a.isAcceptingCollisions() || !b.isAcceptingCollisions()
-                        || a.getTeam() == b.getTeam() || a.getLastCollisionTick() == world.getTicksPassed()
-                || b.getLastCollisionTick() == world.getTicksPassed()) {
+                if (!a.collidesWith.contains(b.getTeam())
+                        || !a.isAcceptingCollisions()
+                        || !b.isAcceptingCollisions()
+                        || a.getTeam() == b.getTeam()
+                        || a.getLastCollisionTick() == world.getTicksPassed()
+                        || b.getLastCollisionTick() == world.getTicksPassed()) {
                     continue;
                 }
 

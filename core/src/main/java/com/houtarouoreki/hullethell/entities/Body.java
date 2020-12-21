@@ -14,6 +14,8 @@ import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
@@ -21,6 +23,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     private final Vector2 acceleration = new Vector2();
     private int lastCollisionTick = -1;
     private CollisionTeam team;
+    public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
@@ -108,6 +111,25 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
 
     public void setTeam(CollisionTeam team) {
         this.team = team;
+        collidesWith.clear();
+        switch (team) {
+            case COMPUTER:
+            case ENVIRONMENT:
+                collidesWith = EnumSet
+                        .of(CollisionTeam.PLAYER_SHIP, CollisionTeam.PLAYER_BULLETS);
+                break;
+            case PLAYER_SHIP:
+                collidesWith = EnumSet.of(CollisionTeam.COMPUTER,
+                                CollisionTeam.ENVIRONMENT, CollisionTeam.ITEMS);
+                break;
+            case PLAYER_BULLETS:
+                collidesWith = EnumSet
+                        .of(CollisionTeam.COMPUTER, CollisionTeam.ENVIRONMENT);
+                break;
+            case ITEMS:
+                collidesWith = EnumSet.of(CollisionTeam.PLAYER_SHIP);
+                break;
+        }
     }
 
     public void onCollision(Body other, CollisionResult collision) {

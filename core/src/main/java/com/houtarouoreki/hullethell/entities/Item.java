@@ -3,13 +3,15 @@ package com.houtarouoreki.hullethell.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.graphics.SpriteLayer;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Sprite;
 
 import java.util.Random;
 
-public class Item extends Body {
+public class Item extends Entity {
     public final String name;
     private final boolean rotatingClockwise;
     private SpriteLayer starLayer;
@@ -21,6 +23,8 @@ public class Item extends Body {
         addTexture("items/" + itemName + ".png");
         setVelocity(new Vector2(-1, 0));
         rotatingClockwise = new Random().nextBoolean();
+        setHealth(1);
+        setTeam(CollisionTeam.ITEMS);
     }
 
     private void addStarAnimation() {
@@ -41,5 +45,11 @@ public class Item extends Body {
         double sinScaleY = 2;
         double maxScale = 0.7f;
         starLayer.scale = (float) Math.max(0, Math.sin(getTime()) * sinScaleY - (sinScaleY - maxScale));
+    }
+
+    @Override
+    public void onCollision(Body other, CollisionResult collision) {
+        super.onCollision(other, collision);
+        setHealth(0);
     }
 }
