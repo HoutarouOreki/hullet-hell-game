@@ -36,6 +36,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             a = new ShootCircleAction();
         } else if (conf.type.equals("playSong")) {
             a = new PlaySongAction();
+        } else if (conf.type.equals("loopSong")) {
+            a = new LoopSongAction();
         } else if (conf.type.equals("dialogue")) {
             a = new DialogueAction(dialogueBox);
         } else if (conf.type.equals("randomAsteroid")) {
@@ -43,7 +45,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         } else if (conf.type.equals("newItemQuest")) {
             a = new NewItemQuest();
         } else {
-            throw new Error("Could not find action of type \"" + conf.type + "\"");
+            throw new Error("Could not find action of type \"" + conf.type + "\""
+                + "\nSource line: " + conf.line);
         }
         a.scriptedTime = conf.scriptedTime;
         a.arguments = conf.arguments;

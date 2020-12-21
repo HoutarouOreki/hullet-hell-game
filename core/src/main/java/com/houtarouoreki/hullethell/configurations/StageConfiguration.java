@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class StageConfiguration {
@@ -18,6 +19,9 @@ public class StageConfiguration {
     public StageConfiguration(String name, List<String> lines) {
         this.name = name;
         sections = new ArrayList<ScriptedSectionConfiguration>();
+
+        final HashMap<String, ScriptedBodyConfiguration> allBodies
+                = new HashMap<String, ScriptedBodyConfiguration>();
 
         ScriptedBodyConfiguration currentBody = null;
         ScriptedSectionConfiguration currentSection = null;
@@ -50,8 +54,14 @@ public class StageConfiguration {
                 if (currentSection == null)
                     throw new NullPointerException("Current section was null");
                 currentSection.actions.add(new ScriptedActionConfiguration(line));
-            } else if (line.matches(".*: \".*/.*\"")) {
-                currentBody = new ScriptedBodyConfiguration(line);
+            } else if (line.matches("^\\w*:(?: \".*\\/.*\")?")) {
+                String bodyName = line.substring(0, line.indexOf(':'));
+                if (allBodies.containsKey(bodyName))
+                    currentBody = allBodies.get(bodyName);
+                else {
+                    currentBody = new ScriptedBodyConfiguration(line);
+                    allBodies.put(bodyName, currentBody);
+                }
                 if (currentSection == null)
                     throw new NullPointerException("Current section was null\n"
                             + name + ", line " + i);

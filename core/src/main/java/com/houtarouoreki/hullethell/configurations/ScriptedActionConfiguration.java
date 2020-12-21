@@ -9,16 +9,17 @@ public class ScriptedActionConfiguration {
     public final String type;
     public final List<String> arguments;
     public final double scriptedTime;
+    public final String line;
 
     public ScriptedActionConfiguration(String line) {
+        this.line = line;
         Pattern pattern = Pattern.compile("^\\t*(\\d+(?:\\.\\d*)?)\\t+(\\w+):?\\t+(.*)");
         Matcher match = pattern.matcher(line.split(" // ")[0]);
         if (match.matches()) {
             type = match.group(2);
             scriptedTime = Double.parseDouble(match.group(1));
             arguments = Arrays.asList(match.group(3).split(", "));
-        }
-        else {
+        } else {
             pattern = Pattern.compile("^(\\d*\\.?\\d*)(?:\\t*(.*))?$");
             match = pattern.matcher(line.split(" // ")[0]);
             if (match.matches()) {
