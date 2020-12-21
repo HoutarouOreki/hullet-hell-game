@@ -144,10 +144,14 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     public void showText(String text, float maxDuration, BasicListener onFinish) {
-        if (!text.equals(""))
+        if (!text.equals("")) {
             appearTime = liveTime;
-        else if (!fullText.equals(""))
+            HulletHellGame.getInputManager().managedProcessors.add(this);
+        }
+        else if (!fullText.equals("")) {
             disappearTime = liveTime;
+            HulletHellGame.getInputManager().managedProcessors.add(this);
+        }
 
         fullText = text;
         timePassed = 0;
@@ -166,8 +170,10 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private void finish() {
-        if (!fullText.equals(""))
+        if (!fullText.equals("")) {
             disappearTime = liveTime;
+            HulletHellGame.getInputManager().managedProcessors.remove(this);
+        }
         if (listener != null)
             listener.onAction();
     }
@@ -175,6 +181,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     public void reset() {
         appearTime = 0;
         disappearTime = 0;
+        HulletHellGame.getInputManager().managedProcessors.remove(this);
         fullText = "";
         liveTime = 0;
         characterSprite.setPosition(new Vector2(-characterSprite.getSize().x, 0));
