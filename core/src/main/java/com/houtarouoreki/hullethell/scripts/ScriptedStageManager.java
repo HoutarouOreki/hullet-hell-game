@@ -5,11 +5,15 @@ import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class ScriptedStageManager {
-    private final Queue<ScriptedSection> sections = new LinkedList<ScriptedSection>();
+    private final HashMap<String, Integer> flags = new HashMap<String, Integer>();
+    private final List<ScriptedSection> waitingSections = new ArrayList<ScriptedSection>();
+    private final List<ScriptedSection> activeSections = new ArrayList<ScriptedSection>();
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 
@@ -22,56 +26,89 @@ public class ScriptedStageManager {
                 section = new ScriptedWhileSection(world, sectionConfiguration, dialogueBox);
             else
                 section = new ScriptedSection(world, sectionConfiguration, dialogueBox);
-            sections.add(section);
+            waitingSections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
         }
     }
 
     public void update(double delta) {
-        while (sections.size() > 0 && sections.peek().isFinished()) {
-            assert sections.peek() != null;
-            bodiesRemovedPrevSections += sections.peek().getBodiesRemovedAmount();
-            sections.remove();
+        startSections();
+        updateSections(delta);
+    }
+
+    private boolean canStartSection(ScriptedSection section) {
+        for (String flag : section.flagsRequiredToStart.keySet()) {
+            if (getFlagValue(flag) < section.flagsRequiredToStart.get(flag))
+                return false;
         }
-        if (sections.size() > 0) {
-            sections.peek().update(delta);
+        return true;
+    }
+
+    private void startSections() {
+        Iterator<ScriptedSection> i = waitingSections.iterator();
+        while (i.hasNext()) {
+            ScriptedSection section = i.next();
+            if (canStartSection(section)) {
+                activeSections.add(section);
+                i.remove();
+            }
         }
+    }
+
+    private void updateSections(double delta) {
+        Iterator<ScriptedSection> i = activeSections.iterator();
+        while (i.hasNext()) {
+            ScriptedSection activeSection = i.next();
+            activeSection.update(delta);
+            if (activeSection.isFinished())
+                i.remove();
+        }
+    }
+
+    public int getFlagValue(String flag) {
+        if (!flags.containsKey(flag))
+            return 0;
+        return flags.get(flag);
+    }
+
+    public void incrementFlag(String flag) {
+        int oldValue = getFlagValue(flag);
+        flags.put(flag, oldValue + 1);
     }
 
     public String getCurrentStageName() {
-        return sections.size() > 0 ? sections.peek().getName() : "null";
+        return ""; // TODO
     }
 
     public int getWaitingBodiesCount() {
-        return sections.size() > 0 ? sections.peek().getWaitingBodiesCount() : 0;
+        return 0; // TODO
     }
 
     public int getActiveBodiesCount() {
-        return sections.size() > 0 ? sections.peek().getActiveBodiesCount() : 0;
+        return 0; // TODO
     }
 
     public int getBodiesCount() {
-        return sections.size() > 0 ? sections.peek().getBodiesCount() : 0;
+        return 0; // TODO
     }
 
     public int getBodiesRemovedAmount() {
-        return bodiesRemovedPrevSections +
-                (sections.peek() != null ? sections.peek().getBodiesRemovedAmount() : 0);
+        return 0; // TODO
     }
 
     public int getSectionWaitingActions() {
-        return sections.size() > 0 ? sections.peek().getWaitingActionsCount() : 0;
+        return 0; // TODO
     }
 
     public int getSectionCurrentActions() {
-        return sections.size() > 0 ? sections.peek().getCurrentActionsCount() : 0;
+        return 0; // TODO
     }
 
     public float getProgression() {
-        return getBodiesRemovedAmount() / (float) allBodiesAmount;
+        return 0; // TODO
     }
 
     public boolean isFinished() {
-        return sections.size() == 0;
+        return waitingSections.isEmpty() && activeSections.isEmpty();
     }
 }

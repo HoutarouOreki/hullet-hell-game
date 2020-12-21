@@ -12,6 +12,7 @@ import java.util.*;
 public class ScriptedSection {
     public final Queue<ScriptedAction> waitingActions;
     public final List<ScriptedAction> currentActions;
+    public final HashMap<String, Integer> flagsRequiredToStart;
     protected final World world;
     protected final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
@@ -22,6 +23,7 @@ public class ScriptedSection {
     private int bodiesRemovedAmount;
 
     public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
+        flagsRequiredToStart = new HashMap<String, Integer>(conf.flagsRequiredToStart);
         this.world = world;
         waitingBodies = new PriorityQueue<ScriptedBody>();
         generateWaitingBodies(conf, dialogueBox);
