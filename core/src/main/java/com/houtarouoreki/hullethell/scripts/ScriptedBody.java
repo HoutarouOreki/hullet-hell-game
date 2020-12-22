@@ -18,11 +18,15 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     private int allSubbodiesAmount;
     private World world;
     private ScriptedSection section;
+    private final boolean wasInPreviousSections;
+    private final boolean willBeInFutureSections;
 
     public ScriptedBody(ScriptedBodyConfiguration conf, DialogueBox dialogueBox) {
         type = conf.type;
         name = conf.name;
         configName = conf.configName;
+        wasInPreviousSections = conf.hasPreviousSection;
+        willBeInFutureSections = conf.hasNextSection;
         for (ScriptedActionConfiguration actionConf : conf.actions) {
             ScriptedAction action = ScriptedAction
                     .createScriptedAction(actionConf, this, dialogueBox);
@@ -32,27 +36,30 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     }
 
     public boolean isFinished() {
+        if (controlledBody == null)
+            return true;
         if (controlledBody.isRemoved()) {
             return true;
         }
         if (controlledBody instanceof Entity && !((Entity) controlledBody).isAlive()) {
             return true;
         }
-        if (currentActions.size() == 0 && waitingActions.size() == 0) {
-            world.removeBody(controlledBody);
-            return true;
-        }
-        return false;
+        return currentActions.size() == 0 && waitingActions.size() == 0;
     }
 
     public void initialise(World world, ScriptedSection section) {
-        controlledBody = createBodyFromScript(type);
+        if (wasInPreviousSections)
+            controlledBody = world.getBody(name);
+        else
+            controlledBody = createBodyFromScript(type);
         controlledBody.name = name;
         this.world = world;
         this.section = section;
     }
 
     public void update() {
+        if (controlledBody == null)
+            return;
         while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
@@ -65,6 +72,8 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
             action.update();
             if (action.isFinished()) {
                 i.remove();
+                if (!willBeInFutureSections)
+                    world.removeBody(controlledBody);
             }
         }
     }

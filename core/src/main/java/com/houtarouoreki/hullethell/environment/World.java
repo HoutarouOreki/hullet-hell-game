@@ -38,9 +38,9 @@ public class World {
     public World(StageConfiguration script, DialogueBox dialogueBox) {
         statistics = new Statistics();
         questManager = new QuestManager();
-        bodies = new ArrayList<Body>();
-        bodiesToAdd = new ArrayList<Body>();
-        bodiesToRemove = new ArrayList<Body>();
+        bodies = new ArrayList<>();
+        bodiesToAdd = new ArrayList<>();
+        bodiesToRemove = new ArrayList<>();
         collisionManager = new CollisionManager(this);
         collisionSoundManager = new CollisionSoundManager(collisionManager);
         scriptedStageManager = new ScriptedStageManager(this, script, dialogueBox);
@@ -172,5 +172,13 @@ public class World {
 
     public void stop() {
         collisionSoundManager.stop();
+    }
+
+    public Body getBody(String name) {
+        for (Body body : bodies) {
+            if (body.name != null && body.name.equals(name))
+                return body;
+        }
+        return null;
     }
 }
