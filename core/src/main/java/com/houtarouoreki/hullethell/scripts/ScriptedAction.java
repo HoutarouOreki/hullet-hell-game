@@ -56,6 +56,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new NewItemQuest();
             case "setFlag":
                 return new SetFlagAction();
+            case "fadeOutMusic":
+                return new FadeOutMusicAction();
             default:
                 throw new Error("Could not find action of type \"" + conf.type + "\""
                         + "\nSource line: " + conf.line);
