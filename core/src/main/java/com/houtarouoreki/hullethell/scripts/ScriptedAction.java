@@ -15,7 +15,6 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public Body body;
     public double scriptedTime;
     protected World world;
-    protected ScriptedStageManager scriptedStageManager;
     protected ScriptedSection section;
     private double totalTime;
     private int ticks;

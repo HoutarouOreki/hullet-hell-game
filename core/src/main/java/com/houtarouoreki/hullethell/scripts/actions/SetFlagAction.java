@@ -13,7 +13,7 @@ public class SetFlagAction extends ScriptedAction {
 
     @Override
     protected void performAction() {
-        scriptedStageManager.incrementFlag(flag);
+        world.scriptedStageManager.incrementFlag(flag);
         setFinished();
     }
 

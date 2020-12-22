@@ -25,12 +25,12 @@ public class World {
     public final static float time_step_duration = 0.01f;
     public final QuestManager questManager;
     public final Statistics statistics;
+    public final ScriptedStageManager scriptedStageManager;
     private final List<Body> bodies;
     private final List<Body> bodiesToAdd;
     private final List<Body> bodiesToRemove;
     private final CollisionManager collisionManager;
     private final CollisionSoundManager collisionSoundManager;
-    private final ScriptedStageManager scriptedStageManager;
     private final WorldRenderingManager renderingManager;
     private int ticksPassed;
     private float bufferedTime;
