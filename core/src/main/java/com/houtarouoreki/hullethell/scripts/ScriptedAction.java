@@ -46,8 +46,10 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new PlaySongAction();
             case "loopSong":
                 return new LoopSongAction();
-            case "dialogue":
-                return new DialogueAction(dialogueBox);
+            case "dialogueCharacter":
+                return new DialogueCharacterAction(dialogueBox);
+            case "dialogueText":
+                return new DialogueTextAction(dialogueBox);
             case "randomAsteroid":
                 return new RandomSplittingAsteroidAction();
             case "newItemQuest":

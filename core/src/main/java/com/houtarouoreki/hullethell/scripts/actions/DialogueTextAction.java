@@ -2,14 +2,13 @@ package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueMessage;
-import com.houtarouoreki.hullethell.helpers.BasicListener;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
-public class DialogueAction extends ScriptedAction {
+public class DialogueTextAction extends ScriptedAction {
     private final DialogueBox dialogueBox;
     private String text;
 
-    public DialogueAction(DialogueBox dialogueBox) {
+    public DialogueTextAction(DialogueBox dialogueBox) {
         this.dialogueBox = dialogueBox;
     }
 
@@ -26,12 +25,7 @@ public class DialogueAction extends ScriptedAction {
     protected void performAction() {
         if (getTicks() != 0)
             return;
-        dialogueBox.addMessage(new DialogueMessage("Temp", text, new BasicListener() {
-            @Override
-            public void onAction() {
-                setFinished();
-            }
-        }));
+        dialogueBox.addMessage(new DialogueMessage("Temp", text, this::setFinished));
     }
 
     @Override

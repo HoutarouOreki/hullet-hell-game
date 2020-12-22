@@ -7,18 +7,22 @@ import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.ui.Label;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 public class DialogueBox extends Drawable implements ControlProcessor {
     private final HashMap<Float, Integer> timeTable
-            = new HashMap<Float, Integer>();
+            = new HashMap<>();
     private final List<DialogueMessage> messages
-            = new ArrayList<DialogueMessage>();
+            = new ArrayList<>();
     private final Label textLabel;
     private final Label characterLabel;
     private String timeTableIsFor;
     private State state = State.HIDDEN;
     private float stateChangeTime;
+    private String characterName;
 
     public DialogueBox() {
         setSize(new Vector2(1, 200));
@@ -41,7 +45,12 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         add(line);
     }
 
+    public void setCharacter(String characterName) {
+        this.characterName = characterName;
+    }
+
     public void addMessage(DialogueMessage message) {
+        message.character = characterName;
         messages.add(message);
     }
 
