@@ -11,9 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ScriptedStageManager {
-    private final HashMap<String, Integer> flags = new HashMap<String, Integer>();
-    private final List<ScriptedSection> waitingSections = new ArrayList<ScriptedSection>();
-    private final List<ScriptedSection> activeSections = new ArrayList<ScriptedSection>();
+    private final HashMap<String, Integer> flags = new HashMap<>();
+    private final List<ScriptedSection> waitingSections = new ArrayList<>();
+    private final List<ScriptedSection> activeSections = new ArrayList<>();
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 

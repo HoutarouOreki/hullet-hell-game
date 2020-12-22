@@ -23,15 +23,15 @@ public class ScriptedSection {
     private int bodiesRemovedAmount;
 
     public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
-        flagsRequiredToStart = new HashMap<String, Integer>(conf.flagsRequiredToStart);
+        flagsRequiredToStart = new HashMap<>(conf.flagsRequiredToStart);
         this.world = world;
-        waitingBodies = new PriorityQueue<ScriptedBody>();
+        waitingBodies = new PriorityQueue<>();
         generateWaitingBodies(conf, dialogueBox);
-        activeBodies = new ArrayList<ScriptedBody>();
-        bodies = new ArrayList<Body>();
+        activeBodies = new ArrayList<>();
+        bodies = new ArrayList<>();
         name = conf.name;
-        waitingActions = new LinkedList<ScriptedAction>();
-        currentActions = new ArrayList<ScriptedAction>();
+        waitingActions = new LinkedList<>();
+        currentActions = new ArrayList<>();
         generateWaitingActions(conf, dialogueBox);
     }
 
