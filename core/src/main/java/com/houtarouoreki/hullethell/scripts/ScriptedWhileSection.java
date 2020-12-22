@@ -60,4 +60,9 @@ public class ScriptedWhileSection extends ScriptedSection {
         }
         return true;
     }
+
+    @Override
+    public boolean isFinished() {
+        return super.isFinished() && !isSupposedToRestart();
+    }
 }
