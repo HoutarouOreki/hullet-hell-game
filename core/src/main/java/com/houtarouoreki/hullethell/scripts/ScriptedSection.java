@@ -4,6 +4,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
+import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
@@ -72,6 +73,10 @@ public class ScriptedSection {
             body.update();
             if (body.isFinished()) {
                 i.remove();
+                if ((body.controlledBody instanceof Entity)
+                        && !((Entity) body.controlledBody).isAlive()) {
+                    world.scriptedStageManager.incrementFlag(body.type + ":" + body.name);
+                }
             }
         }
 
