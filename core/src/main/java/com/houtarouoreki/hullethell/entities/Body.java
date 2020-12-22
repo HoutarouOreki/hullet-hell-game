@@ -15,15 +15,15 @@ import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
     private final List<CollisionCircle> collisionBody;
     private final Vector2 acceleration = new Vector2();
+    public String name;
+    public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
     private int lastCollisionTick = -1;
     private CollisionTeam team;
-    public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
@@ -34,7 +34,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     }
 
     public Body() {
-        collisionBody = new ArrayList<CollisionCircle>();
+        collisionBody = new ArrayList<>();
     }
 
     public ScriptedSection getSection() {
@@ -120,7 +120,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
                 break;
             case PLAYER_SHIP:
                 collidesWith = EnumSet.of(CollisionTeam.COMPUTER,
-                                CollisionTeam.ENVIRONMENT, CollisionTeam.ITEMS);
+                        CollisionTeam.ENVIRONMENT, CollisionTeam.ITEMS);
                 break;
             case PLAYER_BULLETS:
                 collidesWith = EnumSet

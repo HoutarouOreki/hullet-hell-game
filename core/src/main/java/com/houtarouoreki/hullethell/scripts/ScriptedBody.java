@@ -47,6 +47,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
 
     public void initialise(World world, ScriptedSection section) {
         controlledBody = createBodyFromScript(type);
+        controlledBody.name = name;
         this.world = world;
         this.section = section;
     }
