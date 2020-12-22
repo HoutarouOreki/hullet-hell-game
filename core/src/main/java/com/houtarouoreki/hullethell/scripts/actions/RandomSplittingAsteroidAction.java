@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomSplittingAsteroidAction extends ScriptedAction {
-    private final List<RandomAsteroid> asteroids = new ArrayList<RandomAsteroid>();
-    private final List<RandomAsteroid> toAdd = new ArrayList<RandomAsteroid>();
-    private final List<RandomAsteroid> toRemove = new ArrayList<RandomAsteroid>();
-    private final float itemDropMaxRadius = 0.5f;
+    private final List<RandomAsteroid> asteroids = new ArrayList<>();
+    private final List<RandomAsteroid> toAdd = new ArrayList<>();
+    private final List<RandomAsteroid> toRemove = new ArrayList<>();
+    private final float itemDropMaxRadius = 0.6f;
     private Random random;
     private String[] itemStrings;
 
@@ -27,6 +27,8 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     }
 
     private void addAsteroid(RandomAsteroid asteroid) {
+        asteroid.dontCollideWith.addAll(asteroids);
+        asteroid.dontCollideWith.addAll(toAdd);
         toAdd.add(asteroid);
         world.addBody(asteroid);
     }
@@ -47,22 +49,31 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
         if (asteroid.isRemoved())
             toRemove.add(asteroid);
         if (asteroid.getFarthestPointDistance() > itemDropMaxRadius
-                && asteroid.getHealth() <= 0)
+                && !asteroid.isAlive())
             addChildAsteroids(asteroid);
     }
 
     private void addChildAsteroids(final RandomAsteroid asteroid) {
-        int amount = random.nextInt(2) + 1;
+        int amount = random.nextInt(2) + 2;
+        float lastAngle = 0;
         for (int i = 0; i < amount; i++) {
-            float maxScale = asteroid.getFarthestPointDistance();
-            float minScale = 0.6f;
+            float maxScale = asteroid.getFarthestPointDistance() * 1.2f;
+            float minScale = Math.max(itemDropMaxRadius,
+                    asteroid.getFarthestPointDistance() * 2 - 1.5f);
             float scaleRange = maxScale - minScale;
             float scale = random.nextFloat() * scaleRange + minScale;
             RandomAsteroid childAsteroid = generateAsteroid(scale);
-            childAsteroid.setPosition(asteroid.getPosition());
-            childAsteroid.scale(scale);
-            childAsteroid.setVelocity(new Vector2(random.nextFloat() * 4 - 5,
-                    random.nextFloat() * 6 - 3).scl(1 / scale));
+            float speed = random.nextFloat() * 6 - 3;
+            float angle = lastAngle + 70 + random.nextFloat() * 120;
+            Vector2 velocity = new Vector2(-1, 0);
+            velocity.rotate(angle);
+            velocity.scl(speed);
+            velocity.add(new Vector2(-2, 0));
+            velocity.scl(1 / scale);
+            childAsteroid.setVelocity(velocity);
+            Vector2 position = asteroid.getPosition();
+            childAsteroid.setPosition(position);
+            childAsteroid.disableCollisionsFor(0.1f);
             addAsteroid(childAsteroid);
         }
     }

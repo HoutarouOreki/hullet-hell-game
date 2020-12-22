@@ -89,9 +89,12 @@ public class HulletHellGame extends ScreenBasedGame {
 
         screenManager = getScreenManager();
 
-        assetManager.setLoader(BodyConfiguration.class, new BodyConfigurationLoader(new InternalFileHandleResolver()));
-        assetManager.setLoader(SongConfiguration.class, new SongConfigurationLoader(new InternalFileHandleResolver()));
-        assetManager.setLoader(StageConfiguration.class, new StageConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(BodyConfiguration.class,
+                new BodyConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(SongConfiguration.class,
+                new SongConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(StageConfiguration.class,
+                new StageConfigurationLoader(new InternalFileHandleResolver()));
 
         assetManager.setLoader(UiTheme.class, new UiThemeLoader(fileHandleResolver));
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
@@ -123,9 +126,18 @@ public class HulletHellGame extends ScreenBasedGame {
                 "ironOre"
         ));
 
-        loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList("Asteroid"));
-        loadConfigsAndTextures(assetManager, "bullets", Arrays.asList("Bullet 1", "Player bullet 1"));
-        loadConfigsAndTextures(assetManager, "ships", Arrays.asList("Enemy ship 1", "Ship 1", "Copper eye"));
+//        loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList(
+//                "asteroid-large", "asteroid-medium"));
+
+        assetManager.load("environmentals/asteroid-large.png", Texture.class);
+        assetManager.load("environmentals/asteroid-medium.png", Texture.class);
+        assetManager.load("environmentals/asteroid-small.png", Texture.class);
+        assetManager.load("environmentals/asteroid-tiny.png", Texture.class);
+
+        loadConfigsAndTextures(assetManager, "bullets", Arrays.asList(
+                "Bullet 1", "Player bullet 1"));
+        loadConfigsAndTextures(assetManager, "ships", Arrays.asList(
+                "Enemy ship 1", "Ship 1", "Copper eye"));
 
         loadEffects(assetManager, Arrays.asList(
                 "blurredCircle",
@@ -151,7 +163,8 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadSettings() {
         try {
             if (!Mdx.playerData.hasFile("playerData.json"))
-                Mdx.playerData.writeJson(new SerializableSettings(), "playerData.json");
+                Mdx.playerData.writeJson(new SerializableSettings(),
+                        "playerData.json");
             settings.setSettings(Mdx.playerData
                     .readJson(SerializableSettings.class, "playerData.json"));
         } catch (PlayerDataException e) {
@@ -168,7 +181,9 @@ public class HulletHellGame extends ScreenBasedGame {
                 Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
             inputManager.clearPressedKeys();
         }, true);
-        settings.renderFPS.addListener((oldValue, newValue) -> fpsText.setVisibility(newValue), true);
+        settings.renderFPS.addListener(
+                (oldValue, newValue) -> fpsText.setVisibility(newValue),
+                true);
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {

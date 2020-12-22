@@ -15,6 +15,7 @@ import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
@@ -22,12 +23,15 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     private final Vector2 acceleration = new Vector2();
     public String name;
     public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
+    public final List<Body> dontCollideWith = new ArrayList<>();
     private int lastCollisionTick = -1;
     private CollisionTeam team;
     private boolean acceptsCollisions = true;
     private boolean removed;
     private ScriptedSection section;
     private boolean shouldDespawnOOBounds;
+    private float collisionsDisabledFor;
+    private double collisionsDisabledOn;
 
     public Body(List<CollisionCircle> collisionBody) {
         this.collisionBody = collisionBody;
@@ -137,11 +141,19 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     }
 
     public boolean isAcceptingCollisions() {
+        double sinceCollisionsDisabled = getTime() - collisionsDisabledOn;
+        if (sinceCollisionsDisabled <= collisionsDisabledFor)
+            return false;
         return acceptsCollisions;
     }
 
     public void setAcceptsCollisions(boolean acceptsCollisions) {
         this.acceptsCollisions = acceptsCollisions;
+    }
+
+    public void disableCollisionsFor(float seconds) {
+        collisionsDisabledFor = seconds;
+        collisionsDisabledOn = getTime();
     }
 
     public boolean isRemoved() {

@@ -14,7 +14,7 @@ public class CollisionManager {
 
     public CollisionManager(World world) {
         this.world = world;
-        currentStepCollisions = new ArrayList<CollisionResult>();
+        currentStepCollisions = new ArrayList<>();
     }
 
     public void RunCollisions() {
@@ -27,10 +27,11 @@ public class CollisionManager {
 
             for (int j = i + 1; j < world.getBodies().size(); j++) {
                 Body b = world.getBodies().get(j);
-                if (!a.collidesWith.contains(b.getTeam())
+                if (!(a.collidesWith.contains(b.getTeam()) || b.collidesWith.contains(a.getTeam()))
                         || !a.isAcceptingCollisions()
                         || !b.isAcceptingCollisions()
-                        || a.getTeam() == b.getTeam()
+                        || a.dontCollideWith.contains(b)
+                        || b.dontCollideWith.contains(a)
                         || a.getLastCollisionTick() == world.getTicksPassed()
                         || b.getLastCollisionTick() == world.getTicksPassed()) {
                     continue;
@@ -55,7 +56,7 @@ public class CollisionManager {
         for (CollisionCircle ca : a.getCollisionBody()) {
             for (CollisionCircle cb : b.getCollisionBody()) {
                 if (Vector2.dst(a.getPosition().x + ca.getX(), a.getPosition().y + ca.getY(),
-                        b.getPosition().x + cb.getX(),b.getPosition().y + cb.getY())
+                        b.getPosition().x + cb.getX(), b.getPosition().y + cb.getY())
                         <= ca.getRadius() + cb.getRadius()) {
                     collision.isCollision = true;
                     collision.position = approximateCollisionPosition(a, b, ca, cb);
