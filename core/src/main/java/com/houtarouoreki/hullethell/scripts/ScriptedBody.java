@@ -35,7 +35,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         if (controlledBody.isRemoved()) {
             return true;
         }
-        if (controlledBody instanceof Entity && ((Entity) controlledBody).getHealth() == 0) {
+        if (controlledBody instanceof Entity && !((Entity) controlledBody).isAlive()) {
             return true;
         }
         if (currentActions.size() == 0 && waitingActions.size() == 0) {
