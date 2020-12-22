@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.audio.CollisionSoundManager;
@@ -9,6 +10,7 @@ import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.Item;
+import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
@@ -26,6 +28,7 @@ public class World {
     public final QuestManager questManager;
     public final Statistics statistics;
     public final ScriptedStageManager scriptedStageManager;
+    public final Ship player;
     private final List<Body> bodies;
     private final List<Body> bodiesToAdd;
     private final List<Body> bodiesToRemove;
@@ -36,6 +39,7 @@ public class World {
     private float bufferedTime;
 
     public World(StageConfiguration script, DialogueBox dialogueBox) {
+        player = new Ship("Ship 1");
         statistics = new Statistics();
         questManager = new QuestManager();
         bodies = new ArrayList<>();
@@ -109,6 +113,7 @@ public class World {
         bufferedTime += delta;
         while (bufferedTime >= time_step_duration) {
             physics();
+            clampPlayerPosition();
             addBodies();
             removeBodies();
             collisionSoundManager.update(delta);
@@ -117,6 +122,13 @@ public class World {
             scriptedStageManager.update(delta);
             renderingManager.update(delta);
         }
+    }
+
+    private void clampPlayerPosition() {
+        player.setPosition(
+                new Vector2(
+                        MathUtils.clamp(player.getPosition().x, 0, World.viewArea.x),
+                        MathUtils.clamp(player.getPosition().y, 0, World.viewArea.y)));
     }
 
     private void addBodies() {

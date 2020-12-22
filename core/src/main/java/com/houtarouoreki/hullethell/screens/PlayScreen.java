@@ -1,18 +1,15 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.entities.Bullet;
-import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
-import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
 import com.houtarouoreki.hullethell.input.Controls;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -29,10 +26,9 @@ import java.util.List;
 
 public class PlayScreen extends HulletHellScreen {
     public static Viewport viewport;
-    private final List<BackgroundObject> stars = new ArrayList<BackgroundObject>();
+    private final List<BackgroundObject> stars = new ArrayList<>();
     private final DialogueBox dialogueBox;
     private StageConfiguration script;
-    private Ship player;
     private World world;
     private int shotFrames;
 
@@ -52,16 +48,12 @@ public class PlayScreen extends HulletHellScreen {
         if (world != null)
             container.remove(world.questManager);
         world = new World(script, dialogueBox);
-        player = new Ship("Ship 1");
+        Ship player = world.player;
         player.setCollisionCooldown(2);
         player.setTeam(CollisionTeam.PLAYER_SHIP);
         player.setPosition(new Vector2(World.viewArea.x * 0.1f, World.viewArea.y * 0.5f));
-        player.onItemCollected = new BasicObjectListener<Item>() {
-            @Override
-            public void onAction(Item item) {
-                world.statistics.addItem(item.name);
-            }
-        };
+        player.onItemCollected =
+                item -> world.statistics.addItem(item.name);
         world.addBody(player);
         container.add(world.questManager);
         dialogueBox.reset();
@@ -88,22 +80,15 @@ public class PlayScreen extends HulletHellScreen {
 
         updateBackground(delta);
         world.update(delta);
-        clampPlayerPosition();
         if (world.isFinished()) {
             screenManager.enterGameScreen(3, new FadeOutTransition(), new FadeInTransition());
         }
     }
 
-    private void clampPlayerPosition() {
-        player.setPosition(
-                new Vector2(
-                        MathUtils.clamp(player.getPosition().x, 0, World.viewArea.x),
-                        MathUtils.clamp(player.getPosition().y, 0, World.viewArea.y)));
-    }
-
     private void updateSteering() {
         float speed = 6;
         Vector2 targetVelocity = new Vector2();
+        Ship player = world.player;
         if (HulletHellGame.getInputManager().isControlActive(Controls.left))
             targetVelocity.x -= 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.right))
