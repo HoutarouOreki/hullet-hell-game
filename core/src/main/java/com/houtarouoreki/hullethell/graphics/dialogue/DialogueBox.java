@@ -93,6 +93,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     private void setState(State state) {
         this.state = state;
         stateChangeTime = getTime();
+        setVisibility(state != State.HIDDEN);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private float getTransitionProgress() {
-        float a = getTimeSinceStateChange();
+        float a = getTimeSinceStateChange() / 0.4f;
         a = Math.min(1, a);
         a = Math.max(0, a);
         return a;
