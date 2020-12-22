@@ -15,6 +15,7 @@ public class FadeOutMusicAction extends ScriptedAction {
     @Override
     protected void performAction() {
         HulletHellGame.getMusicManager().fadeOut((float) duration);
+        setFinished();
     }
 
     @Override
