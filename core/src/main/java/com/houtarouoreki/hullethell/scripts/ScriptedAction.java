@@ -15,6 +15,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public Body body;
     public double scriptedTime;
     protected World world;
+    protected ScriptedStageManager scriptedStageManager;
     protected ScriptedSection section;
     private double totalTime;
     private int ticks;
@@ -44,9 +45,11 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             a = new RandomSplittingAsteroidAction();
         } else if (conf.type.equals("newItemQuest")) {
             a = new NewItemQuest();
+        } else if (conf.type.equals("setFlag")) {
+            a = new SetFlagAction();
         } else {
             throw new Error("Could not find action of type \"" + conf.type + "\""
-                + "\nSource line: " + conf.line);
+                    + "\nSource line: " + conf.line);
         }
         a.scriptedTime = conf.scriptedTime;
         a.arguments = conf.arguments;
