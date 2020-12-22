@@ -16,7 +16,7 @@ public class ScriptedSection {
     public final HashMap<String, Integer> flagsRequiredToStart;
     protected final World world;
     protected final Queue<ScriptedBody> waitingBodies;
-    private final List<ScriptedBody> activeBodies;
+    protected final List<ScriptedBody> activeBodies;
     private final List<Body> bodies;
     public final String name;
     protected double timePassed;
