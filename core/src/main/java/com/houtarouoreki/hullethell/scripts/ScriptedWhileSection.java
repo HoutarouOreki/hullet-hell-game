@@ -8,13 +8,13 @@ import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.quests.Quest;
 
 public class ScriptedWhileSection extends ScriptedSection {
-    private final String argument;
+    private final String parameters;
     private final ScriptedSectionConfiguration conf;
     private final DialogueBox dialogueBox;
 
     public ScriptedWhileSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
         super(world, conf, dialogueBox);
-        this.argument = conf.name;
+        this.parameters = conf.whileParameters;
         this.conf = conf;
         this.dialogueBox = dialogueBox;
     }
@@ -51,14 +51,13 @@ public class ScriptedWhileSection extends ScriptedSection {
     }
 
     private boolean isSupposedToRestart() {
-        boolean shouldRestart = true;
-        if (argument.startsWith("quest:")) {
-            String questName = argument.replace("quest:", "");
+        if (parameters.startsWith("quest:")) {
+            String questName = parameters.replace("quest:", "");
             for (Quest quest : world.questManager.quests) {
                 if (quest.name.equals(questName) && quest.isDone())
-                    shouldRestart = false;
+                    return false;
             }
         }
-        return shouldRestart;
+        return true;
     }
 }

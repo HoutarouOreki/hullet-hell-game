@@ -20,6 +20,7 @@ public class DialogueCharacterAction extends ScriptedAction {
     @Override
     protected void performAction() {
         dialogueBox.setCharacter(characterName);
+        setFinished();
     }
 
     @Override

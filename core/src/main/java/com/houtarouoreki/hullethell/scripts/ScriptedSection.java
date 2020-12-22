@@ -17,7 +17,7 @@ public class ScriptedSection {
     protected final Queue<ScriptedBody> waitingBodies;
     private final List<ScriptedBody> activeBodies;
     private final List<Body> bodies;
-    private final String name;
+    public final String name;
     protected double timePassed;
     protected int allBodiesAmount;
     private int bodiesRemovedAmount;
@@ -94,10 +94,6 @@ public class ScriptedSection {
 
     public double getTimePassed() {
         return timePassed;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getWaitingBodiesCount() {

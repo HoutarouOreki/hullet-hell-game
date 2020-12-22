@@ -60,8 +60,10 @@ public class ScriptedStageManager {
         while (i.hasNext()) {
             ScriptedSection activeSection = i.next();
             activeSection.update(delta);
-            if (activeSection.isFinished())
+            if (activeSection.isFinished()) {
                 i.remove();
+                incrementFlag("sectionDone:" + activeSection.name);
+            }
         }
     }
 
