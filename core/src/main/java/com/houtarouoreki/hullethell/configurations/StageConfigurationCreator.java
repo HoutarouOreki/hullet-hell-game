@@ -8,7 +8,7 @@ public class StageConfigurationCreator {
     public final List<ScriptedSectionConfiguration> sections = new ArrayList<>();
     final HashMap<String, ScriptedBodyConfiguration> allBodies = new HashMap<>();
     private final Pattern sectionPattern = Pattern.compile("^!(?<type>\\w*)(?:\\(?(?<whileParams>.*)\\))?(?: ?(?<name>\\w*))?(?: ?@(?<startFlags>.*))?$");
-    private final Pattern dialogueSectionCharacterPattern = Pattern.compile("(?<characterName>.*):");
+    private final Pattern dialogueSectionCharacterPattern = Pattern.compile("^(?<characterName>.*):$");
     private final Pattern dialogueSectionTextPattern = Pattern.compile("\\t(?<text>.*)");
     private final Pattern bodyPattern = Pattern.compile("^(?<name>\\w+):(?:\\s+\"(?<path>.*)\"$)?");
     private final Pattern actionPattern = Pattern.compile("^\\t*(?<time>\\d\\.?\\d*)\\s+(?<name>\\w+):?\\s+(?<arguments>.*)$");
@@ -81,32 +81,31 @@ public class StageConfigurationCreator {
     }
 
     private void handleDialogueSection(String line) {
-        handleDialogueCharacterLine(line);
-        handleDialogueTextLine(line);
+        if (!handleDialogueCharacterLine(line))
+            handleDialogueTextLine(line);
     }
 
     private void handleDialogueTextLine(String line) {
-        Matcher matcher;
-
-        matcher = dialogueSectionTextPattern.matcher(line);
-        if (matcher.matches()) {
-            ScriptedActionConfiguration dialogueTextAction = new ScriptedActionConfiguration(
-                    "dialogueText",
-                    Collections.singletonList(matcher.group("text")),
-                    0, line);
-            currentSection.actions.add(dialogueTextAction);
-        }
+        Matcher matcher = dialogueSectionTextPattern.matcher(line);
+        if (!matcher.matches())
+            return;
+        ScriptedActionConfiguration dialogueTextAction = new ScriptedActionConfiguration(
+                "dialogueText",
+                Collections.singletonList(matcher.group("text")),
+                0, line);
+        currentSection.actions.add(dialogueTextAction);
     }
 
-    private void handleDialogueCharacterLine(String line) {
+    private boolean handleDialogueCharacterLine(String line) {
         Matcher matcher = dialogueSectionCharacterPattern.matcher(line);
-        if (matcher.matches()) {
-            ScriptedActionConfiguration dialogueCharacterAction = new ScriptedActionConfiguration(
-                    "dialogueCharacter",
-                    Collections.singletonList(matcher.group("characterName")),
-                    0, line);
-            currentSection.actions.add(dialogueCharacterAction);
-        }
+        if (!matcher.matches())
+            return false;
+        ScriptedActionConfiguration dialogueCharacterAction = new ScriptedActionConfiguration(
+                "dialogueCharacter",
+                Collections.singletonList(matcher.group("characterName")),
+                0, line);
+        currentSection.actions.add(dialogueCharacterAction);
+        return true;
     }
 
     private void setStartFlags(ScriptedSectionConfiguration section, String flagsString) {
