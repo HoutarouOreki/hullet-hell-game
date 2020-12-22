@@ -74,7 +74,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         DialogueMessage completedMessage = messages.get(0);
         messages.remove(completedMessage);
         completedMessage.completionListener.onAction();
-        setState(messages.isEmpty() ? State.POPPING_OUT : State.VISIBLE);
+        setState(messages.isEmpty() ? State.TIMING_OUT : State.VISIBLE);
     }
 
     private void setState(State state) {
@@ -94,6 +94,9 @@ public class DialogueBox extends Drawable implements ControlProcessor {
                 break;
             case VISIBLE:
                 handleVisible();
+                break;
+            case TIMING_OUT:
+                handleTimingOut();
                 break;
             case POPPING_OUT:
                 handlePopOut();
@@ -169,10 +172,18 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         textLabel.setText(message.substring(0, lastIndex + 1));
     }
 
+    private void handleTimingOut() {
+        if (getTimeSinceStateChange() > 0.1f)
+            setState(State.POPPING_OUT);
+        else if (!messages.isEmpty())
+            setState(State.VISIBLE);
+    }
+
     private enum State {
         HIDDEN,
         POPPING_IN,
         VISIBLE,
+        TIMING_OUT,
         POPPING_OUT
     }
 }
