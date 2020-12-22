@@ -58,7 +58,7 @@ public class ScriptedWhileSection extends ScriptedSection {
                     return false;
             }
         }
-        return true;
+        return world.scriptedStageManager.getFlagValue(parameters) <= 0;
     }
 
     @Override
