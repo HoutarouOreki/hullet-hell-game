@@ -24,37 +24,41 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf,
                                                       ScriptedBody body,
                                                       DialogueBox dialogueBox) {
-        ScriptedAction a;
-        if (conf.type.equals("moveTo")) {
-            a = new MoveToAction();
-        } else if (conf.type.equals("moveBezier")) {
-            a = new MoveBezierAction();
-        } else if (conf.type.equals("shoot")) {
-            a = new ShootAction();
-        } else if (conf.type.equals("shootMultipleRadius")) {
-            a = new ShootMultipleAction();
-        } else if (conf.type.equals("shootCircle")) {
-            a = new ShootCircleAction();
-        } else if (conf.type.equals("playSong")) {
-            a = new PlaySongAction();
-        } else if (conf.type.equals("loopSong")) {
-            a = new LoopSongAction();
-        } else if (conf.type.equals("dialogue")) {
-            a = new DialogueAction(dialogueBox);
-        } else if (conf.type.equals("randomAsteroid")) {
-            a = new RandomSplittingAsteroidAction();
-        } else if (conf.type.equals("newItemQuest")) {
-            a = new NewItemQuest();
-        } else if (conf.type.equals("setFlag")) {
-            a = new SetFlagAction();
-        } else {
-            throw new Error("Could not find action of type \"" + conf.type + "\""
-                    + "\nSource line: " + conf.line);
-        }
+        ScriptedAction a = getScriptedAction(conf, dialogueBox);
         a.scriptedTime = conf.scriptedTime;
         a.arguments = conf.arguments;
         a.scriptedBody = body;
         return a;
+    }
+
+    private static ScriptedAction getScriptedAction(ScriptedActionConfiguration conf, DialogueBox dialogueBox) {
+        switch (conf.type) {
+            case "moveTo":
+                return new MoveToAction();
+            case "moveBezier":
+                return new MoveBezierAction();
+            case "shoot":
+                return new ShootAction();
+            case "shootMultipleRadius":
+                return new ShootMultipleAction();
+            case "shootCircle":
+                return new ShootCircleAction();
+            case "playSong":
+                return new PlaySongAction();
+            case "loopSong":
+                return new LoopSongAction();
+            case "dialogue":
+                return new DialogueAction(dialogueBox);
+            case "randomAsteroid":
+                return new RandomSplittingAsteroidAction();
+            case "newItemQuest":
+                return new NewItemQuest();
+            case "setFlag":
+                return new SetFlagAction();
+            default:
+                throw new Error("Could not find action of type \"" + conf.type + "\""
+                        + "\nSource line: " + conf.line);
+        }
     }
 
     public double getScriptedTime() {
