@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.audio.MusicManager;
 import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
-import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.graphics.Fonts;
 import com.houtarouoreki.hullethell.input.InputManager;
@@ -115,7 +114,8 @@ public class HulletHellGame extends ScreenBasedGame {
                 "To Eris - Social Blast",
                 "One Man Symphony - Beat 02",
                 "One Man Symphony - First Night In Space",
-                "One Man Symphony - Into The Unknown"
+                "One Man Symphony - Into The Unknown",
+                "One Man Symphony - Ambush At The Dawn"
         ));
 
         loadItems(assetManager, Arrays.asList(
@@ -130,7 +130,7 @@ public class HulletHellGame extends ScreenBasedGame {
         loadEffects(assetManager, Arrays.asList(
                 "blurredCircle",
                 "star"
-                ));
+        ));
         loadAnimatedEffect(assetManager, "Explosion", 6);
 
         loadCharacters(assetManager, Arrays.asList("Temp"));
@@ -160,23 +160,15 @@ public class HulletHellGame extends ScreenBasedGame {
     }
 
     private void addSettingsListeners() {
-        settings.fullScreen.addListener(new ValueChangeListener<Boolean>() {
-            @Override
-            public void onValueChanged(Boolean oldValue, Boolean newValue) {
-                com.badlogic.gdx.Graphics.DisplayMode dm = Gdx.graphics.getDisplayMode();
-                if (newValue)
-                    Gdx.graphics.setFullscreenMode(dm);
-                else
-                    Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
-                inputManager.clearPressedKeys();
-            }
+        settings.fullScreen.addListener((oldValue, newValue) -> {
+            com.badlogic.gdx.Graphics.DisplayMode dm = Gdx.graphics.getDisplayMode();
+            if (newValue)
+                Gdx.graphics.setFullscreenMode(dm);
+            else
+                Gdx.graphics.setWindowedMode(dm.width - 10, dm.height - 100);
+            inputManager.clearPressedKeys();
         }, true);
-        settings.renderFPS.addListener(new ValueChangeListener<Boolean>() {
-            @Override
-            public void onValueChanged(Boolean oldValue, Boolean newValue) {
-                fpsText.setVisibility(newValue);
-            }
-        }, true);
+        settings.renderFPS.addListener((oldValue, newValue) -> fpsText.setVisibility(newValue), true);
     }
 
     private void loadStages(AssetManager assetManager, List<String> names) {
