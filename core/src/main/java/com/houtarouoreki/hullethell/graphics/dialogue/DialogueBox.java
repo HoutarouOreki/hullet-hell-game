@@ -1,5 +1,7 @@
 package com.houtarouoreki.hullethell.graphics.dialogue;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.graphics.*;
@@ -38,6 +40,17 @@ public class DialogueBox extends Drawable implements ControlProcessor {
 
         add(characterLabel = new Label());
         characterLabel.setSize(new Vector2(500, 30));
+
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParams
+                = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParams.size = 30;
+        fontParams.borderWidth = 1;
+        fontParams.borderColor = Color.BLACK;
+        characterLabel.font = Fonts.getFont("acme", fontParams);
+
+        fontParams.size = 20;
+        fontParams.borderWidth = 0.4f;
+        textLabel.font = Fonts.getFont("acme", fontParams);
 
         Rectangle line = new Rectangle();
         line.setY(40);
@@ -116,6 +129,8 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private void handleHidden() {
+        characterLabel.setText("");
+        textLabel.setText("");
         if (!messages.isEmpty())
             setState(State.POPPING_IN);
     }
