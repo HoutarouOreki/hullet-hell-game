@@ -70,12 +70,15 @@ public class StageConfigurationCreator {
         String bodyName = matcher.group("name");
 
         if (allBodies.containsKey(bodyName))
-            currentBody = allBodies.get(bodyName);
-        else {
-            currentBody = new ScriptedBodyConfiguration(line, bodyName,
-                    matcher.group("path"));
-            allBodies.put(bodyName, currentBody);
-        }
+            allBodies.get(bodyName).hasNextSection = true;
+
+        currentBody = new ScriptedBodyConfiguration(
+                line, bodyName, matcher.group("path"));
+
+        if (allBodies.containsKey(bodyName))
+            currentBody.hasPreviousSection = true;
+
+        allBodies.put(bodyName, currentBody);
 
         currentSection.bodies.add(currentBody);
     }

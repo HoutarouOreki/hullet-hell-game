@@ -9,6 +9,8 @@ public class ScriptedBodyConfiguration {
     public final String type;
     public final String name;
     public final String configName;
+    public boolean hasPreviousSection;
+    public boolean hasNextSection;
 
     public ScriptedBodyConfiguration(String line, String name, String path) {
         this.line = line;
