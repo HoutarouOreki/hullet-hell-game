@@ -11,7 +11,7 @@ public class StageConfigurationCreator {
     private final Pattern dialogueSectionCharacterPattern = Pattern.compile("^(?<characterName>.*):$");
     private final Pattern dialogueSectionTextPattern = Pattern.compile("\\t(?<text>.*)");
     private final Pattern bodyPattern = Pattern.compile("^(?<name>\\w+):(?:\\s+\"(?<path>.*)\"$)?");
-    private final Pattern actionPattern = Pattern.compile("^\\t*(?<time>\\d\\.?\\d*)\\s+(?<name>\\w+):?\\s+(?<arguments>.*)$");
+    private final Pattern actionPattern = Pattern.compile("^\\t*(?<time>\\d\\.?\\d*)\\s+(?<name>\\w+):?(?:[ \\t]+(?<arguments>.*))?$");
     private ScriptedSectionConfiguration currentSection;
     private ScriptedBodyConfiguration currentBody;
 
@@ -29,6 +29,7 @@ public class StageConfigurationCreator {
                         matcher.group("name"), matcher.group("whileParams"));
                 setStartFlags(currentSection, matcher.group("startFlags"));
                 sections.add(currentSection);
+                currentBody = null;
                 continue;
             }
             if (currentSection == null)
@@ -53,7 +54,7 @@ public class StageConfigurationCreator {
             return;
         ScriptedActionConfiguration action = new ScriptedActionConfiguration(
                 matcher.group("name"),
-                Arrays.asList(matcher.group("arguments").split(", ").clone()),
+                getArgumentsList(matcher.group("arguments")),
                 Double.parseDouble(matcher.group("time")),
                 line
         );
@@ -63,22 +64,33 @@ public class StageConfigurationCreator {
             currentSection.actions.add(action);
     }
 
+    private List<String> getArgumentsList(String s) {
+        if (s != null)
+            return Arrays.asList(s.split(", "));
+        return new ArrayList<>();
+    }
+
     private void handleBodyLine(String line) {
         Matcher matcher = bodyPattern.matcher(line);
         if (!matcher.matches())
             return;
         String bodyName = matcher.group("name");
+        boolean hasBodyName = bodyName != null && !bodyName.isEmpty();
+        String path = matcher.group("path");
+        if (hasBodyName && path == null)
+            path = allBodies.get(bodyName).path;
 
-        if (allBodies.containsKey(bodyName))
+        if (hasBodyName && allBodies.containsKey(bodyName))
             allBodies.get(bodyName).hasNextSection = true;
 
         currentBody = new ScriptedBodyConfiguration(
-                line, bodyName, matcher.group("path"));
+                line, bodyName, path);
 
-        if (allBodies.containsKey(bodyName))
+        if (hasBodyName && allBodies.containsKey(bodyName))
             currentBody.hasPreviousSection = true;
 
-        allBodies.put(bodyName, currentBody);
+        if (hasBodyName)
+            allBodies.put(bodyName, currentBody);
 
         currentSection.bodies.add(currentBody);
     }
