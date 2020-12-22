@@ -12,8 +12,8 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final String type;
     public final String name;
     public final String configName;
-    public final Queue<ScriptedAction> waitingActions = new LinkedList<ScriptedAction>();
-    public final List<ScriptedAction> currentActions = new ArrayList<ScriptedAction>();
+    public final Queue<ScriptedAction> waitingActions = new LinkedList<>();
+    public final List<ScriptedAction> currentActions = new ArrayList<>();
     public Body controlledBody;
     private int allSubbodiesAmount;
     private World world;
@@ -69,15 +69,15 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     }
 
     private Body createBodyFromScript(String bodyClass) {
-
-        if (bodyClass.equals("ships")) {
-            return new Ship(configName);
-        } else if (bodyClass.equals("bullets")) {
-            return new Bullet(configName);
-        } else if (bodyClass.equals("environmentals")) {
-            return new Environmental(configName);
-        } else {
-            throw new Error("Error creating body from script");
+        switch (bodyClass) {
+            case "ships":
+                return new Ship(configName);
+            case "bullets":
+                return new Bullet(configName);
+            case "environmentals":
+                return new Environmental(configName);
+            default:
+                throw new Error("Error creating body from script");
         }
     }
 
