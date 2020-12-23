@@ -44,7 +44,12 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         if (controlledBody instanceof Entity && !((Entity) controlledBody).isAlive()) {
             return true;
         }
-        return currentActions.size() == 0 && waitingActions.size() == 0;
+        if (currentActions.size() == 0 && waitingActions.size() == 0) {
+            if (!willBeInFutureSections)
+                world.removeBody(controlledBody);
+            return true;
+        }
+        return false;
     }
 
     public void initialise(World world, ScriptedSection section) {
@@ -72,8 +77,6 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
             action.update();
             if (action.isFinished()) {
                 i.remove();
-                if (!willBeInFutureSections)
-                    world.removeBody(controlledBody);
             }
         }
     }
