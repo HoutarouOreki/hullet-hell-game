@@ -151,11 +151,16 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private float getCharacterDuration(char c) {
-        if (c == '.')
-            return 0.7f;
-        if (c == ',')
-            return 0.4f;
-        return 0.02f;
+        switch (c) {
+            case '.':
+            case '?':
+            case '!':
+                return 0.7f;
+            case ',':
+                return 0.4f;
+            default:
+                return 0.02f;
+        }
     }
 
     private void generateTimeTable() {
