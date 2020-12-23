@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
-import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 
 public class MusicManager {
@@ -15,17 +14,16 @@ public class MusicManager {
     private float fadeOutLeft;
     private float fadeOutDuration;
     private SongConfiguration currentSongInfo;
+    private float fadeInLeft;
+    private float fadeInDuration;
 
     public MusicManager(AssetManager am, SongNotification notification) {
         assetManager = am;
         this.notification = notification;
-        volume = new BindableNumber<Float>(0.7f, 0f, 1f);
-        volume.addListener(new ValueChangeListener<Float>() {
-            @Override
-            public void onValueChanged(Float oldValue, Float newValue) {
-                if (currentSong != null)
-                    currentSong.setVolume(newValue);
-            }
+        volume = new BindableNumber<>(0.7f, 0f, 1f);
+        volume.addListener((oldValue, newValue) -> {
+            if (currentSong != null)
+                currentSong.setVolume(newValue);
         });
         volume.bindTo(HulletHellGame.getSettings().musicVolume);
     }
@@ -42,12 +40,12 @@ public class MusicManager {
         currentSong.setVolume(getVolume());
         currentSongInfo = assetManager.get("music/" + fileName + ".cfg");
         notification.show(currentSongInfo);
-        stopFadeOut();
+        stopTransitions();
     }
 
-    private void stopFadeOut() {
-        fadeOutLeft = -1;
-        fadeOutDuration = 0;
+    private void stopTransitions() {
+        fadeOutLeft = fadeInLeft = -1;
+        fadeOutDuration = fadeInDuration = 0;
         if (currentSong != null)
             currentSong.setVolume(getVolume());
     }
@@ -63,30 +61,45 @@ public class MusicManager {
         if (a <= 0) {
             currentSong.stop();
             currentSong.setVolume(volume.getValue());
-            stopFadeOut();
+            stopTransitions();
             return;
         }
         currentSong.setVolume(a * getVolume());
         fadeOutLeft -= delta;
     }
 
+    private void applyFadeIn(float delta) {
+        float a = 1 - (fadeInLeft / fadeInDuration);
+        if (a >= 1) {
+            currentSong.setVolume(volume.getValue());
+            stopTransitions();
+            return;
+        }
+        currentSong.setVolume(a * getVolume());
+        fadeInLeft -= delta;
+    }
+
     public void play() {
         currentSong.play();
-        stopFadeOut();
+        stopTransitions();
     }
 
     public void pause() {
         currentSong.pause();
-        stopFadeOut();
+        stopTransitions();
     }
 
     public void stop() {
         currentSong.stop();
-        stopFadeOut();
+        stopTransitions();
     }
 
     public void fadeOut(float duration) {
         fadeOutLeft = fadeOutDuration = duration;
+    }
+
+    public void fadeIn(float duration) {
+        fadeInLeft = fadeInDuration = duration;
     }
 
     public float getVolume() {

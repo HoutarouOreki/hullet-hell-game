@@ -62,6 +62,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new NullAction();
             case "movePlayerTo":
                 return new MovePlayerToAction();
+            case "fadeInMusic":
+                return new FadeInMusicAction();
             default:
                 throw new Error("Could not find action of type \"" + conf.type + "\""
                         + "\nSource line: " + conf.line);
