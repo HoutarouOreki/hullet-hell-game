@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
 import org.mini2Dx.core.graphics.Sprite;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship extends Entity {
-    private final List<Bullet> registeredBullets = new ArrayList<Bullet>();
+    private final List<Bullet> registeredBullets = new ArrayList<>();
     public BasicObjectListener<Item> onItemCollected;
     private float collisionCooldown;
     private float remainingCollisionCooldown = 0;
@@ -26,6 +27,7 @@ public class Ship extends Entity {
         setHealth(c.getMaxHealth());
         setSize(new Vector2(c.getSize()));
         setCollisionBody(c.getCollisionCircles());
+        setTeam(CollisionTeam.ENEMY);
     }
 
     public void update(float delta) {

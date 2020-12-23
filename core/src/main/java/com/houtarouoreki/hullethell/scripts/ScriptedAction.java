@@ -38,7 +38,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new MoveBezierAction();
             case "shoot":
                 return new ShootAction();
-            case "shootMultipleRadius":
+            case "shootMultiple":
                 return new ShootMultipleAction();
             case "shootCircle":
                 return new ShootCircleAction();

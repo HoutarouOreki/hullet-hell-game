@@ -15,7 +15,6 @@ import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
@@ -117,21 +116,23 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
         this.team = team;
         collidesWith.clear();
         switch (team) {
-            case COMPUTER:
+            case ENEMY:
             case ENVIRONMENT:
                 collidesWith = EnumSet
                         .of(CollisionTeam.PLAYER_SHIP, CollisionTeam.PLAYER_BULLETS);
                 break;
+            case ENEMY_BULLETS:
+            case ITEMS:
+                collidesWith = EnumSet.of(CollisionTeam.PLAYER_SHIP);
+                break;
             case PLAYER_SHIP:
-                collidesWith = EnumSet.of(CollisionTeam.COMPUTER,
-                        CollisionTeam.ENVIRONMENT, CollisionTeam.ITEMS);
+                collidesWith = EnumSet.of(CollisionTeam.ENEMY,
+                        CollisionTeam.ENVIRONMENT, CollisionTeam.ITEMS,
+                        CollisionTeam.ENEMY_BULLETS);
                 break;
             case PLAYER_BULLETS:
                 collidesWith = EnumSet
-                        .of(CollisionTeam.COMPUTER, CollisionTeam.ENVIRONMENT);
-                break;
-            case ITEMS:
-                collidesWith = EnumSet.of(CollisionTeam.PLAYER_SHIP);
+                        .of(CollisionTeam.ENEMY, CollisionTeam.ENVIRONMENT);
                 break;
         }
     }

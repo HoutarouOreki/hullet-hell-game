@@ -2,17 +2,18 @@ package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.helpers.VectorHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 public class ShootMultipleAction extends ScriptedAction {
+    protected String bulletType;
     protected int amount;
     protected double direction;
     protected double spread;
     protected double speed;
-    protected String bulletType;
 
     @Override
     protected void performAction() {
@@ -23,7 +24,10 @@ public class ShootMultipleAction extends ScriptedAction {
             Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);
             bullet.setPosition(body.getPosition());
-            bullet.setTeam(body.getTeam());
+            if (body.getTeam() == CollisionTeam.PLAYER_SHIP)
+                bullet.setTeam(CollisionTeam.PLAYER_BULLETS);
+            else
+                bullet.setTeam(CollisionTeam.ENEMY_BULLETS);
             world.addBody(bullet);
             bullet.setSection(section);
             ((Ship) body).registerBullet(bullet);
@@ -34,10 +38,10 @@ public class ShootMultipleAction extends ScriptedAction {
 
     @Override
     protected void initialiseArguments() {
-        direction = Double.parseDouble(arguments.get(2));
-        spread = Double.parseDouble(arguments.get(3));
         bulletType = arguments.get(0);
         amount = Integer.parseInt(arguments.get(1));
+        direction = Double.parseDouble(arguments.get(2));
+        spread = Double.parseDouble(arguments.get(3));
         speed = Double.parseDouble(arguments.get(4));
     }
 
