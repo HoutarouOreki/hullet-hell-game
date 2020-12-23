@@ -1,17 +1,13 @@
 package com.houtarouoreki.hullethell.scripts.quests;
 
-import com.houtarouoreki.hullethell.entities.Item;
-
 import java.util.HashMap;
 
 public class Statistics {
-    private final HashMap<String, Integer> collectedItems = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> collectedItems = new HashMap<>();
 
     public void addItem(String itemName) {
-        if (collectedItems.containsKey(itemName))
-            collectedItems.put(itemName, collectedItems.get(itemName) + 1);
-        else
-            collectedItems.put(itemName, 1);
+        int itemAmount = getItemAmount(itemName);
+        collectedItems.put(itemName, itemAmount + 1);
     }
 
     public int getItemAmount(String itemName) {

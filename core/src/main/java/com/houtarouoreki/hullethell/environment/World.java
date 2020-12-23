@@ -166,13 +166,10 @@ public class World {
             }
             if (body instanceof Entity && !((Entity) body).isAlive()) { // check entity's health
                 removeBody(body);
-                for (String itemName : ((Entity) body).itemDrops) {
-                    if (itemName.equals("null"))
-                        continue;
-                    Item itemDrop = new Item(itemName);
-                    itemDrop.setPosition(body.getPosition());
-                    itemDrop.setVelocity(body.getVelocity().scl(0.5f));
-                    addBody(itemDrop);
+                for (Item item : ((Entity) body).items) {
+                    item.setPosition(body.getPosition());
+                    item.setVelocity(body.getVelocity().scl(0.5f));
+                    addBody(item);
                 }
                 continue;
             }

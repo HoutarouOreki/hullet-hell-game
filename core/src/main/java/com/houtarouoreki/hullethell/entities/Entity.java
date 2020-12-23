@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Entity extends Body {
-    public final List<String> itemDrops = new ArrayList<String>();
+    public final List<Item> items = new ArrayList<>();
     private final HealthBarsInfo healthBarsInfo = new HealthBarsInfo();
     private float health;
 

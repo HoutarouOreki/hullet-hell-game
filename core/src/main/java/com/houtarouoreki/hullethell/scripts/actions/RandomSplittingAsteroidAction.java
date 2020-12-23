@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.RandomAsteroid;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
@@ -40,9 +41,20 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
         else
             asteroid = new RandomAsteroid();
 
-        if (asteroid.getFarthestPointDistance() <= itemDropMaxRadius)
-            asteroid.itemDrops.add(itemStrings[random.nextInt(itemStrings.length)]);
+        if (asteroid.getFarthestPointDistance() <= itemDropMaxRadius) {
+            Item itemDrop = getNewRandomItem();
+            if (itemDrop != null)
+                asteroid.items.add(itemDrop);
+        }
         return asteroid;
+    }
+
+    private Item getNewRandomItem() {
+        int randomNumber = random.nextInt(itemStrings.length);
+        String itemName = itemStrings[randomNumber];
+        if (itemName.equals("null"))
+            return null;
+        return new Item(itemName);
     }
 
     private void handleAsteroid(final RandomAsteroid asteroid) {
