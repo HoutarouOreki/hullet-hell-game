@@ -41,6 +41,11 @@ public class Entity extends Body {
     }
 
     @Override
+    public boolean isAcceptingCollisions() {
+        return super.isAcceptingCollisions() && isAlive();
+    }
+
+    @Override
     public void render(Graphics g) {
         super.render(g);
         //renderHealthBar(g);
