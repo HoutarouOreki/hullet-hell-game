@@ -91,6 +91,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
         assetManager.setLoader(BodyConfiguration.class,
                 new BodyConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(ExplosiveConfiguration.class,
+                new ExplosiveConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(ShipConfiguration.class,
                 new ShipConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(SongConfiguration.class,
@@ -138,6 +140,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadConfigsAndTextures(assetManager, "bullets", Arrays.asList(
                 "Bullet 1", "Player bullet 1"));
+
+        loadExplosives(assetManager, Arrays.asList("Explosive"));
         loadShips(assetManager, Arrays.asList(
                 "Enemy ship 1", "Ship 1", "Copper eye"));
 
@@ -219,6 +223,13 @@ public class HulletHellGame extends ScreenBasedGame {
         for (String name : names) {
             am.load(folder + "/" + name + ".png", Texture.class);
             am.load(folder + "/" + name + ".cfg", BodyConfiguration.class);
+        }
+    }
+
+    private void loadExplosives(AssetManager am, List<String> names) {
+        for (String name : names) {
+            am.load("explosives/" + name + ".png", Texture.class);
+            am.load("explosives/" + name + ".cfg", ExplosiveConfiguration.class);
         }
     }
 

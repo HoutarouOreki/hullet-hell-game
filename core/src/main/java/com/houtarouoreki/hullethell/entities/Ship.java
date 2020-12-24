@@ -11,6 +11,9 @@ import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.graphics.Sprite;
 
 public class Ship extends Entity {
+    private final boolean shootsExplosives;
+    private final String ammunitionName;
+    private final float ammunitionSpeed;
     public BasicObjectListener<Item> onItemCollected;
     public BindableNumber<Float> cannonTimeOut;
     public BindableNumber<Float> sprintTimeOut;
@@ -30,6 +33,9 @@ public class Ship extends Entity {
         setSize(c.size);
         setCollisionBody(c.collisionCircles);
         setTeam(CollisionTeam.ENEMY);
+        shootsExplosives = c.ammunitionType.equals("explosives");
+        ammunitionName = c.ammunitionName;
+        ammunitionSpeed = c.ammunitionSpeed;
     }
 
     public void move(float angleDegrees) {
@@ -98,11 +104,15 @@ public class Ship extends Entity {
         this.collisionCooldown = collisionCooldown;
     }
 
-    public boolean shoot() {
-        if (cannonTimeOut.getValue() == 0) {
-            cannonTimeOut.setMaxValue();
-            return true;
-        }
-        return false;
+    public Entity shoot() {
+        if (cannonTimeOut.getValue() != 0)
+            return null;
+
+        cannonTimeOut.setMaxValue();
+        Entity entity = shootsExplosives ?
+                new Explosive(ammunitionName) : new Bullet(ammunitionName);
+        entity.setPosition(getPosition());
+        entity.setVelocity(new Vector2(ammunitionSpeed, 0));
+        return entity;
     }
 }

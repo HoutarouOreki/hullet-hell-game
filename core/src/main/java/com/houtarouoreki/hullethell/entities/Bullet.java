@@ -16,6 +16,8 @@ public class Bullet extends Entity {
         setShouldDespawnOOBounds(true);
     }
 
+    protected Bullet() {}
+
     @Override
     public void onCollision(Body other, CollisionResult collision) {
         super.onCollision(other, collision);

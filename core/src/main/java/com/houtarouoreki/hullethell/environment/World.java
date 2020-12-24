@@ -5,10 +5,7 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.audio.CollisionSoundManager;
 import com.houtarouoreki.hullethell.collisions.CollisionManager;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
-import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.entities.Entity;
-import com.houtarouoreki.hullethell.entities.Item;
-import com.houtarouoreki.hullethell.entities.Ship;
+import com.houtarouoreki.hullethell.entities.*;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.numbers.Vector2;
@@ -162,6 +159,8 @@ public class World {
                     item.setVelocity(body.getVelocity().scl(0.5f));
                     addBody(item);
                 }
+                if (body instanceof Explosive)
+                    addBody(((Explosive) body).getExplosion());
                 continue;
             }
             body.update(time_step_duration);

@@ -19,6 +19,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     private Vector2 velocity = new Vector2();
     private Vector2 size = new Vector2();
     private double time = 0;
+    private int ticks;
 
     public PrimitiveBody() {
         spritesLayers = new ArrayList<>();
@@ -31,6 +32,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     public void update(float delta) {
         setPosition(getPosition().add(getVelocity().scl(delta)));
         time += delta;
+        ticks++;
         updateSpriteLayers();
     }
 
@@ -112,5 +114,9 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
 
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
+    }
+
+    public int getTicks() {
+        return ticks;
     }
 }

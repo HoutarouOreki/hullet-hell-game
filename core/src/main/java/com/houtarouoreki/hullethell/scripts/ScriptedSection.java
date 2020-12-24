@@ -65,7 +65,6 @@ public class ScriptedSection {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
             body.initialise(world, this);
-            world.addBody(body.controlledBody);
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();
         while (i.hasNext()) {
@@ -73,10 +72,8 @@ public class ScriptedSection {
             body.update();
             if (body.isFinished()) {
                 i.remove();
-                if ((body.controlledBody instanceof Entity)
-                        && !((Entity) body.controlledBody).isAlive()) {
+                if (body.isControlledBodyDead())
                     world.scriptedStageManager.incrementFlag(body.type + ":" + body.name);
-                }
             }
         }
 

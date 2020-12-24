@@ -5,10 +5,10 @@ import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.environment.Finishable;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 
-public class Explosion extends PrimitiveBody implements Finishable {
+public class ExplosionEffect extends PrimitiveBody implements Finishable {
     private boolean done;
 
-    public Explosion(Vector2 position) {
+    public ExplosionEffect(Vector2 position) {
         addAnimation("effects/Explosion", 6, 5);
         spritesLayers.get(0).frameIndex.addListener((oldValue, newValue) -> {
             if (oldValue == 5 && newValue == 0) {

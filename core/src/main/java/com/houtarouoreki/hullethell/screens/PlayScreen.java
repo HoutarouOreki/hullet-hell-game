@@ -3,7 +3,7 @@ package com.houtarouoreki.hullethell.screens;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
-import com.houtarouoreki.hullethell.entities.Bullet;
+import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.environment.BackgroundObject;
 import com.houtarouoreki.hullethell.environment.BackgroundStar;
@@ -97,12 +97,10 @@ public class PlayScreen extends HulletHellScreen {
         if (HulletHellGame.getInputManager().isControlActive(Controls.up))
             targetY -= 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
-            if (player.shoot()) {
-                Bullet bullet = new Bullet("Player bullet 1");
-                world.addBody(bullet);
-                bullet.setPosition(player.getPosition());
-                bullet.setTeam(CollisionTeam.PLAYER_BULLETS);
-                bullet.setVelocity(new Vector2(40, 0));
+            Entity ammunition = player.shoot();
+            if (ammunition != null) {
+                world.addBody(ammunition);
+                ammunition.setTeam(CollisionTeam.PLAYER_BULLETS);
                 HulletHellGame.getSoundManager()
                         .playSound("laser1", 0.3f);
             }

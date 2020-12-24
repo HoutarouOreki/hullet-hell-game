@@ -19,12 +19,12 @@ public class WorldRenderingManager {
     private final List<Ship> ships = new ArrayList<>();
     private final List<Body> otherBodies = new ArrayList<>();
     private final List<CollisionIndicator> collisions = new ArrayList<>();
-    private final List<Explosion> explosions = new ArrayList<>();
+    private final List<ExplosionEffect> explosionEffects = new ArrayList<>();
 
     public void update(float delta) {
         updateList(delta, bulletIndicators);
         updateList(delta, collisions);
-        updateList(delta, explosions);
+        updateList(delta, explosionEffects);
     }
 
     private <E extends Updatable & Finishable> void updateList(float delta, List<E> list) {
@@ -40,8 +40,8 @@ public class WorldRenderingManager {
     public void render(Graphics g) {
         for (Body otherBody : otherBodies)
             otherBody.render(g);
-        for (Explosion explosion : explosions)
-            explosion.render(g);
+        for (ExplosionEffect explosionEffect : explosionEffects)
+            explosionEffect.render(g);
         for (Bullet bullet : bullets)
             bullet.render(g);
         for (Ship ship : ships)
@@ -75,15 +75,15 @@ public class WorldRenderingManager {
     private void removeShip(Ship ship) {
         ships.remove(ship);
         if (ship.getHealth() <= 0) {
-            explosions.add(new Explosion(ship.getPosition()));
+            explosionEffects.add(new ExplosionEffect(ship.getPosition()));
         }
     }
 
     private void onRemoveEnvironmental(Environmental environmental) {
         if (environmental.getHealth() <= 0) {
-            Explosion explosion = new Explosion(environmental.getPosition());
-            explosion.setSize(environmental.getSize().scl(2));
-            explosions.add(explosion);
+            ExplosionEffect explosionEffect = new ExplosionEffect(environmental.getPosition());
+            explosionEffect.setSize(environmental.getSize().scl(2));
+            explosionEffects.add(explosionEffect);
         }
     }
 

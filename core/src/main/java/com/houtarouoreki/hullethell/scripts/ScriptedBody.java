@@ -14,12 +14,12 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final String configName;
     public final Queue<ScriptedAction> waitingActions = new LinkedList<>();
     public final List<ScriptedAction> currentActions = new ArrayList<>();
-    public Body controlledBody;
+    private final boolean wasInPreviousSections;
+    private final boolean willBeInFutureSections;
+    private Body controlledBody;
     private int allSubbodiesAmount;
     private World world;
     private ScriptedSection section;
-    private final boolean wasInPreviousSections;
-    private final boolean willBeInFutureSections;
 
     public ScriptedBody(ScriptedBodyConfiguration conf, DialogueBox dialogueBox) {
         type = conf.type;
@@ -33,6 +33,10 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
             waitingActions.add(action);
             allSubbodiesAmount += action.bodiesAmount();
         }
+    }
+
+    public boolean isControlledBodyDead() {
+        return (controlledBody instanceof Entity) && !((Entity) controlledBody).isAlive();
     }
 
     public boolean isFinished() {
@@ -53,13 +57,18 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     }
 
     public void initialise(World world, ScriptedSection section) {
-        if (wasInPreviousSections)
+        if (wasInPreviousSections) {
             controlledBody = world.getBody(name);
-        else
+            if (controlledBody == null)
+                return;
+        }
+        else {
             controlledBody = createBodyFromScript(type);
-        controlledBody.name = name;
+            controlledBody.name = name;
+        }
         this.world = world;
         this.section = section;
+        world.addBody(controlledBody);
     }
 
     public void update() {
