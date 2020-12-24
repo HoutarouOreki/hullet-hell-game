@@ -12,8 +12,8 @@ public class BindableNumber<T extends Comparable<T>> {
     private T value;
 
     public BindableNumber(T value, T min, T max) {
-        listeners = new ArrayList<ValueChangeListener<T>>();
-        binds = new HashSet<BindableNumber<T>>();
+        listeners = new ArrayList<>();
+        binds = new HashSet<>();
         this.min = min;
         this.max = max;
         setValue(value);
@@ -70,13 +70,21 @@ public class BindableNumber<T extends Comparable<T>> {
             bind.setValue(this.value);
     }
 
+    public void setMaxValue() {
+        setValue(getMax());
+    }
+
+    public void setMinValue() {
+        setValue(getMin());
+    }
+
     private void validateMinMax() {
         if (max.compareTo(min) < 0)
             throw new Error("max (" + max + ") cannot be lower than min (" + min + ")");
     }
 
     public final BindableNumber<T> cpyLimitedNumber() {
-        return new BindableNumber<T>(value, min, max);
+        return new BindableNumber<>(value, min, max);
     }
 
     public void addListener(ValueChangeListener<T> listener) {

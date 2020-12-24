@@ -30,7 +30,6 @@ public class PlayScreen extends HulletHellScreen {
     private final DialogueBox dialogueBox;
     private StageConfiguration script;
     private World world;
-    private int shotFrames;
 
     public PlayScreen() {
         viewport = new FitViewport(1280,
@@ -94,12 +93,11 @@ public class PlayScreen extends HulletHellScreen {
         if (HulletHellGame.getInputManager().isControlActive(Controls.right))
             targetX += 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.down))
-            targetY -= 1;
-        if (HulletHellGame.getInputManager().isControlActive(Controls.up))
             targetY += 1;
+        if (HulletHellGame.getInputManager().isControlActive(Controls.up))
+            targetY -= 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
-            shotFrames++;
-            if (shotFrames % 4 == 0) {
+            if (player.shoot()) {
                 Bullet bullet = new Bullet("Player bullet 1");
                 world.addBody(bullet);
                 bullet.setPosition(player.getPosition());
@@ -113,7 +111,11 @@ public class PlayScreen extends HulletHellScreen {
             HulletHellGame.getScreensManager().enterGameScreen(1,
                     new FadeOutTransition(), new FadeInTransition());
 
-        player.move(new Vector2(targetX, targetY).angle());
+        Vector2 targetDirection = new Vector2(targetX, targetY);
+        if (targetDirection.len2() > 0)
+            player.move(targetDirection.angle());
+        else
+            player.stop();
     }
 
     private void initialiseBackground() {

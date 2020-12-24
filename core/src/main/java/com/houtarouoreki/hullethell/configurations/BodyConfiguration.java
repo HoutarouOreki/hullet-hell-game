@@ -19,7 +19,10 @@ public class BodyConfiguration {
     }
 
     public BodyConfiguration(List<String> configurationLines) {
-        Map<String, String> keyValues = ConfigurationsHelper.getKeyValues(configurationLines);
+        this(ConfigurationsHelper.getKeyValues(configurationLines));
+    }
+
+    public BodyConfiguration(Map<String, String> keyValues) {
         name = keyValues.get("name");
         maxHealth = Integer.parseInt(keyValues.get("maxHealth"));
         size = ConfigurationsHelper.parseVector2(keyValues.get("size"));

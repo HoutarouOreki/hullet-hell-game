@@ -32,7 +32,7 @@ public class BodyConfigurationLoader extends AsynchronousAssetLoader<BodyConfigu
     @SuppressWarnings("rawtypes")
     @Override
     public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, BodyConfigurationParameter parameter) {
-        return new Array<AssetDescriptor>();
+        return new Array<>();
     }
 
     public static class BodyConfigurationParameter extends AssetLoaderParameters<BodyConfiguration> {
