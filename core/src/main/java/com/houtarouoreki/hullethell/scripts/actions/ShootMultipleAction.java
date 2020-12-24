@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Bullet;
-import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.helpers.VectorHelpers;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
@@ -30,7 +29,6 @@ public class ShootMultipleAction extends ScriptedAction {
                 bullet.setTeam(CollisionTeam.ENEMY_BULLETS);
             world.addBody(bullet);
             bullet.setSection(section);
-            ((Ship) body).registerBullet(bullet);
         }
         setFinished();
         HulletHellGame.getSoundManager().playSound("laser2", 0.5f);

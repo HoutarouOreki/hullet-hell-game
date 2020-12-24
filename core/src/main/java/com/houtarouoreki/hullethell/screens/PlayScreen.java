@@ -86,7 +86,6 @@ public class PlayScreen extends HulletHellScreen {
     }
 
     private void updateSteering() {
-        float speed = 6;
         Vector2 targetVelocity = new Vector2();
         Ship player = world.player;
         if (HulletHellGame.getInputManager().isControlActive(Controls.left))
@@ -105,7 +104,6 @@ public class PlayScreen extends HulletHellScreen {
                 bullet.setPosition(player.getPosition());
                 bullet.setTeam(CollisionTeam.PLAYER_BULLETS);
                 bullet.setVelocity(new Vector2(40, 0));
-                player.registerBullet(bullet);
                 HulletHellGame.getSoundManager()
                         .playSound("laser1", 0.3f);
             }
@@ -114,7 +112,7 @@ public class PlayScreen extends HulletHellScreen {
             HulletHellGame.getScreensManager().enterGameScreen(1,
                     new FadeOutTransition(), new FadeInTransition());
 
-        player.setVelocity(targetVelocity.scl(speed));
+        player.move(targetVelocity.angle());
     }
 
     private void initialiseBackground() {

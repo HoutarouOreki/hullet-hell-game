@@ -6,8 +6,6 @@ import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 
 public class Bullet extends Entity {
-    private Ship source;
-
     public Bullet(String configurationName) {
         String path = "bullets/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
@@ -25,15 +23,5 @@ public class Bullet extends Entity {
         if (other instanceof Entity) {
             ((Entity) other).applyDamage(2);
         }
-    }
-
-    public void setSource(Ship ship) {
-        source = ship;
-    }
-
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-        source.unregisterBullet(this);
     }
 }
