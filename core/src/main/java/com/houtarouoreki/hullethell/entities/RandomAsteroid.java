@@ -24,7 +24,7 @@ public class RandomAsteroid extends Entity {
                 -(random.nextFloat() * 6 + 3),
                 random.nextFloat() * 2.2f - 1.1f
         );
-        setHealth(10 * scale * scale);
+        setHealth(getMaxHealth());
         this.setVelocity(velocity.div(scale));
         scale(scale);
         setPosition(new Vector2(
@@ -33,6 +33,10 @@ public class RandomAsteroid extends Entity {
         ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0))));
         collidesWith.add(CollisionTeam.ENVIRONMENT);
         clockwiseRotation = random.nextBoolean();
+    }
+
+    private float getMaxHealth() {
+        return 10 * scale * scale;
     }
 
     private void setTexture(float scale) {
@@ -46,15 +50,33 @@ public class RandomAsteroid extends Entity {
             addTexture("environmentals/asteroid-tiny.png");
     }
 
+    @Override
+    public void applyDamage(float damage) {
+        super.applyDamage(damage);
+        if (scale < 2)
+            return;
+        spritesLayers.clear();
+        float percent = getHealth() / getMaxHealth();
+        if (percent < 0.3)
+            addTexture("environmentals/asteroid-large-dmg3.png");
+        else if (percent < 0.6)
+            addTexture("environmentals/asteroid-large-dmg2.png");
+        else if (percent < 0.9)
+            addTexture("environmentals/asteroid-large-dmg1.png");
+        else
+            addTexture("environmentals/asteroid-large.png");
+
+    }
+
     public RandomAsteroid() {
         this(new Random().nextFloat() * 2.5f + 0.5f);
     }
 
     public void update(float delta) {
         super.update(delta);
+        rotation += 40 * delta / scale / scale * (clockwiseRotation ? 1 : -1);
         if (spritesLayers.isEmpty())
             setTexture(scale);
-        spritesLayers.get(0).rotation += 40 * delta / scale / scale * (clockwiseRotation ? 1 : -1);
     }
 
     @Override

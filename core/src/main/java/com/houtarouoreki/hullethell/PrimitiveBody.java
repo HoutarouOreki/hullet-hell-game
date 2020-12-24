@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PrimitiveBody implements Renderable, Updatable {
+    public float rotation;
     protected final List<SpriteLayer> spritesLayers;
     private Vector2 position = new Vector2();
     private Vector2 velocity = new Vector2();
@@ -69,7 +70,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
         sprite.setOriginCenter();
         sprite.setSize(renderSize.x, renderSize.y);
         sprite.setPosition(topLeft.x, topLeft.y);
-        sprite.setRotation(layer.rotation);
+        sprite.setRotation(rotation + layer.rotation);
         g.drawSprite(sprite);
     }
 

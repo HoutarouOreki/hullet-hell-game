@@ -133,7 +133,8 @@ public class HulletHellGame extends ScreenBasedGame {
 //        loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList(
 //                "asteroid-large", "asteroid-medium"));
 
-        assetManager.load("environmentals/asteroid-large.png", Texture.class);
+        //assetManager.load("environmentals/asteroid-large.png", Texture.class);
+        loadWithDamaged("environmentals", "asteroid-large", 3);
         assetManager.load("environmentals/asteroid-medium.png", Texture.class);
         assetManager.load("environmentals/asteroid-small.png", Texture.class);
         assetManager.load("environmentals/asteroid-tiny.png", Texture.class);
@@ -216,6 +217,14 @@ public class HulletHellGame extends ScreenBasedGame {
         for (String name : names) {
             am.load("music/" + name + ".mp3", Music.class);
             am.load("music/" + name + ".cfg", SongConfiguration.class);
+        }
+    }
+
+    private void loadWithDamaged(String folder, String name, int damageFrames) {
+        String path = folder + "/" + name;
+        assetManager.load(path + ".png", Texture.class);
+        for (int i = 1; i <= damageFrames; i++) {
+            assetManager.load(path + "-dmg" + i + ".png", Texture.class);
         }
     }
 
