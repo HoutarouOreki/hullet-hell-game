@@ -1,8 +1,10 @@
 package com.houtarouoreki.hullethell.entities;
 
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
@@ -33,6 +35,7 @@ public class RandomAsteroid extends Entity {
         ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0))));
         collidesWith.add(CollisionTeam.ENVIRONMENT);
         clockwiseRotation = random.nextBoolean();
+        setTexture(scale);
     }
 
     private float getMaxHealth() {
@@ -40,43 +43,29 @@ public class RandomAsteroid extends Entity {
     }
 
     private void setTexture(float scale) {
-        if (scale >= 2f)
-            addTexture("environmentals/asteroid-large.png");
+        spriteInfo = HulletHellGame.getAssetManager()
+                .get("environmentals/asteroid-sprite.cfg", SpriteInfo.class);
+        if (scale >= 1.8f)
+            bodySpriteManager.size = SpriteInfo.Size.LARGE;
         else if (scale >= 1f)
-            addTexture("environmentals/asteroid-medium.png");
+            bodySpriteManager.size = SpriteInfo.Size.MEDIUM;
         else if (scale >= 0.75f)
-            addTexture("environmentals/asteroid-small.png");
+            bodySpriteManager.size = SpriteInfo.Size.SMALL;
         else
-            addTexture("environmentals/asteroid-tiny.png");
-    }
-
-    @Override
-    public void applyDamage(float damage) {
-        super.applyDamage(damage);
-        if (scale < 2)
-            return;
-        spritesLayers.clear();
-        float percent = getHealth() / getMaxHealth();
-        if (percent < 0.3)
-            addTexture("environmentals/asteroid-large-dmg3.png");
-        else if (percent < 0.6)
-            addTexture("environmentals/asteroid-large-dmg2.png");
-        else if (percent < 0.9)
-            addTexture("environmentals/asteroid-large-dmg1.png");
-        else
-            addTexture("environmentals/asteroid-large.png");
-
+            bodySpriteManager.size = SpriteInfo.Size.TINY;
+        bodySpriteManager.setDamageStageMinHealth(0, getMaxHealth() * 0.8f);
+        bodySpriteManager.setDamageStageMinHealth(1, getMaxHealth() * 0.5f);
+        bodySpriteManager.setDamageStageMinHealth(2, getMaxHealth() * 0.2f);
+        bodySpriteManager.setDamageStageMinHealth(3, getMaxHealth() * 0.1f);
     }
 
     public RandomAsteroid() {
-        this(new Random().nextFloat() * 2.5f + 0.5f);
+        this(new Random().nextFloat() * 2f + 0.5f);
     }
 
     public void update(float delta) {
         super.update(delta);
         rotation += 40 * delta / scale / scale * (clockwiseRotation ? 1 : -1);
-        if (spritesLayers.isEmpty())
-            setTexture(scale);
     }
 
     @Override

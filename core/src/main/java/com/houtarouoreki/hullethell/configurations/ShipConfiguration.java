@@ -15,15 +15,16 @@ public class ShipConfiguration extends BodyConfiguration {
     public final float ammunitionSpeed;
 
     public ShipConfiguration(FileHandle file) {
-        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
+        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")),
+                file.pathWithoutExtension());
     }
 
-    public ShipConfiguration(List<String> configurationLines) {
-        this(ConfigurationsHelper.getKeyValues(configurationLines));
+    public ShipConfiguration(List<String> configurationLines, String path) {
+        this(ConfigurationsHelper.getKeyValues(configurationLines), path);
     }
 
-    public ShipConfiguration(Map<String, String> keyValues) {
-        super(keyValues);
+    public ShipConfiguration(Map<String, String> keyValues, String path) {
+        super(keyValues, path);
         maxSpeed = Float.parseFloat(keyValues.getOrDefault("maxSpeed", "0"));
         cannonTimeOut = Float.parseFloat(keyValues.getOrDefault("cannonTimeOut", "0"));
         sprintTimeOut = Float.parseFloat(keyValues.getOrDefault("sprintTimeOut", "0"));

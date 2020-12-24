@@ -25,10 +25,10 @@ public class Ship extends Entity {
     public Ship(String configurationName) {
         String path = "ships/" + configurationName;
         ShipConfiguration c = HulletHellGame.getAssetManager().get(path + ".cfg");
+        configuration = c;
         maxSpeed = c.maxSpeed;
         cannonTimeOut = new BindableNumber<>(0f, 0f, c.cannonTimeOut);
         sprintTimeOut = new BindableNumber<>(0f, 0f, c.sprintTimeOut);
-        addTexture(path + ".png");
         setHealth(c.maxHealth);
         setSize(c.size);
         setCollisionBody(c.collisionCircles);

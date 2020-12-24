@@ -1,9 +1,12 @@
 package com.houtarouoreki.hullethell;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.graphics.BodySpriteManager;
 import com.houtarouoreki.hullethell.graphics.Renderable;
+import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.graphics.SpriteLayer;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import com.houtarouoreki.hullethell.numbers.Vector2;
@@ -14,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PrimitiveBody implements Renderable, Updatable {
+    public final List<SpriteLayer> spritesLayers;
+    public final BodySpriteManager bodySpriteManager = new BodySpriteManager(this);
+    public BodyConfiguration configuration;
     public float rotation;
-    protected final List<SpriteLayer> spritesLayers;
+    public SpriteInfo spriteInfo;
     private Vector2 position = new Vector2();
     private Vector2 velocity = new Vector2();
     private Vector2 size = new Vector2();
@@ -24,6 +30,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
 
     public PrimitiveBody() {
         spritesLayers = new ArrayList<>();
+        this.configuration = null;
     }
 
     public double getTime() {
@@ -32,9 +39,11 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
 
     public void update(float delta) {
         setPosition(getPosition().add(getVelocity().scl(delta)));
+        updateSpriteLayers();
+        if (isSpriteRequired() && spriteInfo == null)
+            spriteInfo = HulletHellGame.getAssetManager().get(configuration.path + "-sprite.cfg");
         time += delta;
         ticks++;
-        updateSpriteLayers();
     }
 
     private void updateSpriteLayers() {
@@ -119,5 +128,9 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
 
     public int getTicks() {
         return ticks;
+    }
+
+    public boolean isSpriteRequired() {
+        return false;
     }
 }

@@ -13,6 +13,7 @@ import com.houtarouoreki.hullethell.audio.SongNotification;
 import com.houtarouoreki.hullethell.audio.SoundManager;
 import com.houtarouoreki.hullethell.configurations.*;
 import com.houtarouoreki.hullethell.graphics.Fonts;
+import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.input.InputManager;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.screens.LoadingScreen;
@@ -97,6 +98,8 @@ public class HulletHellGame extends ScreenBasedGame {
                 new ShipConfigurationLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(SongConfiguration.class,
                 new SongConfigurationLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(SpriteInfo.class,
+                new SpriteInfoLoader(new InternalFileHandleResolver()));
         assetManager.setLoader(StageConfiguration.class,
                 new StageConfigurationLoader(new InternalFileHandleResolver()));
 
@@ -134,23 +137,20 @@ public class HulletHellGame extends ScreenBasedGame {
 //                "asteroid-large", "asteroid-medium"));
 
         //assetManager.load("environmentals/asteroid-large.png", Texture.class);
-        loadWithDamaged("environmentals", "asteroid-large", 3);
-        assetManager.load("environmentals/asteroid-medium.png", Texture.class);
-        assetManager.load("environmentals/asteroid-small.png", Texture.class);
-        assetManager.load("environmentals/asteroid-tiny.png", Texture.class);
+        loadSpriteInfo("environmentals/asteroid");
 
-        loadConfigsAndTextures(assetManager, "bullets", Arrays.asList(
+        loadConfigsAndTextures("bullets", Arrays.asList(
                 "Bullet 1", "Player bullet 1"));
 
         loadExplosives(assetManager, Arrays.asList("Explosive"));
-        loadShips(assetManager, Arrays.asList(
+        loadShips(Arrays.asList(
                 "Enemy ship 1", "Ship 1", "Copper eye"));
 
         loadEffects(assetManager, Arrays.asList(
                 "blurredCircle",
                 "star"
         ));
-        loadAnimatedEffect(assetManager, "Explosion", 6);
+        loadSpriteInfo("effects/Explosion");
 
         //loadCharacters(assetManager, Arrays.asList("Temp"));
 
@@ -220,32 +220,34 @@ public class HulletHellGame extends ScreenBasedGame {
         }
     }
 
-    private void loadWithDamaged(String folder, String name, int damageFrames) {
-        String path = folder + "/" + name;
-        assetManager.load(path + ".png", Texture.class);
-        for (int i = 1; i <= damageFrames; i++) {
-            assetManager.load(path + "-dmg" + i + ".png", Texture.class);
-        }
+    private void loadSpriteInfo(String name) {
+        assetManager.load(name + "-sprite.cfg", SpriteInfo.class);
     }
 
-    private void loadConfigsAndTextures(AssetManager am, String folder, List<String> names) {
+    private void loadConfigsAndTextures(String folder, List<String> names) {
         for (String name : names) {
-            am.load(folder + "/" + name + ".png", Texture.class);
-            am.load(folder + "/" + name + ".cfg", BodyConfiguration.class);
+            String path = folder + "/" + name;
+            assetManager.load(path + ".png", Texture.class);
+            assetManager.load(path + ".cfg", BodyConfiguration.class);
+            loadSpriteInfo(path);
         }
     }
 
     private void loadExplosives(AssetManager am, List<String> names) {
         for (String name : names) {
-            am.load("explosives/" + name + ".png", Texture.class);
-            am.load("explosives/" + name + ".cfg", ExplosiveConfiguration.class);
+            String path = "explosives/" + name;
+            am.load(path + ".png", Texture.class);
+            am.load(path + ".cfg", ExplosiveConfiguration.class);
+            loadSpriteInfo(path);
         }
     }
 
-    private void loadShips(AssetManager am, List<String> names) {
+    private void loadShips(List<String> names) {
         for (String name : names) {
-            am.load("ships/" + name + ".png", Texture.class);
-            am.load("ships/" + name + ".cfg", ShipConfiguration.class);
+            String path = "ships/" + name;
+            assetManager.load(path + ".png", Texture.class);
+            assetManager.load(path + ".cfg", ShipConfiguration.class);
+            loadSpriteInfo(path);
         }
     }
 

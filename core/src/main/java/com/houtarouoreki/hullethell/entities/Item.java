@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.graphics.SpriteLayer;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
@@ -20,11 +21,13 @@ public class Item extends Entity {
         name = itemName;
         getCollisionBody().add(new CollisionCircle(0.5f));
         setSize(new Vector2(1));
-        addTexture("items/" + itemName + ".png");
         setVelocity(new Vector2(-1, 0));
         rotatingClockwise = new Random().nextBoolean();
         setHealth(1);
         setTeam(CollisionTeam.ITEMS);
+        spriteInfo = new SpriteInfo();
+        spriteInfo.textureName = itemName;
+        spriteInfo.textureFolder = "items";
     }
 
     private void addStarAnimation() {

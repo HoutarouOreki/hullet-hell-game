@@ -15,10 +15,7 @@ public class Entity extends Body {
     private float health;
 
     public Entity() {
-    }
-
-    public Entity(List<CollisionCircle> collisionBody) {
-        super(collisionBody);
+        super();
     }
 
     public float getHealth() {
@@ -66,5 +63,10 @@ public class Entity extends Body {
         g.setColor(healthBarsInfo.getColor());
         g.fillRect(topLeft.x, topLeft.y + 10 * healthBarsInfo.getHealthBarsAmount(),
                 renderSize.x * healthBarsInfo.getLastBarFill(), 5);
+    }
+
+    @Override
+    public boolean isSpriteRequired() {
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import com.houtarouoreki.hullethell.graphics.Renderable;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
     public final List<Body> dontCollideWith = new ArrayList<>();
-    private final List<CollisionCircle> collisionBody;
+    private final List<CollisionCircle> collisionBody = new ArrayList<>();
     public Vector2 acceleration = new Vector2();
     public String name;
     public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
@@ -31,14 +32,6 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     private boolean shouldDespawnOOBounds;
     private float collisionsDisabledFor;
     private double collisionsDisabledOn;
-
-    public Body(List<CollisionCircle> collisionBody) {
-        this.collisionBody = collisionBody;
-    }
-
-    public Body() {
-        collisionBody = new ArrayList<>();
-    }
 
     public ScriptedSection getSection() {
         return section;
@@ -53,6 +46,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     public void update(float delta) {
         super.update(delta);
         setVelocity(getVelocity().add(acceleration.scl(delta)));
+        bodySpriteManager.update(delta);
     }
 
     public float getFarthestPointDistance() {

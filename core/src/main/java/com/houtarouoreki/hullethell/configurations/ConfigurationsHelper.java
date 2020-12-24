@@ -13,6 +13,8 @@ public class ConfigurationsHelper {
     public static Map<String, String> getKeyValues(List<String> lines) {
         Map<String, String> returnPairs = new HashMap<>();
         for (String line : lines) {
+            if (line.isEmpty())
+                continue;
             String[] strings = line.split(": ");
             returnPairs.put(strings[0], strings[1]);
         }

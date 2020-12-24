@@ -13,17 +13,25 @@ public class BodyConfiguration {
     public final int maxHealth;
     public final Vector2 size;
     public final List<CollisionCircle> collisionCircles;
+    public final String path;
 
     public BodyConfiguration(FileHandle file) {
-        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")));
+        this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")),
+                file.pathWithoutExtension());
     }
 
-    public BodyConfiguration(List<String> configurationLines) {
-        this(ConfigurationsHelper.getKeyValues(configurationLines));
+    public BodyConfiguration(List<String> configurationLines, String path) {
+        this(ConfigurationsHelper.getKeyValues(configurationLines), path);
     }
 
-    public BodyConfiguration(Map<String, String> keyValues) {
-        name = keyValues.get("name");
+    public BodyConfiguration(Map<String, String> keyValues, String path) {
+        this.path = path;
+        if (keyValues.containsKey("name"))
+            name = keyValues.get("name");
+        else {
+            int lastFSlashIndex = path.lastIndexOf('/');
+            name = path.substring(lastFSlashIndex + 1);
+        }
         maxHealth = Integer.parseInt(keyValues.get("maxHealth"));
         size = ConfigurationsHelper.parseVector2(keyValues.get("size"));
         collisionCircles = ConfigurationsHelper.parseCollisionCircles(keyValues.get("collisionCircles"));
