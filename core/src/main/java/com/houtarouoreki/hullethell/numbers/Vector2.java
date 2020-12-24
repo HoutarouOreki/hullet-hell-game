@@ -117,10 +117,11 @@ public class Vector2 {
     }
 
     /**
-     * @return A vector rotated clockwise,
-     * the y-axis points down.
+     * @return A vector rotated clockwise.
      */
-    public Vector2 rotated(float degrees) {
+    public Vector2 rotated(float degrees, boolean yUp) {
+        if (yUp)
+            degrees *= -1;
         double radians = Math.toRadians(degrees);
 
         double cos = Math.cos(radians);

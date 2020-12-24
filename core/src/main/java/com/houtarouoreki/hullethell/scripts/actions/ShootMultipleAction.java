@@ -17,7 +17,7 @@ public class ShootMultipleAction extends ScriptedAction {
     protected void performAction() {
         for (int i = 0; i < amount; i++) {
             double directionDegrees = this.direction + spread * (-(amount - 1) * 0.5 + i);
-            Vector2 initialVelocity = new Vector2(0, -1).rotated((float) directionDegrees)
+            Vector2 initialVelocity = new Vector2(0, 1).rotated((float) directionDegrees, true)
                     .scl((float) speed);
             Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);

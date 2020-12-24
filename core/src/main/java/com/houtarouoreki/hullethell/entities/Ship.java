@@ -33,7 +33,7 @@ public class Ship extends Entity {
     }
 
     public void move(float angleDegrees) {
-        setVelocity(new Vector2(0, 1).rotated(-angleDegrees).scl(maxSpeed));
+        setVelocity(new Vector2(0, 1).rotated(angleDegrees, true).scl(maxSpeed));
     }
 
     public void stop() {

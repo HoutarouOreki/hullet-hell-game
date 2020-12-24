@@ -78,7 +78,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
             float speed = random.nextFloat() * 6 - 3;
             float angle = lastAngle + 70 + random.nextFloat() * 120;
             childAsteroid.setVelocity(new Vector2(-1, 0)
-                    .rotated(angle)
+                    .rotated(angle, true)
                     .scl(speed)
                     .add(new Vector2(-2, 0))
                     .scl(1 / scale));
