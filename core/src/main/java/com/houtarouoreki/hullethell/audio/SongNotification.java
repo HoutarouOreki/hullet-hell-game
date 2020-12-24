@@ -4,12 +4,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Drawable;
 import com.houtarouoreki.hullethell.graphics.Fonts;
 import com.houtarouoreki.hullethell.graphics.Sprite;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 
 import java.util.EnumSet;

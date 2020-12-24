@@ -1,10 +1,10 @@
 package com.houtarouoreki.hullethell.graphics;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.environment.Finishable;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 public class BulletIndicator extends PrimitiveBody implements Finishable {
     private final Bullet bullet;
@@ -21,7 +21,7 @@ public class BulletIndicator extends PrimitiveBody implements Finishable {
         timeLeft -= delta;
         float size = Interpolation.exp5.apply(0,
                 bullet.getFarthestPointDistance() * 10, timeLeft / length);
-        setSize(new Vector2(size, size));
+        this.setSize(new Vector2(size));
         setPosition(bullet.getPosition());
     }
 

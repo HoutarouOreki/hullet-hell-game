@@ -1,7 +1,6 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
@@ -9,6 +8,7 @@ import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import com.houtarouoreki.hullethell.graphics.Renderable;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedSection;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
@@ -18,11 +18,11 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class Body extends PrimitiveBody implements Renderable, Updatable {
+    public final List<Body> dontCollideWith = new ArrayList<>();
     private final List<CollisionCircle> collisionBody;
-    private final Vector2 acceleration = new Vector2();
+    public Vector2 acceleration = new Vector2();
     public String name;
     public EnumSet<CollisionTeam> collidesWith = EnumSet.noneOf(CollisionTeam.class);
-    public final List<Body> dontCollideWith = new ArrayList<>();
     private int lastCollisionTick = -1;
     private CollisionTeam team;
     private boolean acceptsCollisions = true;
@@ -52,7 +52,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
     @Override
     public void update(float delta) {
         super.update(delta);
-        setVelocity(getVelocity().add(new Vector2(getAcceleration()).scl(delta)));
+        setVelocity(getVelocity().add(acceleration.scl(delta)));
     }
 
     public float getFarthestPointDistance() {
@@ -76,7 +76,7 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
         g.setColor(Color.YELLOW);
         for (CollisionCircle circle : getCollisionBody()) {
             RenderHelpers.drawWorldCircle(
-                    new Vector2(getPosition()).add(new Vector2(circle.getX(), circle.getY())),
+                    getPosition().add(new Vector2(circle.getX(), circle.getY())),
                     circle.getRadius(), g);
         }
     }
@@ -89,14 +89,6 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
         for (CollisionCircle c : collisionCircles) {
             getCollisionBody().add(new CollisionCircle(c.getCenterX(), c.getCenterY(), c.getRadius()));
         }
-    }
-
-    public Vector2 getAcceleration() {
-        return acceleration.cpy();
-    }
-
-    public void setAcceleration(Vector2 acceleration) {
-        this.acceleration.set(acceleration);
     }
 
     public void scale(float scale) {

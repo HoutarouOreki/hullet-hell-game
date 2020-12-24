@@ -1,9 +1,9 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import java.util.Random;
@@ -16,7 +16,7 @@ public class RandomAsteroid extends Entity {
         super();
         this.scale = scale;
         setShouldDespawnOOBounds(true);
-        setSize(new Vector2(1, 1));
+        this.setSize(new Vector2(1, 1));
         setTeam(CollisionTeam.ENVIRONMENT);
         getCollisionBody().add(new CollisionCircle(0, 0, 0.5f));
         Random random = new Random();
@@ -25,13 +25,12 @@ public class RandomAsteroid extends Entity {
                 random.nextFloat() * 2.2f - 1.1f
         );
         setHealth(10 * scale * scale);
-        setVelocity(velocity.scl(1 / scale));
+        this.setVelocity(velocity.div(scale));
         scale(scale);
-        Vector2 startingPosition = new Vector2(
+        setPosition(new Vector2(
                 1,
                 random.nextFloat()
-        ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0)));
-        setPosition(startingPosition);
+        ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0))));
         collidesWith.add(CollisionTeam.ENVIRONMENT);
         clockwiseRotation = random.nextBoolean();
     }

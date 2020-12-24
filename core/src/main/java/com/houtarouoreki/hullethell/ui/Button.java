@@ -1,11 +1,11 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 import java.util.EnumSet;
 
@@ -19,14 +19,14 @@ public class Button extends MenuComponent {
         background = new Rectangle();
         background.setRelativePositionAxes(bothAxes);
         background.setRelativeSizeAxes(bothAxes);
-        background.setSize(new Vector2(1, 1));
+        background.setSize(new Vector2(1));
         background.setColor(UNACTIVE_COLOR);
         add(background);
 
         label = new Label();
         label.setRelativePositionAxes(bothAxes);
         label.setRelativeSizeAxes(bothAxes);
-        label.setSize(new Vector2(1, 1));
+        label.setSize(new Vector2(1));
         label.alignment = Align.center;
         add(label);
     }

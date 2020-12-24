@@ -1,10 +1,9 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Bullet;
-import com.houtarouoreki.hullethell.helpers.VectorHelpers;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 public class ShootMultipleAction extends ScriptedAction {
@@ -18,7 +17,7 @@ public class ShootMultipleAction extends ScriptedAction {
     protected void performAction() {
         for (int i = 0; i < amount; i++) {
             double directionDegrees = this.direction + spread * (-(amount - 1) * 0.5 + i);
-            Vector2 initialVelocity = VectorHelpers.unitFromDegrees(directionDegrees)
+            Vector2 initialVelocity = new Vector2(0, -1).rotated((float) directionDegrees)
                     .scl((float) speed);
             Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);

@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.entities;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
@@ -11,9 +10,9 @@ public class Bullet extends Entity {
         BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
         addTexture(path + ".png");
-        setHealth(c.getMaxHealth());
-        setSize(new Vector2(c.getSize()));
-        setCollisionBody(c.getCollisionCircles());
+        setHealth(c.maxHealth);
+        setSize(c.size);
+        setCollisionBody(c.collisionCircles);
         setShouldDespawnOOBounds(true);
     }
 

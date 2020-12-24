@@ -3,10 +3,10 @@ package com.houtarouoreki.hullethell.graphics.dialogue;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.graphics.*;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 
 import java.util.ArrayList;

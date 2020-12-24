@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.SongConfiguration;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Button;
 import com.houtarouoreki.hullethell.ui.Menu;
 import org.mini2Dx.core.game.GameContainer;
@@ -29,34 +29,19 @@ public class MainMenuScreen extends HulletHellScreen {
         playButton.setText("Play");
         playButton.setSize(buttonSize);
         playButton.focus();
-        playButton.listener = new Button.ButtonListener() {
-            @Override
-            public void onAction() {
-                onPlayButton();
-            }
-        };
+        playButton.listener = this::onPlayButton;
 
         Button settingsButton = new Button();
         settingsButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         settingsButton.setText("Settings");
         settingsButton.setSize(buttonSize);
-        settingsButton.listener = new Button.ButtonListener() {
-            @Override
-            public void onAction() {
-                onSettingsButton();
-            }
-        };
+        settingsButton.listener = this::onSettingsButton;
 
         Button exitButton = new Button();
         exitButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         exitButton.setSize(buttonSize);
         exitButton.setText("Exit");
-        exitButton.listener = new Button.ButtonListener() {
-            @Override
-            public void onAction() {
-                System.exit(0);
-            }
-        };
+        exitButton.listener = () -> System.exit(0);
         menu.addAll(Arrays.asList(playButton, settingsButton, exitButton));
 
         playButton.upperNeighbor = exitButton;

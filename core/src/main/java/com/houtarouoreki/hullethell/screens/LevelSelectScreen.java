@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
@@ -8,6 +7,7 @@ import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Container;
 import com.houtarouoreki.hullethell.graphics.PaddingMargin;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Button;
 import com.houtarouoreki.hullethell.ui.Label;
 import com.houtarouoreki.hullethell.ui.Menu;
@@ -23,8 +23,6 @@ import java.util.List;
 public class LevelSelectScreen extends HulletHellScreen {
     private final Menu menu;
     private final Label levelTitle;
-    private final Label songTitle;
-    private final Label songAuthor;
 
     public LevelSelectScreen() {
         Container leftHalf = new Container();
@@ -36,11 +34,11 @@ public class LevelSelectScreen extends HulletHellScreen {
         levelTitle = new Label();
         leftHalf.add(levelTitle);
 
-        songTitle = new Label();
+        Label songTitle = new Label();
         songTitle.setPosition(new Vector2(0, 50));
         leftHalf.add(songTitle);
 
-        songAuthor = new Label();
+        Label songAuthor = new Label();
         songAuthor.setPosition(new Vector2(0, 100));
         leftHalf.add(songAuthor);
 
@@ -52,19 +50,14 @@ public class LevelSelectScreen extends HulletHellScreen {
         rightHalf.setPadding(new PaddingMargin(50));
         container.add(rightHalf);
 
-        List<Button> stageButtons = new ArrayList<Button>();
-        Array<StageConfiguration> h = new Array<StageConfiguration>();
+        List<Button> stageButtons = new ArrayList<>();
+        Array<StageConfiguration> h = new Array<>();
         HulletHellGame.getAssetManager().getAll(StageConfiguration.class, h);
         for (final StageConfiguration stage : h) {
             Button button = new Button();
             button.setText(stage.name);
             button.addListener(createButtonSelectListener(stage));
-            button.listener = new Button.ButtonListener() {
-                @Override
-                public void onAction() {
-                    onStageSelected(stage);
-                }
-            };
+            button.listener = () -> onStageSelected(stage);
 
             stageButtons.add(button);
         }

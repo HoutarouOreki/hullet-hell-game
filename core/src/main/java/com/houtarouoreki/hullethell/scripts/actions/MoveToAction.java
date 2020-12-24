@@ -1,9 +1,9 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 public class MoveToAction extends ScriptedAction {
@@ -36,12 +36,12 @@ public class MoveToAction extends ScriptedAction {
     @Override
     protected void performAction() {
         if (duration == 0) {
-            body.setPosition(targetPosition.cpy());
+            body.setPosition(targetPosition);
             setFinished();
             return;
         }
         if (getTicks() == 0) {
-            startingPosition = new Vector2(body.getPosition());
+            startingPosition = body.getPosition();
         }
         float progress = (float) ((section.getTimePassed() - getScriptedTime()) / duration);
         if (progress > 1) {

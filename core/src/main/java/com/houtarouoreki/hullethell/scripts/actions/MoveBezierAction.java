@@ -1,13 +1,14 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MoveBezierAction extends ScriptedAction {
-    private final List<Vector2> sourcePoints = new ArrayList<Vector2>();
+    private final List<Vector2> sourcePoints = new ArrayList<>();
     private double duration;
 
     @Override
@@ -20,12 +21,12 @@ public class MoveBezierAction extends ScriptedAction {
     }
 
     private Vector2 calculateBezierPoint(double time) {
-        return calculateBezierPoint((float)time, 0, sourcePoints.size() - 1);
+        return calculateBezierPoint((float) time, 0, sourcePoints.size() - 1);
     }
 
     private Vector2 calculateBezierPoint(float time, int firstPoint, int lastPoint) {
         if (firstPoint == lastPoint)
-            return sourcePoints.get(firstPoint).cpy();
+            return sourcePoints.get(firstPoint);
         Vector2 value = calculateBezierPoint(time, firstPoint, lastPoint - 1).scl(1 - time);
         return value.add(calculateBezierPoint(time, firstPoint + 1, lastPoint).scl(time));
     }
@@ -37,7 +38,7 @@ public class MoveBezierAction extends ScriptedAction {
             completion = 1;
             setFinished();
         }
-        body.setPosition(calculateBezierPoint(completion).scl(world.viewArea));
+        body.setPosition(calculateBezierPoint(completion).scl(World.viewArea));
     }
 
     @Override

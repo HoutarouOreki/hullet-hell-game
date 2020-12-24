@@ -1,11 +1,11 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.graphics.SpriteLayer;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Sprite;
 
@@ -19,7 +19,7 @@ public class Item extends Entity {
     public Item(String itemName) {
         name = itemName;
         getCollisionBody().add(new CollisionCircle(0.5f));
-        setSize(new Vector2(1, 1));
+        setSize(new Vector2(1));
         addTexture("items/" + itemName + ".png");
         setVelocity(new Vector2(-1, 0));
         rotatingClockwise = new Random().nextBoolean();

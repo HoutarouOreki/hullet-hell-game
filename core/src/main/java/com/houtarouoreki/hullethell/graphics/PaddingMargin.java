@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.graphics;
 
-import com.badlogic.gdx.math.Vector2;
+
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 public class PaddingMargin {
     public float top;

@@ -14,12 +14,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class WorldRenderingManager {
-    private final List<BulletIndicator> bulletIndicators = new ArrayList<BulletIndicator>();
-    private final List<Bullet> bullets = new ArrayList<Bullet>();
-    private final List<Ship> ships = new ArrayList<Ship>();
-    private final List<Body> otherBodies = new ArrayList<Body>();
-    private final List<CollisionIndicator> collisions = new ArrayList<CollisionIndicator>();
-    private final List<Explosion> explosions = new ArrayList<Explosion>();
+    private final List<BulletIndicator> bulletIndicators = new ArrayList<>();
+    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<Ship> ships = new ArrayList<>();
+    private final List<Body> otherBodies = new ArrayList<>();
+    private final List<CollisionIndicator> collisions = new ArrayList<>();
+    private final List<Explosion> explosions = new ArrayList<>();
 
     public void update(float delta) {
         updateList(delta, bulletIndicators);

@@ -1,12 +1,12 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 import java.util.EnumSet;
 
@@ -20,7 +20,7 @@ public class SliderFloat extends MenuComponent {
     private float rightTimeOut = 0;
 
     public SliderFloat(float startValue, float min, float max) {
-        value = new BindableNumber<Float>(startValue, min, max);
+        value = new BindableNumber<>(startValue, min, max);
         step = (max - min) * 0.01f;
 
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);

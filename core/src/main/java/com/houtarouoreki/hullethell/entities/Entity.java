@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -53,8 +53,8 @@ public class Entity extends Body {
 
     private void renderHealthBar(Graphics g) {
         Vector2 renderSize = getRenderSize();
-        Vector2 topLeft = new Vector2(getRenderPosition())
-                .mulAdd(renderSize, new Vector2(-0.5f, 0.5f));
+        Vector2 topLeft = getRenderPosition()
+                .add(renderSize.scl(new Vector2(-0.5f, 0.5f)));
 
         for (int i = 0; i < healthBarsInfo.getHealthBarsAmount(); i++) {
             g.setColor(healthBarsInfo.getColor());

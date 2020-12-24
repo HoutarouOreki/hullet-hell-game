@@ -1,7 +1,6 @@
 package com.houtarouoreki.hullethell.screens;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.Bindable;
@@ -13,6 +12,7 @@ import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.*;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
@@ -29,7 +29,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     private final Menu menu;
 
     public SettingsScreen() {
-        List<SettingsComponent> settingsComponents = new ArrayList<SettingsComponent>();
+        List<SettingsComponent> settingsComponents = new ArrayList<>();
 
         Settings settings = HulletHellGame.getSettings();
 
@@ -38,12 +38,7 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         menu.setPadding(new PaddingMargin(60, 60));
 
         SliderFloat.SliderTextGenerator
-                volumeTextGenerator = new SliderFloat.SliderTextGenerator() {
-            @Override
-            public String generateText(float value) {
-                return ((Integer) Math.round(value * 100)).toString();
-            }
-        };
+                volumeTextGenerator = value -> ((Integer) Math.round(value * 100)).toString();
 
         SliderFloat musicVolume = new SliderFloat(.7f, 0,
                 1);

@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.graphics;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import java.util.EnumSet;
 import java.util.List;
 
 public abstract class Drawable {
-    public final List<Drawable> children = new ArrayList<Drawable>();
-    private final Vector2 position = new Vector2(0, 0);
-    private final Vector2 size = new Vector2(1, 1);
+    public final List<Drawable> children = new ArrayList<>();
     private final PaddingMargin padding = new PaddingMargin();
     private final PaddingMargin margin = new PaddingMargin();
-    private final Vector2 anchor = new Vector2(0, 0);
-    private final Vector2 origin = new Vector2(0, 0);
+    private Vector2 position = new Vector2();
+    private Vector2 size = new Vector2(1, 1);
+    private Vector2 anchor = new Vector2();
+    private Vector2 origin = new Vector2();
     private float time = 0;
     private EnumSet<Axes> relativePositionAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativeSizeAxes = EnumSet.noneOf(Axes.class);
@@ -25,60 +25,46 @@ public abstract class Drawable {
     private Color color = Color.WHITE;
     private boolean visibility = true;
 
-    public Vector2 getPosition() {
-        return position.cpy();
-    }
-
-    public void setPosition(Vector2 position) {
-        this.position.set(position);
-    }
-
     public void setX(float x) {
-        this.position.x = x;
+        this.setPosition(this.getPosition().withX(x));
     }
 
     public void setY(float y) {
-        this.position.y = y;
-    }
-
-    public Vector2 getSize() {
-        return size.cpy();
-    }
-
-    public void setSize(Vector2 size) {
-        this.size.set(size);
+        this.setPosition(this.getPosition().withY(y));
     }
 
     public Vector2 getContentRenderSize() {
-        Vector2 contentSize = getRenderSize().cpy();
+        Vector2 contentSize = getRenderSize();
+        float xAddition = 0;
+        float yAddition = 0;
         if (relativePaddingAxes.contains(Axes.HORIZONTAL))
-            contentSize.x -= padding.getTotalHorizontal() * getRenderSize().x;
+            xAddition -= padding.getTotalHorizontal() * getRenderSize().x;
         else
-            contentSize.x -= padding.getTotalHorizontal();
+            xAddition -= padding.getTotalHorizontal();
         if (relativePaddingAxes.contains(Axes.VERTICAL))
-            contentSize.y -= padding.getTotalVertical() * getRenderSize().y;
+            yAddition -= padding.getTotalVertical() * getRenderSize().y;
         else
-            contentSize.y -= padding.getTotalVertical();
-        return contentSize;
+            yAddition -= padding.getTotalVertical();
+        return contentSize.add(new Vector2(xAddition, yAddition));
     }
 
     public Vector2 getRenderSize() {
-        Vector2 renderSize = getSize().cpy();
+        Vector2 renderSize = getSize();
         if (relativeSizeAxes.contains(Axes.HORIZONTAL))
-            renderSize.x *= parent.getContentRenderSize().x;
+            renderSize = renderSize.sclX(parent.getContentRenderSize().x);
         if (relativeSizeAxes.contains(Axes.VERTICAL))
-            renderSize.y *= parent.getContentRenderSize().y;
-        renderSize.sub(getMargin().getTotal());
+            renderSize = renderSize.sclY(parent.getContentRenderSize().y);
+        renderSize = renderSize.sub(getMargin().getTotal());
         return renderSize;
     }
 
     public Vector2 getRenderPosition() {
         Vector2 renderPos = getPosition();
         if (relativeSizeAxes.contains(Axes.HORIZONTAL))
-            renderPos.x *= parent.getContentRenderSize().x;
+            renderPos = renderPos.sclX(parent.getContentRenderSize().x);
         if (relativeSizeAxes.contains(Axes.VERTICAL))
-            renderPos.y *= parent.getContentRenderSize().y;
-        renderPos.add(getMargin().getLeftTop());
+            renderPos = renderPos.sclY(parent.getContentRenderSize().y);
+        renderPos = renderPos.add(getMargin().getLeftTop());
         if (parent == null)
             return renderPos;
         return renderPos.add(parent.getRenderPosition())
@@ -185,23 +171,39 @@ public abstract class Drawable {
         this.visibility = visibility;
     }
 
+    public float getTime() {
+        return time;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public Vector2 getSize() {
+        return size;
+    }
+
+    public void setSize(Vector2 size) {
+        this.size = size;
+    }
+
     public Vector2 getAnchor() {
-        return anchor.cpy();
+        return anchor;
     }
 
     public void setAnchor(Vector2 anchor) {
-        this.anchor.set(anchor);
+        this.anchor = anchor;
     }
 
     public Vector2 getOrigin() {
-        return origin.cpy();
+        return origin;
     }
 
     public void setOrigin(Vector2 origin) {
-        this.origin.set(origin);
-    }
-
-    public float getTime() {
-        return time;
+        this.origin = origin;
     }
 }

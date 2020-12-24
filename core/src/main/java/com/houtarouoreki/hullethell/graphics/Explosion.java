@@ -1,25 +1,21 @@
 package com.houtarouoreki.hullethell.graphics;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.PrimitiveBody;
-import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.environment.Finishable;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 public class Explosion extends PrimitiveBody implements Finishable {
     private boolean done;
 
     public Explosion(Vector2 position) {
         addAnimation("effects/Explosion", 6, 5);
-        spritesLayers.get(0).frameIndex.addListener(new ValueChangeListener<Integer>() {
-            @Override
-            public void onValueChanged(Integer oldValue, Integer newValue) {
-                if (oldValue == 5 && newValue == 0) {
-                    setDone();
-                }
+        spritesLayers.get(0).frameIndex.addListener((oldValue, newValue) -> {
+            if (oldValue == 5 && newValue == 0) {
+                setDone();
             }
         });
-        setPosition(position);
+        this.setPosition(position);
         setSize(new Vector2(5, 5));
         HulletHellGame.getSoundManager().playSound("kick-gritty");
     }

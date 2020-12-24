@@ -2,10 +2,10 @@ package com.houtarouoreki.hullethell.scripts.quests;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Container;
 import com.houtarouoreki.hullethell.graphics.Fonts;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class QuestManager extends Container {
-    public final List<Quest> quests = new ArrayList<Quest>();
+    public final List<Quest> quests = new ArrayList<>();
 
     public QuestManager() {
         setAnchor(new Vector2(1, 0));

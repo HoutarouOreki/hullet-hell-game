@@ -1,13 +1,13 @@
 package com.houtarouoreki.hullethell.helpers;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.screens.PlayScreen;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class RenderHelpers {
     public static Vector2 translateToRenderPosition(Vector2 position) {
-        return new Vector2(position.x, World.viewArea.y - position.y).scl(getViewport()).scl(1 / World.viewArea.x, 1 / World.viewArea.y);
+        return new Vector2(position.x, World.viewArea.y - position.y).scl(getViewport()).div(World.viewArea);
     }
 
     public static void drawWorldCircle(Vector2 worldPosition, float radius, Graphics g) {

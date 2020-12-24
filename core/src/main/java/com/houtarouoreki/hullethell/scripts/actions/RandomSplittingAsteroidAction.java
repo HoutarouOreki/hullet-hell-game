@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.RandomAsteroid;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 
 import java.util.ArrayList;
@@ -77,14 +77,12 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
             RandomAsteroid childAsteroid = generateAsteroid(scale);
             float speed = random.nextFloat() * 6 - 3;
             float angle = lastAngle + 70 + random.nextFloat() * 120;
-            Vector2 velocity = new Vector2(-1, 0);
-            velocity.rotate(angle);
-            velocity.scl(speed);
-            velocity.add(new Vector2(-2, 0));
-            velocity.scl(1 / scale);
-            childAsteroid.setVelocity(velocity);
-            Vector2 position = asteroid.getPosition();
-            childAsteroid.setPosition(position);
+            childAsteroid.setVelocity(new Vector2(-1, 0)
+                    .rotated(angle)
+                    .scl(speed)
+                    .add(new Vector2(-2, 0))
+                    .scl(1 / scale));
+            childAsteroid.setPosition(asteroid.getPosition());
             childAsteroid.disableCollisionsFor(0.1f);
             addAsteroid(childAsteroid);
         }

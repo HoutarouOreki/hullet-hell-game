@@ -1,8 +1,6 @@
 package com.houtarouoreki.hullethell.environment;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.audio.CollisionSoundManager;
 import com.houtarouoreki.hullethell.collisions.CollisionManager;
@@ -13,6 +11,7 @@ import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.Ship;
 import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
 import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
 import com.houtarouoreki.hullethell.scripts.quests.Statistics;
@@ -125,10 +124,7 @@ public class World {
     }
 
     private void clampPlayerPosition() {
-        player.setPosition(
-                new Vector2(
-                        MathUtils.clamp(player.getPosition().x, 0, World.viewArea.x),
-                        MathUtils.clamp(player.getPosition().y, 0, World.viewArea.y)));
+        player.setPosition(player.getPosition().clamped(new Vector2(), World.viewArea));
     }
 
     private void addBodies() {
@@ -154,12 +150,7 @@ public class World {
     protected void physics() {
         for (Body body : bodies) {
             if (body.shouldDespawnOOBounds()) {
-                float despawnMarginX = body.getSize().x;
-                float despawnMarginY = body.getSize().y;
-                if (body.getPosition().x < -despawnMarginX ||
-                        body.getPosition().y < -despawnMarginY ||
-                        body.getPosition().x > viewArea.x + despawnMarginX ||
-                        body.getPosition().y > viewArea.y + despawnMarginY) {
+                if (body.getPosition().outsideOf(body.getSize().scl(-1), viewArea.add(body.getSize()))) {
                     removeBody(body);
                     continue;
                 }

@@ -1,7 +1,7 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.math.Vector2;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import javax.management.RuntimeErrorException;
@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ConfigurationsHelper {
     public static Map<String, String> getKeyValues(List<String> lines) {
-        Map<String, String> returnPairs = new HashMap<String, String>();
+        Map<String, String> returnPairs = new HashMap<>();
         for (String line : lines) {
             String[] strings = line.split(": ");
             returnPairs.put(strings[0], strings[1]);
@@ -21,7 +21,7 @@ public class ConfigurationsHelper {
 
     public static List<String> getLinesFromFile(AssetManager am, String filePath) {
         File file = am.get(filePath);
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         Scanner scanner;
         try {
             scanner = new Scanner(file);
@@ -43,7 +43,7 @@ public class ConfigurationsHelper {
 
     public static List<CollisionCircle> parseCollisionCircles(String t) {
         String[] textCollisionCircles = t.split(" / ");
-        List<CollisionCircle> collisionCircles = new ArrayList<CollisionCircle>();
+        List<CollisionCircle> collisionCircles = new ArrayList<>();
         for (String textCollisionCircle : textCollisionCircles) {
             collisionCircles.add(parseCollisionCircle(textCollisionCircle));
         }

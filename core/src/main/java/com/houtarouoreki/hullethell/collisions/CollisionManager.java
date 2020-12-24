@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.collisions;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class CollisionManager {
                     continue;
                 }
 
-                float centerDistance = new Vector2(a.getPosition()).add(new Vector2(b.getPosition()).scl(-1)).len();
+                float centerDistance = a.getPosition().add(b.getPosition().scl(-1)).len();
 
                 if (centerDistance <= a.getFarthestPointDistance() + b.getFarthestPointDistance()) {
                     CollisionResult collision = isCollision(a, b);
@@ -55,9 +55,9 @@ public class CollisionManager {
         CollisionResult collision = new CollisionResult();
         for (CollisionCircle ca : a.getCollisionBody()) {
             for (CollisionCircle cb : b.getCollisionBody()) {
-                if (Vector2.dst(a.getPosition().x + ca.getX(), a.getPosition().y + ca.getY(),
-                        b.getPosition().x + cb.getX(), b.getPosition().y + cb.getY())
-                        <= ca.getRadius() + cb.getRadius()) {
+                Vector2 caPos = getCollisionCircleWorldPosition(a, ca);
+                Vector2 cbPos = getCollisionCircleWorldPosition(b, cb);
+                if (caPos.dst(cbPos) <= ca.getRadius() + cb.getRadius()) {
                     collision.isCollision = true;
                     collision.position = approximateCollisionPosition(a, b, ca, cb);
                     collision.time = world.getTimePassed();

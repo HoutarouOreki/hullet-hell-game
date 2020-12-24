@@ -2,11 +2,11 @@ package com.houtarouoreki.hullethell.graphics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.environment.Finishable;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import com.houtarouoreki.hullethell.helpers.RenderHelpers;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class CollisionIndicator implements Updatable, Finishable, Renderable {

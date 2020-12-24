@@ -1,13 +1,12 @@
 package com.houtarouoreki.hullethell.ui;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.Bindable;
-import com.houtarouoreki.hullethell.bindables.ValueChangeListener;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 import java.util.EnumSet;
 
@@ -17,12 +16,12 @@ public class Switch extends MenuComponent {
     private final Label label;
 
     public Switch() {
-        value = new Bindable<Boolean>(false);
+        value = new Bindable<>(false);
         EnumSet<Axes> bothAxes = EnumSet.of(Axes.HORIZONTAL, Axes.VERTICAL);
         Rectangle offRect = new Rectangle();
         offRect.setRelativePositionAxes(bothAxes);
         offRect.setRelativeSizeAxes(bothAxes);
-        offRect.setSize(new Vector2(1, 1));
+        offRect.setSize(new Vector2(1));
         offRect.setColor(UNACTIVE_COLOR);
         add(offRect);
 
@@ -40,12 +39,7 @@ public class Switch extends MenuComponent {
         label.alignment = Align.center;
         add(label);
 
-        value.addListener(new ValueChangeListener<Boolean>() {
-            @Override
-            public void onValueChanged(Boolean oldValue, Boolean newValue) {
-                generateLayout();
-            }
-        }, true);
+        value.addListener((oldValue, newValue) -> generateLayout(), true);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.houtarouoreki.hullethell.environment;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.PrimitiveBody;
-import org.mini2Dx.core.graphics.Sprite;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 
 public abstract class BackgroundObject extends PrimitiveBody {
 

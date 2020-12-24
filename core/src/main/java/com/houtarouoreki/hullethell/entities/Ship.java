@@ -1,13 +1,13 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.BindableNumber;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.graphics.Sprite;
 
 public class Ship extends Entity {
@@ -24,14 +24,14 @@ public class Ship extends Entity {
         BodyConfiguration c = HulletHellGame.getAssetManager()
                 .get(path + ".cfg", BodyConfiguration.class);
         addTexture(path + ".png");
-        setHealth(c.getMaxHealth());
-        setSize(new Vector2(c.getSize()));
-        setCollisionBody(c.getCollisionCircles());
+        setHealth(c.maxHealth);
+        setSize(c.size);
+        setCollisionBody(c.collisionCircles);
         setTeam(CollisionTeam.ENEMY);
     }
 
     public void move(float angleDegrees) {
-        setVelocity(new Vector2(0, 1).rotate(-angleDegrees).scl(maxSpeed));
+        setVelocity(new Vector2(0, 1).rotated(-angleDegrees).scl(maxSpeed));
     }
 
     public void update(float delta) {

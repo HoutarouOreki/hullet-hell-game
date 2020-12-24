@@ -1,6 +1,5 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.badlogic.gdx.math.Vector2;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
@@ -11,6 +10,7 @@ import com.houtarouoreki.hullethell.environment.BackgroundStar;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.input.Controls;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -86,16 +86,17 @@ public class PlayScreen extends HulletHellScreen {
     }
 
     private void updateSteering() {
-        Vector2 targetVelocity = new Vector2();
         Ship player = world.player;
+        float targetX = 0;
+        float targetY = 0;
         if (HulletHellGame.getInputManager().isControlActive(Controls.left))
-            targetVelocity.x -= 1;
+            targetX -= 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.right))
-            targetVelocity.x += 1;
+            targetX += 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.down))
-            targetVelocity.y -= 1;
+            targetY -= 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.up))
-            targetVelocity.y += 1;
+            targetY += 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
             shotFrames++;
             if (shotFrames % 4 == 0) {
@@ -112,7 +113,7 @@ public class PlayScreen extends HulletHellScreen {
             HulletHellGame.getScreensManager().enterGameScreen(1,
                     new FadeOutTransition(), new FadeInTransition());
 
-        player.move(targetVelocity.angle());
+        player.move(new Vector2(targetX, targetY).angle());
     }
 
     private void initialiseBackground() {
