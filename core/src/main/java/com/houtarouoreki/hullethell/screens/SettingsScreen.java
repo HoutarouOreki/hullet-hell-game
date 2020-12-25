@@ -104,7 +104,7 @@ public class SettingsScreen extends HulletHellScreen {
         try {
             Mdx.playerData.writeJson(
                     new SerializableSettings(HulletHellGame.getSettings()),
-                    "playerData.json");
+                    "settings.json");
         } catch (PlayerDataException e) {
             e.printStackTrace();
         }
