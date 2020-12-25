@@ -1,13 +1,11 @@
 package com.houtarouoreki.hullethell.screens;
 
-import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.Transition;
 
 public abstract class HulletHellScreen extends BasicGameScreen {
     public static final int LOADING_SCREEN = 0;

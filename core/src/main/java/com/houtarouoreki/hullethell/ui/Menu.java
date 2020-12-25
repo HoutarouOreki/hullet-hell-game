@@ -7,7 +7,6 @@ import com.houtarouoreki.hullethell.graphics.Drawable;
 import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
-import com.houtarouoreki.hullethell.screens.garage.ShipsMenuOption;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +63,7 @@ public class Menu extends Drawable implements ControlProcessor {
 
     public void interconnectComponentsVertically(boolean focusFirst) {
         LoopInt i = new LoopInt(components);
-        do  {
+        do {
             MenuComponent component = components.get(i.getValue());
             component.upperNeighbor = components.get(i.decremented());
             component.lowerNeighbor = components.get(i.incremented());
