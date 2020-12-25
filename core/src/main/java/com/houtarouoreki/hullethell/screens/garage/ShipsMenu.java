@@ -20,17 +20,13 @@ public class ShipsMenu extends Menu {
     private void addOptions() {
         int i = 0;
         List<ShipConfiguration> shipConfigurations = new ArrayList<>();
-        float minScaleY = 500000;
-        float minScaleX = 500000;
         for (String shipConfigurationName : HulletHellGame.getPlayerState().unlockedShips) {
             ShipConfiguration c = HulletHellGame.getAssetManager()
                     .get("ships/" + shipConfigurationName + ".cfg");
             shipConfigurations.add(c);
-            minScaleY = Math.min(minScaleY, ShipsMenuOption.getYScaleToFitThumbnail(c.size));
-            minScaleX = Math.min(minScaleX, ShipsMenuOption.getXScaleToFitThumbnail(c.size));
         }
         for (ShipConfiguration shipConfiguration : shipConfigurations) {
-            ShipsMenuOption menuOption = new ShipsMenuOption(shipConfiguration, Math.min(minScaleX, minScaleY));
+            ShipsMenuOption menuOption = new ShipsMenuOption(shipConfiguration, shipConfigurations);
             float spacing = 3;
             menuOption.setY(i * (menuOption.getSize().y + spacing));
             add(menuOption);

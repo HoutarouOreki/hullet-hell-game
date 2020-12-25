@@ -62,9 +62,11 @@ public abstract class Drawable {
         } else if (getFillMode() == FillMode.FILL) {
             renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
             renderSize = renderSize.fill(parent.getContentRenderSize().scl(size));
+            renderSize = renderSize.scl(getSize());
         } else if (getFillMode() == FillMode.FIT) {
             renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
             renderSize = renderSize.fit(parent.getContentRenderSize().scl(size));
+            renderSize = renderSize.scl(getSize());
         }
         if (!children.isEmpty()) {
             if (autoSizeAxes.contains(Axes.VERTICAL)) {

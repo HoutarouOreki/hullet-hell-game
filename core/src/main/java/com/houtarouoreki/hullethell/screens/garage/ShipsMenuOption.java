@@ -10,6 +10,7 @@ import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 import com.houtarouoreki.hullethell.ui.MenuComponent;
 
+import java.util.Collection;
 import java.util.EnumSet;
 
 public class ShipsMenuOption extends MenuComponent {
@@ -18,10 +19,11 @@ public class ShipsMenuOption extends MenuComponent {
     private static final float spriteContainerHeight = height - 2 * spacing;
     private static final float spriteContainerWidth = spriteContainerHeight + 40;
     private static final Vector2 spriteContainerSize = new Vector2(spriteContainerWidth, spriteContainerHeight);
+    public static final Vector2 spriteContainerContentSize = spriteContainerSize.sub(new Vector2(spacing * 2));
     public final ShipConfiguration shipConfiguration;
     private final Rectangle background;
 
-    public ShipsMenuOption(ShipConfiguration shipConfiguration, float spriteDownscale) {
+    public ShipsMenuOption(ShipConfiguration shipConfiguration, Collection<ShipConfiguration> allOther) {
         this.shipConfiguration = shipConfiguration;
 
         setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
@@ -44,6 +46,9 @@ public class ShipsMenuOption extends MenuComponent {
         container.add(spriteContainer);
         spriteContainer.setSize(spriteContainerSize);
         spriteContainer.setPadding(new PaddingMargin(spacing));
+
+        float spriteDownscale = GarageScreen.getScale(allOther, spriteContainer.getContentRenderSize());
+
         Sprite shipSprite = new Sprite();
         shipSprite.texture = HulletHellGame.getAssetManager().get(shipConfiguration.path + ".png");
         shipSprite.setAnchor(new Vector2(0.5f));
@@ -66,14 +71,6 @@ public class ShipsMenuOption extends MenuComponent {
         shipNameLabel.setOrigin(new Vector2(0.5f));
 
         unfocus();
-    }
-
-    public static float getXScaleToFitThumbnail(Vector2 size) {
-        return size.fit(spriteContainerSize.sub(new Vector2(spacing).scl(2))).x / size.x;
-    }
-
-    public static float getYScaleToFitThumbnail(Vector2 size) {
-        return size.fit(spriteContainerSize.sub(new Vector2(spacing).scl(2))).y / size.y;
     }
 
     @Override
