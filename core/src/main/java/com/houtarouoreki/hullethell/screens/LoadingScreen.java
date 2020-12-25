@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
+import com.houtarouoreki.hullethell.screens.garage.GarageScreen;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.GameScreen;
@@ -32,8 +33,9 @@ public class LoadingScreen extends HulletHellScreen {
 
         if (HulletHellGame.getAssetManager().update() && loadingDuration > minimum_loading_time) {
             HulletHellGame.getScreensManager().addGameScreen(new MainMenuScreen());
+            HulletHellGame.getScreensManager().addGameScreen(new GarageScreen());
             PlayScreen ps = new PlayScreen();
-            ps.setStage(HulletHellGame.getAssetManager().<StageConfiguration>get("stages/Stage 1.cfg"));
+            ps.setStage(HulletHellGame.getAssetManager().get("stages/Stage 1.cfg"));
             HulletHellGame.getScreensManager().addGameScreen(ps);
             HulletHellGame.getScreensManager().addGameScreen(new ResultsScreen());
             HulletHellGame.getScreensManager().addGameScreen(new SettingsScreen());

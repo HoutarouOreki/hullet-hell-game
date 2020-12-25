@@ -11,6 +11,8 @@ import java.util.List;
 
 public abstract class Drawable {
     public final List<Drawable> children = new ArrayList<>();
+    public float widthHeightRatioForFitFill = 1;
+    private FillMode fillMode = FillMode.STRETCH;
     private final PaddingMargin padding = new PaddingMargin();
     private final PaddingMargin margin = new PaddingMargin();
     private Vector2 position = new Vector2();
@@ -55,6 +57,17 @@ public abstract class Drawable {
         if (relativeSizeAxes.contains(Axes.VERTICAL))
             renderSize = renderSize.sclY(parent.getContentRenderSize().y);
         renderSize = renderSize.sub(getMargin().getTotal());
+        if (getFillMode() == FillMode.FILL) {
+            if (widthHeightRatioForFitFill > 1)
+                renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
+            else
+                renderSize = renderSize.withY(renderSize.x * widthHeightRatioForFitFill);
+        } else if (getFillMode() == FillMode.FIT) {
+            if (widthHeightRatioForFitFill > 1)
+                renderSize = renderSize.withY(renderSize.x / widthHeightRatioForFitFill);
+            else
+                renderSize = renderSize.withX(renderSize.y / widthHeightRatioForFitFill);
+        }
         return renderSize;
     }
 
@@ -205,5 +218,13 @@ public abstract class Drawable {
 
     public void setOrigin(Vector2 origin) {
         this.origin = origin;
+    }
+
+    public FillMode getFillMode() {
+        return fillMode;
+    }
+
+    public void setFillMode(FillMode fillMode) {
+        this.fillMode = fillMode;
     }
 }

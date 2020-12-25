@@ -1,11 +1,13 @@
 package com.houtarouoreki.hullethell.screens;
 
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.ui.WindowSizeContainer;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.Transition;
 
 public abstract class HulletHellScreen extends BasicGameScreen {
     public static final int LOADING_SCREEN = 0;
@@ -14,6 +16,7 @@ public abstract class HulletHellScreen extends BasicGameScreen {
     public static final int RESULTS_SCREEN = 3;
     public static final int SETTINGS_SCREEN = 4;
     public static final int LEVEL_SELECT_SCREEN = 5;
+    public static final int GARAGE_SCREEN = 6;
     public final WindowSizeContainer container = new WindowSizeContainer();
 
     @Override

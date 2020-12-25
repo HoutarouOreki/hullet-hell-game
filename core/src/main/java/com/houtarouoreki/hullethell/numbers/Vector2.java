@@ -180,4 +180,8 @@ public class Vector2 {
     public Vector2 withY(float y) {
         return new Vector2(x, y);
     }
+
+    public float getWidthHeightRatio() {
+        return x / y;
+    }
 }

@@ -28,8 +28,13 @@ public class MainMenuScreen extends HulletHellScreen {
         playButton.setPosition(new Vector2(buttonX, getNextButtonY()));
         playButton.setText("Play");
         playButton.setSize(buttonSize);
-        playButton.focus();
         playButton.listener = this::onPlayButton;
+
+        Button garageButton = new Button();
+        garageButton.setPosition(new Vector2(buttonX, getNextButtonY()));
+        garageButton.setText("Garage");
+        garageButton.setSize(buttonSize);
+        garageButton.listener = this::onGarageButton;
 
         Button settingsButton = new Button();
         settingsButton.setPosition(new Vector2(buttonX, getNextButtonY()));
@@ -42,14 +47,8 @@ public class MainMenuScreen extends HulletHellScreen {
         exitButton.setSize(buttonSize);
         exitButton.setText("Exit");
         exitButton.listener = () -> System.exit(0);
-        menu.addAll(Arrays.asList(playButton, settingsButton, exitButton));
-
-        playButton.upperNeighbor = exitButton;
-        playButton.lowerNeighbor = settingsButton;
-        settingsButton.upperNeighbor = playButton;
-        settingsButton.lowerNeighbor = exitButton;
-        exitButton.upperNeighbor = settingsButton;
-        exitButton.lowerNeighbor = playButton;
+        menu.addAll(Arrays.asList(playButton, garageButton, settingsButton, exitButton));
+        menu.interconnectComponentsVertically(true);
     }
 
     @Override
@@ -80,6 +79,13 @@ public class MainMenuScreen extends HulletHellScreen {
                 HulletHellScreen.LEVEL_SELECT_SCREEN,
                 new FadeOutTransition(), new FadeInTransition());
         HulletHellGame.getMusicManager().fadeOut(0.5f);
+    }
+
+    private void onGarageButton() {
+        HulletHellGame.getScreensManager().enterGameScreen(
+                HulletHellScreen.GARAGE_SCREEN,
+                new FadeOutTransition(), new FadeInTransition());
+
     }
 
     private void onSettingsButton() {
