@@ -157,6 +157,18 @@ public class Vector2 {
         return new Vector2(x, y);
     }
 
+    public Vector2 fit(Vector2 max) {
+        float scaleDownX = max.x / x;
+        float scaleDownY = max.y / y;
+        return scl(Math.min(scaleDownX, scaleDownY));
+    }
+
+    public Vector2 fill(Vector2 min) {
+        float scaleUpX = min.x / x;
+        float scaleUpY = min.y / y;
+        return scl(Math.max(scaleUpX, scaleUpY));
+    }
+
     public boolean lesserThan(Vector2 other) {
         return x < other.x || y < other.y;
     }

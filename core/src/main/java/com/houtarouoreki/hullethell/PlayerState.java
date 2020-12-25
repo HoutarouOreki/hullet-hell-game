@@ -17,5 +17,7 @@ public class PlayerState {
         unlockedShips.clear();
         unlockedShips.addAll(data.unlockedShips);
         currentShip.setValue(data.currentShip);
+        unlockedShips.add("Beetle 1");
+        unlockedShips.add("Thomson 2");
     }
 }

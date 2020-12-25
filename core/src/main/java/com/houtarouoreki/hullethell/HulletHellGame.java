@@ -151,7 +151,11 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadExplosives(assetManager, Arrays.asList("Explosive"));
         loadShips(Arrays.asList(
-                "Enemy ship 1", "Ship 1", "Copper eye"));
+                "Enemy ship 1", "Copper eye",
+                "Ship 1",
+                "Beetle 1",
+                "Thomson 2"
+                ));
 
         loadEffects(assetManager, Arrays.asList(
                 "blurredCircle",
@@ -191,10 +195,10 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadPlayerState() {
         try {
             if (!Mdx.playerData.hasFile("playerState.json"))
-                Mdx.playerData.writeJson(new SerializableSettings(),
+                Mdx.playerData.writeJson(new SerializablePlayerState(playerState),
                         "playerState.json");
-            settings.setSettings(Mdx.playerData
-                    .readJson(SerializableSettings.class, "playerState.json"));
+            playerState.set(Mdx.playerData
+                    .readJson(SerializablePlayerState.class, "playerState.json"));
         } catch (PlayerDataException e) {
             e.printStackTrace();
         }

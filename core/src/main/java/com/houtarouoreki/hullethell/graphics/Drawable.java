@@ -52,21 +52,18 @@ public abstract class Drawable {
 
     public Vector2 getRenderSize() {
         Vector2 renderSize = getSize();
-        if (relativeSizeAxes.contains(Axes.HORIZONTAL))
-            renderSize = renderSize.sclX(parent.getContentRenderSize().x);
-        if (relativeSizeAxes.contains(Axes.VERTICAL))
-            renderSize = renderSize.sclY(parent.getContentRenderSize().y);
-        renderSize = renderSize.sub(getMargin().getTotal());
-        if (getFillMode() == FillMode.FILL) {
-            if (widthHeightRatioForFitFill > 1)
-                renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
-            else
-                renderSize = renderSize.withY(renderSize.x * widthHeightRatioForFitFill);
+        if (getFillMode() == FillMode.STRETCH) {
+            if (relativeSizeAxes.contains(Axes.HORIZONTAL))
+                renderSize = renderSize.sclX(parent.getContentRenderSize().x);
+            if (relativeSizeAxes.contains(Axes.VERTICAL))
+                renderSize = renderSize.sclY(parent.getContentRenderSize().y);
+            renderSize = renderSize.sub(getMargin().getTotal());
+        } else if (getFillMode() == FillMode.FILL) {
+            renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
+            renderSize = renderSize.fill(parent.getContentRenderSize().scl(size));
         } else if (getFillMode() == FillMode.FIT) {
-            if (widthHeightRatioForFitFill > 1)
-                renderSize = renderSize.withY(renderSize.x / widthHeightRatioForFitFill);
-            else
-                renderSize = renderSize.withX(renderSize.y / widthHeightRatioForFitFill);
+            renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
+            renderSize = renderSize.fit(parent.getContentRenderSize().scl(size));
         }
         return renderSize;
     }

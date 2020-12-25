@@ -12,6 +12,9 @@ public class SerializablePlayerState {
     @Field
     public String currentShip;
 
+    public SerializablePlayerState() {
+    }
+
     public SerializablePlayerState(PlayerState playerState) {
         unlockedShips = new ArrayList<>(playerState.unlockedShips);
         currentShip = playerState.currentShip.getValue();
