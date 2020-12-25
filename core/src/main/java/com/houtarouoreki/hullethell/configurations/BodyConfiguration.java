@@ -14,6 +14,7 @@ public class BodyConfiguration {
     public final Vector2 size;
     public final List<CollisionCircle> collisionCircles;
     public final String path;
+    public final String fileName;
     public final int damage;
 
     public BodyConfiguration(FileHandle file) {
@@ -27,6 +28,8 @@ public class BodyConfiguration {
 
     public BodyConfiguration(Map<String, String> keyValues, String path) {
         this.path = path;
+        System.out.println("path = " + path);
+        fileName = path.substring(path.lastIndexOf('/') + 1);
         if (keyValues.containsKey("name"))
             name = keyValues.get("name");
         else {

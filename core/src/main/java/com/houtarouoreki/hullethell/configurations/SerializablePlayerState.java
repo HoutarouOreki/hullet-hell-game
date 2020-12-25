@@ -17,6 +17,6 @@ public class SerializablePlayerState {
 
     public SerializablePlayerState(PlayerState playerState) {
         unlockedShips = new ArrayList<>(playerState.unlockedShips);
-        currentShip = playerState.currentShip.getValue();
+        currentShip = playerState.currentShipFileName.getValue();
     }
 }

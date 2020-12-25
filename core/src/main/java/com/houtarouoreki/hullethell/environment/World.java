@@ -35,7 +35,7 @@ public class World {
     private float bufferedTime;
 
     public World(StageConfiguration script, DialogueBox dialogueBox) {
-        player = new Ship("Ship 1");
+        player = new Ship(HulletHellGame.getPlayerState().currentShipFileName.getValue());
         statistics = new Statistics();
         questManager = new QuestManager();
         bodies = new ArrayList<>();

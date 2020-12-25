@@ -23,6 +23,11 @@ public class GarageScreen extends HulletHellScreen {
         menu.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
         menuContainer.setRelativeSizeAxes(EnumSet.of(Axes.VERTICAL));
         menuContainer.setSize(new Vector2(300, 1));
+        HulletHellGame.getPlayerState().currentShipFileName.addListener(this::onShipChanged);
+    }
+
+    private void onShipChanged(String oldValue, String newValue) {
+
     }
 
     @Override

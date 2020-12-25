@@ -4,6 +4,7 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.configurations.ShipConfiguration;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.ui.Menu;
+import com.houtarouoreki.hullethell.ui.MenuComponent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -13,11 +14,10 @@ public class ShipsMenu extends Menu {
     public ShipsMenu() {
         setAutoSizeAxes(EnumSet.of(Axes.VERTICAL));
         addOptions();
-        interconnectComponentsVertically(true);
+        interconnectComponentsVertically(false);
     }
 
     private void addOptions() {
-
         int i = 0;
         List<ShipConfiguration> shipConfigurations = new ArrayList<>();
         float minScaleY = 500000;
@@ -34,7 +34,23 @@ public class ShipsMenu extends Menu {
             float spacing = 3;
             menuOption.setY(i * (menuOption.getSize().y + spacing));
             add(menuOption);
+            if (shipConfiguration.fileName.equals(HulletHellGame.getPlayerState().currentShipFileName.getValue()))
+                menuOption.focus();
+            menuOption.addListener(new MenuComponent.MenuComponentListener() {
+                @Override
+                public void onFocused() {
+                    onShipSelected(shipConfiguration);
+                }
+
+                @Override
+                public void onFocusLost() {
+                }
+            });
             i++;
         }
+    }
+
+    private void onShipSelected(ShipConfiguration shipConfiguration) {
+        HulletHellGame.getPlayerState().currentShipFileName.setValue(shipConfiguration.fileName);
     }
 }
