@@ -14,6 +14,7 @@ public class BodyConfiguration {
     public final Vector2 size;
     public final List<CollisionCircle> collisionCircles;
     public final String path;
+    public final int damage;
 
     public BodyConfiguration(FileHandle file) {
         this(Arrays.asList(new String(file.readBytes()).split("\\r?\\n")),
@@ -35,5 +36,6 @@ public class BodyConfiguration {
         maxHealth = Integer.parseInt(keyValues.get("maxHealth"));
         size = ConfigurationsHelper.parseVector2(keyValues.get("size"));
         collisionCircles = ConfigurationsHelper.parseCollisionCircles(keyValues.get("collisionCircles"));
+        damage = Integer.parseInt(keyValues.getOrDefault("damage", "0"));
     }
 }
