@@ -101,6 +101,11 @@ public class MainMenuScreen extends HulletHellScreen {
     }
 
     @Override
+    public int getPreviousScreenId() {
+        return MAIN_MENU_SCREEN;
+    }
+
+    @Override
     public void render(GameContainer gc, Graphics g) {
         menu.render(g);
     }

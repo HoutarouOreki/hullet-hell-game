@@ -45,6 +45,11 @@ public class LoadingScreen extends HulletHellScreen {
     }
 
     @Override
+    public int getPreviousScreenId() {
+        return 0;
+    }
+
+    @Override
     public void render(GameContainer gc, Graphics g) {
         float screenCenterH = gc.getWidth() / 2f;
         float screenCenterV = gc.getHeight() / 2f;

@@ -40,11 +40,13 @@ public class HulletHellGame extends ScreenBasedGame {
     private static SoundManager soundManager;
     private static ScreenManager<GameScreen> screenManager;
     private static Settings settings;
+    private static PlayerState playerState;
     private final WindowSizeContainer container;
     private Label fpsText;
 
     public HulletHellGame() {
         settings = new Settings();
+        playerState = new PlayerState();
         container = new WindowSizeContainer();
         assetManager = new AssetManager();
         inputManager = new InputManager();
@@ -75,9 +77,14 @@ public class HulletHellGame extends ScreenBasedGame {
         return settings;
     }
 
+    public static PlayerState getPlayerState() {
+        return playerState;
+    }
+
     @Override
     public void initialise() {
         loadSettings();
+        loadPlayerState();
 
         SongNotification notification = new SongNotification(assetManager);
         musicManager = new MusicManager(assetManager, notification);
@@ -171,11 +178,23 @@ public class HulletHellGame extends ScreenBasedGame {
 
     private void loadSettings() {
         try {
-            if (!Mdx.playerData.hasFile("playerData.json"))
+            if (!Mdx.playerData.hasFile("settings.json"))
                 Mdx.playerData.writeJson(new SerializableSettings(),
-                        "playerData.json");
+                        "settings.json");
             settings.setSettings(Mdx.playerData
-                    .readJson(SerializableSettings.class, "playerData.json"));
+                    .readJson(SerializableSettings.class, "settings.json"));
+        } catch (PlayerDataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadPlayerState() {
+        try {
+            if (!Mdx.playerData.hasFile("playerState.json"))
+                Mdx.playerData.writeJson(new SerializableSettings(),
+                        "playerState.json");
+            settings.setSettings(Mdx.playerData
+                    .readJson(SerializableSettings.class, "playerState.json"));
         } catch (PlayerDataException e) {
             e.printStackTrace();
         }

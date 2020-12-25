@@ -93,6 +93,11 @@ public class LevelSelectScreen extends HulletHellScreen {
     }
 
     @Override
+    public int getPreviousScreenId() {
+        return MAIN_MENU_SCREEN;
+    }
+
+    @Override
     public int getId() {
         return LEVEL_SELECT_SCREEN;
     }

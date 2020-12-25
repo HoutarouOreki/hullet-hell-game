@@ -16,9 +16,13 @@ public class ResultsScreen extends HulletHellScreen {
 
     @Override
     public void update(GameContainer gameContainer, ScreenManager<? extends GameScreen> screenManager, float v) {
-        if (HulletHellGame.getInputManager().isControlActive(Controls.select) ||
-                HulletHellGame.getInputManager().isControlActive(Controls.back))
+        if (HulletHellGame.getInputManager().isControlActive(Controls.select))
             screenManager.enterGameScreen(1, new FadeOutTransition(), new FadeInTransition());
+    }
+
+    @Override
+    public int getPreviousScreenId() {
+        return LEVEL_SELECT_SCREEN;
     }
 
     @Override

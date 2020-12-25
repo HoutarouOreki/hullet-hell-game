@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class SettingsScreen extends HulletHellScreen implements ControlProcessor {
+public class SettingsScreen extends HulletHellScreen {
     private final Menu menu;
 
     public SettingsScreen() {
@@ -81,6 +81,11 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     }
 
     @Override
+    public int getPreviousScreenId() {
+        return MAIN_MENU_SCREEN;
+    }
+
+    @Override
     public void postTransitionIn(Transition transitionIn) {
         super.postTransitionIn(transitionIn);
         HulletHellGame.getInputManager().managedProcessors.add(menu);
@@ -92,6 +97,10 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
         super.preTransitionOut(transitionOut);
         HulletHellGame.getInputManager().managedProcessors.remove(menu);
         HulletHellGame.getInputManager().managedProcessors.remove(this);
+        saveSettings();
+    }
+
+    private void saveSettings() {
         try {
             Mdx.playerData.writeJson(
                     new SerializableSettings(HulletHellGame.getSettings()),
@@ -104,16 +113,6 @@ public class SettingsScreen extends HulletHellScreen implements ControlProcessor
     @Override
     public int getId() {
         return SETTINGS_SCREEN;
-    }
-
-    @Override
-    public boolean handleControl(Controls control) {
-        if (control == Controls.back) {
-            HulletHellGame.getScreensManager().enterGameScreen(MAIN_MENU_SCREEN,
-                    new FadeOutTransition(), new FadeInTransition());
-            return true;
-        }
-        return false;
     }
 
     private void generateLayout(List<SettingsComponent> components) {

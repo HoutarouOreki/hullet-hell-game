@@ -24,6 +24,11 @@ public class GarageScreen extends HulletHellScreen {
     }
 
     @Override
+    public int getPreviousScreenId() {
+        return MAIN_MENU_SCREEN;
+    }
+
+    @Override
     public int getId() {
         return GARAGE_SCREEN;
     }

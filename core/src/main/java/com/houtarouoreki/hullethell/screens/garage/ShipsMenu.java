@@ -14,11 +14,11 @@ public class ShipsMenu extends Menu {
     }
 
     private void addOptions() {
-        Array<ShipConfiguration> shipConfigurations = new Array<>();
-        HulletHellGame.getAssetManager().getAll(ShipConfiguration.class, shipConfigurations);
 
         int i = 0;
-        for (ShipConfiguration shipConfiguration : shipConfigurations) {
+        for (String shipConfigurationName : HulletHellGame.getPlayerState().unlockedShips) {
+            ShipConfiguration shipConfiguration = HulletHellGame.getAssetManager()
+                    .get("ships/" + shipConfigurationName + ".cfg");
             ShipsMenuOption menuOption = new ShipsMenuOption(shipConfiguration);
             float spacing = 3;
             menuOption.setY(i * (menuOption.getSize().y + spacing));

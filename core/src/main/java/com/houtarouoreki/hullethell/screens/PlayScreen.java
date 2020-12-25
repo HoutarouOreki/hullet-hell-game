@@ -84,6 +84,11 @@ public class PlayScreen extends HulletHellScreen {
         }
     }
 
+    @Override
+    public int getPreviousScreenId() {
+        return LEVEL_SELECT_SCREEN;
+    }
+
     private void updateSteering() {
         Ship player = world.player;
         float targetX = 0;
@@ -105,9 +110,6 @@ public class PlayScreen extends HulletHellScreen {
                         .playSound("laser1", 0.3f);
             }
         }
-        if (HulletHellGame.getInputManager().isControlActive(Controls.back))
-            HulletHellGame.getScreensManager().enterGameScreen(1,
-                    new FadeOutTransition(), new FadeInTransition());
 
         Vector2 targetDirection = new Vector2(targetX, targetY);
         if (targetDirection.len2() > 0)
