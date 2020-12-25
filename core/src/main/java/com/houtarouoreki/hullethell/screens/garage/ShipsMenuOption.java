@@ -49,7 +49,7 @@ public class ShipsMenuOption extends MenuComponent {
 
         float spriteDownscale = GarageScreen.getScale(allOther, spriteContainer.getContentRenderSize());
 
-        Sprite shipSprite = new Sprite();
+        ShipSprite shipSprite = new ShipSprite(shipConfiguration);
         shipSprite.texture = HulletHellGame.getAssetManager().get(shipConfiguration.path + ".png");
         shipSprite.setAnchor(new Vector2(0.5f));
         shipSprite.setOrigin(new Vector2(0.5f));

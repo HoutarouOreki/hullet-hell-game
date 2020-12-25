@@ -69,8 +69,8 @@ public class GarageScreen extends HulletHellScreen {
     private void onShipChanged(String oldValue, String newValue) {
         shipDisplayContainer.children.clear();
 
-        Sprite shipSprite = new Sprite();
         ShipConfiguration c = HulletHellGame.getPlayerState().getCurrentShipConfiguration();
+        ShipSprite shipSprite = new ShipSprite(c);
         shipSprite.texture = HulletHellGame.getAssetManager().get(c.path + ".png");
         shipSprite.setAnchor(new Vector2(0.5f));
         shipSprite.setOrigin(new Vector2(0.5f));
