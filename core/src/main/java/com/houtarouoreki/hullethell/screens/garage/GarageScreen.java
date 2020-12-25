@@ -1,14 +1,28 @@
 package com.houtarouoreki.hullethell.screens.garage;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.graphics.Axes;
+import com.houtarouoreki.hullethell.graphics.Container;
+import com.houtarouoreki.hullethell.graphics.PaddingMargin;
+import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.screens.HulletHellScreen;
 import org.mini2Dx.core.screen.Transition;
+
+import java.util.EnumSet;
 
 public class GarageScreen extends HulletHellScreen {
     private final ShipsMenu menu;
 
     public GarageScreen() {
-        container.add(menu = new ShipsMenu());
+        Container menuContainer = new Container();
+        container.add(menuContainer);
+        menuContainer.add(menu = new ShipsMenu());
+        menuContainer.setPadding(new PaddingMargin(5));
+        menu.setAnchor(new Vector2(0.5f));
+        menu.setOrigin(new Vector2(0.5f));
+        menu.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
+        menuContainer.setRelativeSizeAxes(EnumSet.of(Axes.VERTICAL));
+        menuContainer.setSize(new Vector2(300, 1));
     }
 
     @Override

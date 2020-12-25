@@ -13,13 +13,16 @@ import com.houtarouoreki.hullethell.ui.MenuComponent;
 import java.util.EnumSet;
 
 public class ShipsMenuOption extends MenuComponent {
+    private static final float height = 64;
+    private static final float spacing = 6;
+    private static final float spriteContainerHeight = height - 2 * spacing;
+    private static final float spriteContainerWidth = spriteContainerHeight + 40;
+    private static final Vector2 spriteContainerSize = new Vector2(spriteContainerWidth, spriteContainerHeight);
     public final ShipConfiguration shipConfiguration;
     private final Rectangle background;
 
-    public ShipsMenuOption(ShipConfiguration shipConfiguration) {
+    public ShipsMenuOption(ShipConfiguration shipConfiguration, float spriteDownscale) {
         this.shipConfiguration = shipConfiguration;
-
-        float height = 64;
 
         setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
         setSize(new Vector2(1, height));
@@ -27,16 +30,10 @@ public class ShipsMenuOption extends MenuComponent {
         add(background = new Rectangle());
         background.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
 
-        float spacing = 6;
-
         Container container = new Container();
         container.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
         add(container);
         container.setPadding(new PaddingMargin(spacing));
-
-        float spriteContainerHeight = height - 2 * spacing;
-        float spriteContainerWidth = spriteContainerHeight + 40;
-        Vector2 spriteContainerSize = new Vector2(spriteContainerWidth, spriteContainerHeight);
 
         Rectangle spriteBackground = new Rectangle();
         container.add(spriteBackground);
@@ -48,12 +45,10 @@ public class ShipsMenuOption extends MenuComponent {
         spriteContainer.setSize(spriteContainerSize);
         spriteContainer.setPadding(new PaddingMargin(spacing));
         Sprite shipSprite = new Sprite();
-        shipSprite.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
         shipSprite.texture = HulletHellGame.getAssetManager().get(shipConfiguration.path + ".png");
-        shipSprite.widthHeightRatioForFitFill = shipConfiguration.size.getWidthHeightRatio();
         shipSprite.setAnchor(new Vector2(0.5f));
         shipSprite.setOrigin(new Vector2(0.5f));
-        shipSprite.setFillMode(FillMode.FIT);
+        shipSprite.setSize(shipConfiguration.size.scl(spriteDownscale));
         spriteContainer.add(shipSprite);
 
         Container textContainer = new Container();
@@ -71,6 +66,14 @@ public class ShipsMenuOption extends MenuComponent {
         shipNameLabel.setOrigin(new Vector2(0.5f));
 
         unfocus();
+    }
+
+    public static float getXScaleToFitThumbnail(Vector2 size) {
+        return size.fit(spriteContainerSize.sub(new Vector2(spacing).scl(2))).x / size.x;
+    }
+
+    public static float getYScaleToFitThumbnail(Vector2 size) {
+        return size.fit(spriteContainerSize.sub(new Vector2(spacing).scl(2))).y / size.y;
     }
 
     @Override

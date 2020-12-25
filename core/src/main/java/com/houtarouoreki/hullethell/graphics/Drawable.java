@@ -23,6 +23,7 @@ public abstract class Drawable {
     private EnumSet<Axes> relativePositionAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativeSizeAxes = EnumSet.noneOf(Axes.class);
     private EnumSet<Axes> relativePaddingAxes = EnumSet.noneOf(Axes.class);
+    private EnumSet<Axes> autoSizeAxes = EnumSet.noneOf(Axes.class);
     private Drawable parent;
     private Color color = Color.WHITE;
     private boolean visibility = true;
@@ -64,6 +65,26 @@ public abstract class Drawable {
         } else if (getFillMode() == FillMode.FIT) {
             renderSize = renderSize.withX(renderSize.y * widthHeightRatioForFitFill);
             renderSize = renderSize.fit(parent.getContentRenderSize().scl(size));
+        }
+        if (!children.isEmpty()) {
+            if (autoSizeAxes.contains(Axes.VERTICAL)) {
+                float maxY = 0;
+                for (Drawable child : children) {
+                    if (child.relativeSizeAxes.contains(Axes.VERTICAL))
+                        continue;
+                    maxY = Math.max(maxY, child.getPosition().y + child.getSize().y);
+                }
+                renderSize = renderSize.withY(maxY);
+            }
+            if (autoSizeAxes.contains(Axes.HORIZONTAL)) {
+                float maxX = 0;
+                for (Drawable child : children) {
+                    if (child.relativeSizeAxes.contains(Axes.HORIZONTAL))
+                        continue;
+                    maxX = Math.max(maxX, child.getPosition().x + child.getSize().x);
+                }
+                renderSize = renderSize.withX(maxX);
+            }
         }
         return renderSize;
     }
@@ -223,5 +244,13 @@ public abstract class Drawable {
 
     public void setFillMode(FillMode fillMode) {
         this.fillMode = fillMode;
+    }
+
+    public EnumSet<Axes> getAutoSizeAxes() {
+        return autoSizeAxes;
+    }
+
+    public void setAutoSizeAxes(EnumSet<Axes> autoSizeAxes) {
+        this.autoSizeAxes = autoSizeAxes;
     }
 }
