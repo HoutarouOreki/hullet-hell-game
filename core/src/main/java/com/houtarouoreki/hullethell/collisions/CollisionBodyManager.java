@@ -122,12 +122,12 @@ public class CollisionBodyManager {
         dontCollideWith.add(body.collisionBodyManager);
     }
 
-    public boolean collidesWith(CollisionBodyManager other) {
+    public boolean canCollideWith(CollisionBodyManager other) {
         return isAcceptingCollisions() && collidesWith.contains(other.getTeam())
                 && !dontCollideWith.contains(other);
     }
 
-    public boolean collidesWith(CollisionBodyManager other, int onTick) {
+    public boolean canCollideWith(CollisionBodyManager other, int onTick) {
         return isAcceptingCollisions(onTick) && collidesWith.contains(other.getTeam())
                 && !dontCollideWith.contains(other);
     }

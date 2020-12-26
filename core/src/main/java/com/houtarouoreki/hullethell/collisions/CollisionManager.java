@@ -25,8 +25,8 @@ public class CollisionManager {
             for (int j = i + 1; j < world.getBodies().size(); j++) {
                 CollisionBodyManager b = world.getBodies().get(j).collisionBodyManager;
 
-                if (!a.collidesWith(b, world.getTicksPassed())
-                        || !b.collidesWith(a, world.getTicksPassed())) {
+                if (!a.canCollideWith(b, world.getTicksPassed())
+                        || !b.canCollideWith(a, world.getTicksPassed())) {
                     continue;
                 }
 
