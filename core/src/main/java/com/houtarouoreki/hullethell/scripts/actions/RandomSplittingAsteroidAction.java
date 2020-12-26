@@ -13,7 +13,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     private final List<RandomAsteroid> asteroids = new ArrayList<>();
     private final List<RandomAsteroid> toAdd = new ArrayList<>();
     private final List<RandomAsteroid> toRemove = new ArrayList<>();
-    private final float itemDropMaxRadius = 0.6f;
+    private final float itemDropMaxRadius = 0.5f;
     private Random random;
     private String[] itemStrings;
 
@@ -28,8 +28,6 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     }
 
     private void addAsteroid(RandomAsteroid asteroid) {
-        asteroid.getCollisionBodyManager().disableCollisionsWith(asteroids);
-        asteroid.getCollisionBodyManager().disableCollisionsWith(toAdd);
         toAdd.add(asteroid);
         world.addBody(asteroid);
     }
@@ -67,7 +65,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
 
     private void addChildAsteroids(final RandomAsteroid asteroid) {
         int amount = random.nextInt(2) + 2;
-        float lastAngle = 0;
+        float lastAngle = random.nextFloat() * 360;
         for (int i = 0; i < amount; i++) {
             float maxScale = asteroid.getCollisionBodyManager().getFarthestPointDistance() * 1.2f;
             float minScale = Math.max(itemDropMaxRadius,
@@ -83,8 +81,8 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
                     .add(new Vector2(-2, 0))
                     .scl(1 / scale));
             childAsteroid.setPosition(asteroid.getPosition());
-            childAsteroid.getCollisionBodyManager().disableCollisionsFor(0.1f);
             addAsteroid(childAsteroid);
+            childAsteroid.parent = asteroid;
         }
     }
 

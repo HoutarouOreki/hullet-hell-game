@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.entities;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.Circle;
+import com.houtarouoreki.hullethell.collisions.CollisionBodyManager;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.environment.World;
@@ -14,6 +15,7 @@ import java.util.Random;
 public class RandomAsteroid extends Entity {
     private final float scale;
     private final boolean clockwiseRotation;
+    public RandomAsteroid parent;
 
     public RandomAsteroid(float scale) {
         super();
@@ -74,5 +76,29 @@ public class RandomAsteroid extends Entity {
         super.onCollision(collision);
         if (collision.other instanceof Entity)
             ((Entity) collision.other).applyDamage(scale * getVelocity().len2());
+    }
+
+    @Override
+    protected CollisionBodyManager generateCollisionBodyManager() {
+        return new AsteroidCollisionBodyManager(this);
+    }
+
+    private class AsteroidCollisionBodyManager extends CollisionBodyManager {
+        private final RandomAsteroid asteroid;
+
+        public AsteroidCollisionBodyManager(RandomAsteroid asteroid) {
+            super(asteroid);
+            this.asteroid = asteroid;
+        }
+
+        @Override
+        public boolean canCollideWith(CollisionBodyManager other) {
+            if (other instanceof AsteroidCollisionBodyManager) {
+                RandomAsteroid otherAsteroid = ((AsteroidCollisionBodyManager) other).asteroid;
+                if (otherAsteroid.parent != null && otherAsteroid.parent == parent)
+                    return false;
+            }
+            return super.canCollideWith(other);
+        }
     }
 }
