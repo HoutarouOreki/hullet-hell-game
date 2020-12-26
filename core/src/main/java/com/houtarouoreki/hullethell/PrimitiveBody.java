@@ -41,7 +41,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
         setPosition(getPosition().add(getVelocity().scl(delta)));
         updateSpriteLayers();
         if (isSpriteRequired() && spriteInfo == null)
-            spriteInfo = HulletHellGame.getAssetManager().get(configuration.path + "-sprite.cfg");
+            spriteInfo = HulletHellGame.getAssetManager().get(configuration.path + "-sprite.hhc");
         time += delta;
         ticks++;
     }

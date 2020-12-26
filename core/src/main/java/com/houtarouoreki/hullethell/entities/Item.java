@@ -30,6 +30,7 @@ public class Item extends Entity {
         spriteInfo = new SpriteInfo();
         spriteInfo.textureName = itemName;
         spriteInfo.textureFolder = "items";
+        setShouldDespawnOOBounds(true);
     }
 
     private void addStarAnimation() {

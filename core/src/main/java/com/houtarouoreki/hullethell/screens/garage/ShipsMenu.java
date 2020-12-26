@@ -22,7 +22,7 @@ public class ShipsMenu extends Menu {
         List<ShipConfiguration> shipConfigurations = new ArrayList<>();
         for (String shipConfigurationName : HulletHellGame.getPlayerState().unlockedShips) {
             ShipConfiguration c = HulletHellGame.getAssetManager()
-                    .get("ships/" + shipConfigurationName + ".cfg");
+                    .get("ships/" + shipConfigurationName + ".hhc");
             shipConfigurations.add(c);
         }
         for (ShipConfiguration shipConfiguration : shipConfigurations) {

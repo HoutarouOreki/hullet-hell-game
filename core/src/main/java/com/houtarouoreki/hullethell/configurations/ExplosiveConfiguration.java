@@ -29,6 +29,6 @@ public class ExplosiveConfiguration extends BodyConfiguration {
     }
 
     public static ExplosiveConfiguration fromName(String name) {
-        return HulletHellGame.getAssetManager().get("explosives/" + name + ".cfg");
+        return HulletHellGame.getAssetManager().get("explosives/" + name + ".hhc");
     }
 }

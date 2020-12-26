@@ -221,7 +221,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
     private void loadStages(AssetManager assetManager, List<String> names) {
         for (String name : names) {
-            assetManager.load("stages/" + name + ".cfg", StageConfiguration.class);
+            assetManager.load("stages/" + name + ".hhc", StageConfiguration.class);
         }
     }
 
@@ -240,19 +240,19 @@ public class HulletHellGame extends ScreenBasedGame {
     private void loadMusicAndConfigs(AssetManager am, List<String> names) {
         for (String name : names) {
             am.load("music/" + name + ".mp3", Music.class);
-            am.load("music/" + name + ".cfg", SongConfiguration.class);
+            am.load("music/" + name + ".hhc", SongConfiguration.class);
         }
     }
 
     private void loadSpriteInfo(String name) {
-        assetManager.load(name + "-sprite.cfg", SpriteInfo.class);
+        assetManager.load(name + "-sprite.hhc", SpriteInfo.class);
     }
 
     private void loadConfigsAndTextures(String folder, List<String> names) {
         for (String name : names) {
             String path = folder + "/" + name;
             assetManager.load(path + ".png", Texture.class);
-            assetManager.load(path + ".cfg", BodyConfiguration.class);
+            assetManager.load(path + ".hhc", BodyConfiguration.class);
             loadSpriteInfo(path);
         }
     }
@@ -261,7 +261,7 @@ public class HulletHellGame extends ScreenBasedGame {
         for (String name : names) {
             String path = "explosives/" + name;
             am.load(path + ".png", Texture.class);
-            am.load(path + ".cfg", ExplosiveConfiguration.class);
+            am.load(path + ".hhc", ExplosiveConfiguration.class);
             loadSpriteInfo(path);
         }
     }
@@ -270,7 +270,7 @@ public class HulletHellGame extends ScreenBasedGame {
         for (String name : names) {
             String path = "ships/" + name;
             assetManager.load(path + ".png", Texture.class);
-            assetManager.load(path + ".cfg", ShipConfiguration.class);
+            assetManager.load(path + ".hhc", ShipConfiguration.class);
             loadSpriteInfo(path);
         }
     }

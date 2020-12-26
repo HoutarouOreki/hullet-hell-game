@@ -24,7 +24,7 @@ public class Ship extends Entity {
 
     public Ship(String configurationName) {
         String path = "ships/" + configurationName;
-        ShipConfiguration c = HulletHellGame.getAssetManager().get(path + ".cfg");
+        ShipConfiguration c = HulletHellGame.getAssetManager().get(path + ".hhc");
         configuration = c;
         maxSpeed = c.maxSpeed;
         cannonTimeOut = new BindableNumber<>(0f, 0f, c.cannonTimeOut);

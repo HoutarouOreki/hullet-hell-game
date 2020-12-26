@@ -38,7 +38,7 @@ public class MusicManager {
         currentSong = assetManager.get("music/" + fileName + ".mp3", Music.class);
         currentSong.setPosition(0);
         currentSong.setVolume(getVolume());
-        currentSongInfo = assetManager.get("music/" + fileName + ".cfg");
+        currentSongInfo = assetManager.get("music/" + fileName + ".hhc");
         notification.show(currentSongInfo);
         stopTransitions();
     }

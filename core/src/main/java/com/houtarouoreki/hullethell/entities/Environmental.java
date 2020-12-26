@@ -9,7 +9,7 @@ public class Environmental extends Entity {
     public Environmental(String configurationName) {
         String path = "environmentals/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
-                .get(path + ".cfg", BodyConfiguration.class);
+                .get(path + ".hhc", BodyConfiguration.class);
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);

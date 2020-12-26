@@ -44,8 +44,8 @@ public class BodyConfiguration {
     }
 
     public static BodyConfiguration fromPath(String path) {
-        if (!path.endsWith(".cfg"))
-            path += ".cfg";
+        if (!path.endsWith(".hhc"))
+            path += ".hhc";
         return HulletHellGame.getAssetManager().get(path);
     }
 }

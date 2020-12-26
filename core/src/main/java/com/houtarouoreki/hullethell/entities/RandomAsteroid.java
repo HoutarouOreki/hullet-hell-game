@@ -49,7 +49,7 @@ public class RandomAsteroid extends Entity {
 
     private void setTexture(float scale) {
         spriteInfo = HulletHellGame.getAssetManager()
-                .get("environmentals/asteroid-sprite.cfg", SpriteInfo.class);
+                .get("environmentals/asteroid-sprite.hhc", SpriteInfo.class);
         if (scale >= 1.8f)
             bodySpriteManager.size = SpriteInfo.Size.LARGE;
         else if (scale >= 1f)

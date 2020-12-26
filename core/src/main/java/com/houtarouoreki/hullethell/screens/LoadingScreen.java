@@ -34,7 +34,7 @@ public class LoadingScreen extends HulletHellScreen {
             HulletHellGame.getScreensManager().addGameScreen(new MainMenuScreen());
             HulletHellGame.getScreensManager().addGameScreen(new GarageScreen());
             PlayScreen ps = new PlayScreen();
-            ps.setStage(HulletHellGame.getAssetManager().get("stages/Stage 1.cfg"));
+            ps.setStage(HulletHellGame.getAssetManager().get("stages/Stage 1.hhc"));
             HulletHellGame.getScreensManager().addGameScreen(ps);
             HulletHellGame.getScreensManager().addGameScreen(new ResultsScreen());
             HulletHellGame.getScreensManager().addGameScreen(new SettingsScreen());

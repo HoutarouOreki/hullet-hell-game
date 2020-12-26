@@ -35,6 +35,6 @@ public class ShipConfiguration extends BodyConfiguration {
     }
 
     public static ShipConfiguration fromName(String name) {
-        return HulletHellGame.getAssetManager().get("ships/" + name + ".cfg");
+        return HulletHellGame.getAssetManager().get("ships/" + name + ".hhc");
     }
 }

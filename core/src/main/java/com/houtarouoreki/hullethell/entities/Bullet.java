@@ -8,7 +8,7 @@ public class Bullet extends Entity {
     public Bullet(String configurationName) {
         String path = "bullets/" + configurationName;
         BodyConfiguration c = HulletHellGame.getAssetManager()
-                .get(path + ".cfg", BodyConfiguration.class);
+                .get(path + ".hhc", BodyConfiguration.class);
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);

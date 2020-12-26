@@ -10,7 +10,7 @@ public class Explosive extends Entity {
 
     public Explosive(String configurationName) {
         String path = "explosives/" + configurationName;
-        ExplosiveConfiguration c = HulletHellGame.getAssetManager().get(path + ".cfg");
+        ExplosiveConfiguration c = HulletHellGame.getAssetManager().get(path + ".hhc");
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
