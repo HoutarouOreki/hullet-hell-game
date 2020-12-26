@@ -135,9 +135,10 @@ public class HulletHellGame extends ScreenBasedGame {
                 "One Man Symphony - Ambush At The Dawn"
         ));
 
-        loadItems(assetManager, Arrays.asList(
+        loadItems(Arrays.asList(
                 "copperOre",
-                "ironOre"
+                "ironOre",
+                "hologramCoin"
         ));
 
 //        loadConfigsAndTextures(assetManager, "environmentals", Arrays.asList(
@@ -146,9 +147,12 @@ public class HulletHellGame extends ScreenBasedGame {
         //assetManager.load("environmentals/asteroid-large.png", Texture.class);
         loadSpriteInfo("environmentals/asteroid");
         loadSpriteInfo("lasers/laser");
+        assetManager.load("lasers/laser-head.png", Texture.class);
+        assetManager.load("lasers/laser-tail.png", Texture.class);
 
         loadConfigsAndTextures("bullets", Arrays.asList(
-                "Bullet 1", "Player bullet 1"));
+                "Bullet 1", "Player bullet 1",
+                "hologramBullet"));
 
         loadExplosives(assetManager, Arrays.asList("Explosive"));
         loadShips(Arrays.asList(
@@ -168,7 +172,8 @@ public class HulletHellGame extends ScreenBasedGame {
 
         loadStages(assetManager, Arrays.asList("Stage 1", "Stage 2",
                 "Act 1",
-                "Act 2a"
+                "Act 2a",
+                "Act 2b"
         ));
 
         Gdx.input.setInputProcessor(inputManager);
@@ -231,9 +236,9 @@ public class HulletHellGame extends ScreenBasedGame {
         }
     }
 
-    private void loadItems(AssetManager am, List<String> names) {
+    private void loadItems(List<String> names) {
         for (String name : names) {
-            am.load("items/" + name + ".png", Texture.class);
+            loadSpriteInfo("items/" + name);
         }
     }
 

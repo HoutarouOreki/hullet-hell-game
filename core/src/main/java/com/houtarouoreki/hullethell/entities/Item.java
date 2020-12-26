@@ -20,6 +20,7 @@ public class Item extends Entity {
 
     public Item(String itemName) {
         name = itemName;
+        spriteInfo = SpriteInfo.fromPath("items/" + itemName);
         getCollisionBodyManager().setCollisionBody(Collections
                 .singletonList(new Circle(Vector2.ZERO, 0.5f)));
         setSize(new Vector2(1));
@@ -27,9 +28,6 @@ public class Item extends Entity {
         rotatingClockwise = new Random().nextBoolean();
         setHealth(1);
         getCollisionBodyManager().setTeam(CollisionTeam.ITEMS);
-        spriteInfo = new SpriteInfo();
-        spriteInfo.textureName = itemName;
-        spriteInfo.textureFolder = "items";
         setShouldDespawnOOBounds(true);
     }
 
@@ -46,7 +44,7 @@ public class Item extends Entity {
         super.update(delta);
         if (spritesLayers.size() == 1)
             addStarAnimation();
-        spritesLayers.get(0).rotation += rotatingClockwise ? 80 * delta : -80 * delta;
+        //spritesLayers.get(0).rotation += rotatingClockwise ? 80 * delta : -80 * delta;
         starLayer.rotation += 180 * delta;
         double sinScaleY = 2;
         double maxScale = 0.7f;
@@ -57,5 +55,10 @@ public class Item extends Entity {
     public void onCollision(CollisionResult collision) {
         super.onCollision(collision);
         setHealth(0);
+    }
+
+    @Override
+    public boolean isSpriteRequired() {
+        return true;
     }
 }

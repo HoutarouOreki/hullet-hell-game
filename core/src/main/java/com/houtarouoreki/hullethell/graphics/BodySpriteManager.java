@@ -34,7 +34,12 @@ public class BodySpriteManager implements Updatable {
     }
 
     private void setSprite() {
-        body.addTexture(body.spriteInfo.getPath(size));
+        if (body.spriteInfo.framesCount.get(size) <= 1)
+            body.addTexture(body.spriteInfo.getPath(size));
+        else
+            body.addAnimation(body.spriteInfo.getPathWithoutExtension(),
+                    body.spriteInfo.framesCount.get(size),
+                    body.spriteInfo.framesCount.get(size));
     }
 
     private void updateDamageSprite() {

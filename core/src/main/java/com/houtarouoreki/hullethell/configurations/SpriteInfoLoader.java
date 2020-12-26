@@ -39,11 +39,15 @@ public class SpriteInfoLoader extends AsynchronousAssetLoader<SpriteInfo, Sprite
     private void addTexturesToLoad() {
         for (SpriteInfo.Size size : spriteInfo.availableSizes) {
             if (spriteInfo.framesCount.get(size) == 0) {
-                for (int i = 0; i <= spriteInfo.damageTexturesCount.get(size); i++)
-                    HulletHellGame.getAssetManager().load(spriteInfo.getDamagedPath(size, i), Texture.class);
+                for (int i = 0; i <= spriteInfo.damageTexturesCount.get(size); i++) {
+                    String path = spriteInfo.getDamagedPath(size, i);
+                    HulletHellGame.getAssetManager().load(path, Texture.class);
+                }
             } else {
-                for (int i = 0; i < spriteInfo.framesCount.get(size); i++)
-                    HulletHellGame.getAssetManager().load(spriteInfo.getPath(size, i), Texture.class);
+                for (int i = 0; i < spriteInfo.framesCount.get(size); i++) {
+                    String path = spriteInfo.getPath(size, i);
+                    HulletHellGame.getAssetManager().load(path, Texture.class);
+                }
             }
         }
     }

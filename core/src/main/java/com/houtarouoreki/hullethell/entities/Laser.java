@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Laser extends Body {
-    private final Sprite sprite;
+    private final Sprite headSprite;
+    private final Sprite bodySprite;
+    private final Sprite tailSprite;
     public float damage;
     public float rotation;
     private Bindable<Float> length;
@@ -25,8 +27,18 @@ public class Laser extends Body {
 
     public Laser() {
         getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
-        Texture texture = HulletHellGame.getAssetManager().get("lasers/laser.png");
-        sprite = new Sprite(texture);
+        String prefix = "lasers/";
+        String name = "laser";
+        Texture bodyTexture = HulletHellGame.getAssetManager().get(prefix + name + ".png");
+        bodySprite = new Sprite(bodyTexture);
+        if (HulletHellGame.getAssetManager().isLoaded(prefix + name + "-head.png")) {
+            Texture headTexture = HulletHellGame.getAssetManager().get(prefix + name + "-head.png");
+            headSprite = new Sprite(headTexture);
+        } else headSprite = null;
+        if (HulletHellGame.getAssetManager().isLoaded(prefix + name + "-tail.png")) {
+            Texture headTexture = HulletHellGame.getAssetManager().get(prefix + name + "-tail.png");
+            tailSprite = new Sprite(headTexture);
+        } else tailSprite = null;
         length.addListener(this::onSizeChanged);
         width.addListener(this::onSizeChanged);
     }
@@ -40,12 +52,30 @@ public class Laser extends Body {
         super.render(g);
         Vector2 size = RenderHelpers
                 .translateToRenderSize(new Vector2(width.getValue(), length.getValue()));
-        sprite.setSize(size.x, 0);
-        sprite.setOriginCenter();
-        sprite.setOriginBasedPosition(getRenderPosition().x, getRenderPosition().y);
-        sprite.setRotation(rotation + 180);
-        sprite.setSize(size.x, size.y);
-        g.drawSprite(sprite);
+        bodySprite.setSize(size.x, 0);
+        bodySprite.setOriginCenter();
+        bodySprite.setOriginBasedPosition(getRenderPosition().x, getRenderPosition().y);
+        bodySprite.setRotation(rotation + 180);
+        bodySprite.setSize(size.x, size.y);
+        g.drawSprite(bodySprite);
+
+        Vector2 headSize = RenderHelpers.translateToRenderSize(new Vector2(1));
+        if (headSprite != null) {
+            headSprite.setSize(headSize.x, headSize.y);
+            headSprite.setOriginCenter();
+            headSprite.setOriginBasedPosition(getRenderPosition().x, getRenderPosition().y);
+            headSprite.setRotation(rotation + 180);
+            g.drawSprite(headSprite);
+        }
+
+        Vector2 tailSize = RenderHelpers.translateToRenderSize(new Vector2(width.getValue()));
+        if (tailSprite != null) {
+            tailSprite.setSize(tailSize.x, tailSize.y);
+            tailSprite.setOrigin(tailSize.x * 0.5f, -length.getValue());
+            tailSprite.setOriginBasedPosition(getRenderPosition().x, getRenderPosition().y);
+            tailSprite.setRotation(rotation + 180);
+            g.drawSprite(tailSprite);
+        }
     }
 
     @Override
@@ -120,7 +150,6 @@ public class Laser extends Body {
             setCollisionBody(newCollisionBody);
             collisionBodyInvalid = false;
             farthestPointDistance = getLength();
-            System.out.println("h");
         }
 
         @Override

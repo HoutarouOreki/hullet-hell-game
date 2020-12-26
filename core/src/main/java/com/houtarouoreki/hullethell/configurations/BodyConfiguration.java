@@ -29,7 +29,6 @@ public class BodyConfiguration {
 
     public BodyConfiguration(Map<String, String> keyValues, String path) {
         this.path = path;
-        System.out.println("path = " + path);
         fileName = path.substring(path.lastIndexOf('/') + 1);
         if (keyValues.containsKey("name"))
             name = keyValues.get("name");

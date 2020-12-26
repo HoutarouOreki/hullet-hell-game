@@ -1,0 +1,70 @@
+!
+#0	playSong:	One Man Symphony - Vertical Cities
+
+!dialogue introDialogue
+Mechanic:
+	Collect all the coins to proceed to the next section of the course.
+
+
+! firstIn
+
+0	newItemQuest:	1, 4 hologramCoin
+
+laserWall: "lasers/laser"
+	0 moveTo: 1.2, 0.375
+	0 moveTo: 0.2, 0.375, 4, sineOut
+	0 setLaserProperties: 0.5, 5, 0, 0
+
+bulletSpawner: "ships/Copper eye"
+	0 moveTo: 1.6, 0.5
+	0 moveTo: 0.6, 0.5, 4, sineOut
+
+coin1: "items/hologramCoin"
+	0 moveTo: 1.9, 0.9
+	0 moveTo: 0.9, 0.9, 4, sineOut
+
+coin2: "items/hologramCoin"
+	0 moveTo: 1.3, 0.9
+	0 moveTo: 0.3, 0.9, 4, sineOut
+
+coin3: "items/hologramCoin"
+	0 moveTo: 1.9, 0.1
+	0 moveTo: 0.9, 0.1, 4, sineOut
+
+coin4: "items/hologramCoin"
+	0 moveTo: 1.3, 0.1
+	0 moveTo: 0.3, 0.1, 4, sineOut
+
+0 movePlayerTo: -0.2, 0.5
+0 movePlayerTo: -0.2, 0.5, 4
+3 movePlayerTo: 0.1, 0.5, 2
+
+!while(quest:1) firstLoop @sectionDone:firstIn
+
+laserWall:
+	10 nullAction
+
+bulletSpawner:
+	0 shootMultiple: hologramBullet, 24, 00, 15, 3
+	1 shootMultiple: hologramBullet, 24, 05, 15, 3
+	2 shootMultiple: hologramBullet, 24, 10, 15, 3
+	3 shootMultiple: hologramBullet, 24, 15, 15, 3
+	4 shootMultiple: hologramBullet, 24, 20, 15, 3
+	5 shootMultiple: hologramBullet, 24, 25, 15, 3
+	6 shootMultiple: hologramBullet, 24, 20, 15, 3
+	7 shootMultiple: hologramBullet, 24, 15, 15, 3
+	8 shootMultiple: hologramBullet, 24, 10, 15, 3
+	9 shootMultiple: hologramBullet, 24, 05, 15, 3
+	10 shootMultiple: hologramBullet, 24, 00, 15, 3
+
+coin1:
+	0 holdPositionFor 10
+
+coin2:
+	0 holdPositionFor 10
+
+coin3:
+	0 holdPositionFor 10
+
+coin4:
+	0 holdPositionFor 10

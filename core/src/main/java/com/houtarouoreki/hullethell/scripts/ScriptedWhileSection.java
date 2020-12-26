@@ -22,7 +22,7 @@ public class ScriptedWhileSection extends ScriptedSection {
     @Override
     public void update(double delta) {
         super.update(delta);
-        if (!waitingActions.isEmpty() || !waitingBodies.isEmpty() || !activeBodies.isEmpty())
+        if (!waitingActions.isEmpty() || !waitingBodies.isEmpty())
             return;
         if (isSupposedToRestart()) {
             generateWaitingActions(conf, dialogueBox);

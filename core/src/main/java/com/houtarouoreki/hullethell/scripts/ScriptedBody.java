@@ -43,7 +43,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         if (controlledBody == null || controlledBody.isRemoved()) {
             return true;
         }
-        if (controlledBody instanceof Entity && !((Entity) controlledBody).isAlive()) {
+        if (isControlledBodyDead()) {
             return true;
         }
         if (currentActions.isEmpty() && waitingActions.isEmpty()) {
@@ -72,6 +72,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public void update() {
         if (controlledBody == null)
             return;
+
         while (!waitingActions.isEmpty() && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
@@ -98,8 +99,12 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
                 return new Environmental(configName);
             case "lasers":
                 return new Laser();
+            case "items":
+                Item item = new Item(configName);
+                item.setShouldDespawnOOBounds(false);
+                return item;
             default:
-                throw new Error("Error creating body from script");
+                throw new Error("Could not create body of bodyClass \"" + bodyClass + "\".");
         }
     }
 
