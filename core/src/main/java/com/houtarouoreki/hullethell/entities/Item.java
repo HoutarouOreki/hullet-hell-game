@@ -2,14 +2,15 @@ package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.Circle;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.graphics.SpriteLayer;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Sprite;
 
+import java.util.Collections;
 import java.util.Random;
 
 public class Item extends Entity {
@@ -19,12 +20,13 @@ public class Item extends Entity {
 
     public Item(String itemName) {
         name = itemName;
-        getCollisionBody().add(new CollisionCircle(0.5f));
+        collisionBodyManager.setCollisionBody(Collections
+                .singletonList(new Circle(Vector2.ZERO, 0.5f)));
         setSize(new Vector2(1));
         setVelocity(new Vector2(-1, 0));
         rotatingClockwise = new Random().nextBoolean();
         setHealth(1);
-        setTeam(CollisionTeam.ITEMS);
+        collisionBodyManager.setTeam(CollisionTeam.ITEMS);
         spriteInfo = new SpriteInfo();
         spriteInfo.textureName = itemName;
         spriteInfo.textureFolder = "items";
@@ -51,8 +53,8 @@ public class Item extends Entity {
     }
 
     @Override
-    public void onCollision(Body other, CollisionResult collision) {
-        super.onCollision(other, collision);
+    public void onCollision(CollisionResult collision) {
+        super.onCollision(collision);
         setHealth(0);
     }
 }

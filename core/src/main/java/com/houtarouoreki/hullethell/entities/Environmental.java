@@ -13,16 +13,16 @@ public class Environmental extends Entity {
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
-        setCollisionBody(c.collisionCircles);
-        setTeam(CollisionTeam.ENVIRONMENT);
+        collisionBodyManager.setCollisionBody(c.collisionCircles);
+        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
         setShouldDespawnOOBounds(true);
     }
 
     @Override
-    public void onCollision(Body other, CollisionResult collision) {
-        super.onCollision(other, collision);
-        if (other instanceof Entity) {
-            ((Entity) other).applyDamage(2);
+    public void onCollision(CollisionResult collision) {
+        super.onCollision(collision);
+        if (collision.other instanceof Entity) {
+            ((Entity) collision.other).applyDamage(2);
         }
     }
 

@@ -22,10 +22,10 @@ public class ShootMultipleAction extends ScriptedAction {
             Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);
             bullet.setPosition(body.getPosition());
-            if (body.getTeam() == CollisionTeam.PLAYER_SHIP)
-                bullet.setTeam(CollisionTeam.PLAYER_BULLETS);
+            if (body.collisionBodyManager.getTeam() == CollisionTeam.PLAYER_SHIP)
+                bullet.collisionBodyManager.setTeam(CollisionTeam.PLAYER_BULLETS);
             else
-                bullet.setTeam(CollisionTeam.ENEMY_BULLETS);
+                bullet.collisionBodyManager.setTeam(CollisionTeam.ENEMY_BULLETS);
             world.addBody(bullet);
             bullet.setSection(section);
         }

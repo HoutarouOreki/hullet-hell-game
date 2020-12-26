@@ -1,7 +1,6 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
-import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.ExplosiveConfiguration;
 
 public class Explosive extends Entity {
@@ -15,7 +14,7 @@ public class Explosive extends Entity {
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
-        setCollisionBody(c.collisionCircles);
+        collisionBodyManager.setCollisionBody(c.collisionCircles);
         setShouldDespawnOOBounds(true);
         explosionRadius = c.explosionRadius;
         explosionDamage = c.explosionDamage;
@@ -25,7 +24,6 @@ public class Explosive extends Entity {
     public Explosion getExplosion() {
         Explosion explosion = new Explosion(explosionDamage, explosionRadius, explosionDuration);
         explosion.setPosition(getPosition());
-        explosion.setTeam(CollisionTeam.ENVIRONMENT);
         return explosion;
     }
 }

@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.Circle;
 import com.houtarouoreki.hullethell.configurations.ShipConfiguration;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class ShipSprite extends Sprite {
@@ -25,8 +25,8 @@ public class ShipSprite extends Sprite {
             return;
         g.setLineHeight(0);
         g.setColor(new Color(0f, 1f, 1f, 0.8f));
-        for (CollisionCircle circle : c.collisionCircles) {
-            drawCircle(g, circle.getX(), circle.getY(), circle.getRadius());
+        for (Circle circle : c.collisionCircles) {
+            drawCircle(g, circle.position.x, circle.position.y, circle.radius);
         }
 
         if (helperCircle.radius == 0)

@@ -1,8 +1,8 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.houtarouoreki.hullethell.collisions.Circle;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 
 import javax.management.RuntimeErrorException;
 import java.io.File;
@@ -43,20 +43,18 @@ public class ConfigurationsHelper {
         return new Vector2(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
     }
 
-    public static List<CollisionCircle> parseCollisionCircles(String t) {
-        String[] textCollisionCircles = t.split(" / ");
-        List<CollisionCircle> collisionCircles = new ArrayList<>();
-        for (String textCollisionCircle : textCollisionCircles) {
-            collisionCircles.add(parseCollisionCircle(textCollisionCircle));
+    public static List<Circle> parseCircles(String t) {
+        String[] circleStrings = t.split(" / ");
+        List<Circle> collisionCircles = new ArrayList<>();
+        for (String circleString : circleStrings) {
+            collisionCircles.add(parseCircle(circleString));
         }
         return collisionCircles;
     }
 
-    public static CollisionCircle parseCollisionCircle(String t) {
+    public static Circle parseCircle(String t) {
         String[] xyr = t.split(", ");
-        return new CollisionCircle(
-                Float.parseFloat(xyr[0]),
-                Float.parseFloat(xyr[1]),
+        return new Circle(new Vector2(Float.parseFloat(xyr[0]), Float.parseFloat(xyr[1])),
                 Float.parseFloat(xyr[2]));
     }
 }

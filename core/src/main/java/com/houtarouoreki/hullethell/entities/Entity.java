@@ -5,7 +5,6 @@ import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionBodyManager;
 import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.ArrayList;
@@ -40,11 +39,6 @@ public class Entity extends Body {
     }
 
     @Override
-    public boolean isAcceptingCollisions() {
-        return super.isAcceptingCollisions() && isAlive();
-    }
-
-    @Override
     public void render(Graphics g) {
         super.render(g);
         if (HulletHellGame.getSettings().healthBars.getValue())
@@ -71,5 +65,21 @@ public class Entity extends Body {
     @Override
     public boolean isSpriteRequired() {
         return true;
+    }
+
+    @Override
+    protected CollisionBodyManager generateCollisionBodyManager() {
+        return new EntityCollisionBodyManager(this);
+    }
+
+    private class EntityCollisionBodyManager extends CollisionBodyManager {
+        public EntityCollisionBodyManager(Entity body) {
+            super(body);
+        }
+
+        @Override
+        public boolean isAcceptingCollisions() {
+            return super.isAcceptingCollisions() && isAlive();
+        }
     }
 }

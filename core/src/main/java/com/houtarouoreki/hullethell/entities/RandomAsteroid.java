@@ -1,13 +1,14 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.Circle;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.SpriteInfo;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
 
+import java.util.Collections;
 import java.util.Random;
 
 public class RandomAsteroid extends Entity {
@@ -19,8 +20,9 @@ public class RandomAsteroid extends Entity {
         this.scale = scale;
         setShouldDespawnOOBounds(true);
         this.setSize(new Vector2(1, 1));
-        setTeam(CollisionTeam.ENVIRONMENT);
-        getCollisionBody().add(new CollisionCircle(0, 0, 0.5f));
+        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
+        collisionBodyManager.setCollisionBody(Collections
+                .singletonList(new Circle(Vector2.ZERO, 0.5f)));
         Random random = new Random();
         Vector2 velocity = new Vector2(
                 -(random.nextFloat() * 6 + 3),
@@ -33,9 +35,13 @@ public class RandomAsteroid extends Entity {
                 1,
                 random.nextFloat()
         ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0))));
-        collidesWith.add(CollisionTeam.ENVIRONMENT);
+        collisionBodyManager.collidesWith.add(CollisionTeam.ENVIRONMENT);
         clockwiseRotation = random.nextBoolean();
         setTexture(scale);
+    }
+
+    public RandomAsteroid() {
+        this(new Random().nextFloat() * 2f + 0.5f);
     }
 
     private float getMaxHealth() {
@@ -59,22 +65,18 @@ public class RandomAsteroid extends Entity {
         bodySpriteManager.setDamageStageMinHealth(3, getMaxHealth() * 0.1f);
     }
 
-    public RandomAsteroid() {
-        this(new Random().nextFloat() * 2f + 0.5f);
-    }
-
     public void update(float delta) {
         super.update(delta);
         rotation += 40 * delta / scale / scale * (clockwiseRotation ? 1 : -1);
     }
 
     @Override
-    public void onCollision(Body other, CollisionResult collision) {
-        super.onCollision(other, collision);
-        if (other instanceof RandomAsteroid) {
+    public void onCollision(CollisionResult collision) {
+        super.onCollision(collision);
+        if (collision.other instanceof RandomAsteroid) {
             System.out.println();
         }
-        if (other instanceof Entity)
-            ((Entity) other).applyDamage(scale * getVelocity().len2());
+        if (collision.other instanceof Entity)
+            ((Entity) collision.other).applyDamage(scale * getVelocity().len2());
     }
 }

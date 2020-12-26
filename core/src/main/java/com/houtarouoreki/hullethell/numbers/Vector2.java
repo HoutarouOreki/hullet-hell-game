@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.numbers;
 import com.badlogic.gdx.math.Interpolation;
 
 public class Vector2 {
+    public static final Vector2 ZERO = new Vector2();
     public final float x;
     public final float y;
 

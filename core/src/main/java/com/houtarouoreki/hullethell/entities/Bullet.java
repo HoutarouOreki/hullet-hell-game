@@ -12,17 +12,17 @@ public class Bullet extends Entity {
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
-        setCollisionBody(c.collisionCircles);
+        collisionBodyManager.setCollisionBody(c.collisionCircles);
         setShouldDespawnOOBounds(true);
     }
 
     protected Bullet() {}
 
     @Override
-    public void onCollision(Body other, CollisionResult collision) {
-        super.onCollision(other, collision);
-        if (other instanceof Entity) {
-            ((Entity) other).applyDamage(configuration.damage);
+    public void onCollision(CollisionResult collision) {
+        super.onCollision(collision);
+        if (collision.other instanceof Entity) {
+            ((Entity) collision.other).applyDamage(configuration.damage);
         }
     }
 }

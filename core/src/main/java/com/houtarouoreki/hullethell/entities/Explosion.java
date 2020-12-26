@@ -1,9 +1,13 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.Circle;
+import com.houtarouoreki.hullethell.collisions.CollisionBodyManager;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
+import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import org.mini2Dx.core.engine.geom.CollisionCircle;
+
+import java.util.Collections;
 
 public class Explosion extends Entity {
     private final float damage;
@@ -13,8 +17,10 @@ public class Explosion extends Entity {
         this.damage = damage;
         this.duration = duration;
         setSize(new Vector2(radius * 2));
-        getCollisionBody().add(new CollisionCircle(0, 0, radius));
+        collisionBodyManager.setCollisionBody(Collections
+                .singletonList(new Circle(Vector2.ZERO, radius)));
         addAnimation("effects/Explosion", 6, 6 / duration);
+        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
     }
 
     @Override
@@ -23,16 +29,16 @@ public class Explosion extends Entity {
     }
 
     @Override
-    public boolean isAcceptingCollisions() {
-        return super.isAcceptingCollisions() && getTicks() <= 1;
+    public void onCollision(CollisionResult collision) {
+        if (collision.other instanceof Entity) {
+            ((Entity) collision.other).applyDamage(damage);
+            collisionBodyManager.disableCollisionsWith(collision.other);
+        }
     }
 
     @Override
-    public void onCollision(Body other, CollisionResult collision) {
-        if (other instanceof Entity) {
-            ((Entity) other).applyDamage(damage);
-            dontCollideWith.add(other);
-        }
+    protected CollisionBodyManager generateCollisionBodyManager() {
+        return new ExplosionCollisionBodyManager(this);
     }
 
     @Override
@@ -40,5 +46,16 @@ public class Explosion extends Entity {
         if (getTime() == 0)
             HulletHellGame.getSoundManager().playSound("kick-gritty");
         super.update(delta);
+    }
+
+    private class ExplosionCollisionBodyManager extends CollisionBodyManager {
+        public ExplosionCollisionBodyManager(Explosion body) {
+            super(body);
+        }
+
+        @Override
+        public boolean isAcceptingCollisions() {
+            return super.isAcceptingCollisions() && getTicks() <= 1;
+        }
     }
 }
