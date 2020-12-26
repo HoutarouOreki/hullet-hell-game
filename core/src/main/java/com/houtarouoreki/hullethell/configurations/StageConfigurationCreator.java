@@ -5,8 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StageConfigurationCreator {
-    public final List<ScriptedSectionConfiguration> sections = new ArrayList<>();
-    final HashMap<String, ScriptedBodyConfiguration> allBodies = new HashMap<>();
+    public final List<ScriptedSectionConfiguration> sections = new ArrayList<>(50);
+    final HashMap<String, ScriptedBodyConfiguration> allBodies = new HashMap<>(100);
     private final Pattern sectionPattern = Pattern.compile("^!(?<type>\\w*)(?:\\(?(?<whileParams>.*)\\))?(?: ?(?<name>\\w*))?(?: ?@(?<startFlags>.*))?$");
     private final Pattern dialogueSectionCharacterPattern = Pattern.compile("^(?<characterName>.*):$");
     private final Pattern dialogueSectionTextPattern = Pattern.compile("\\t(?<text>.*)");

@@ -9,7 +9,6 @@ import com.houtarouoreki.hullethell.configurations.Settings;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.PaddingMargin;
 import com.houtarouoreki.hullethell.graphics.Rectangle;
-import com.houtarouoreki.hullethell.input.ControlProcessor;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.LoopInt;
 import com.houtarouoreki.hullethell.numbers.Vector2;
@@ -18,8 +17,6 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.playerdata.PlayerDataException;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

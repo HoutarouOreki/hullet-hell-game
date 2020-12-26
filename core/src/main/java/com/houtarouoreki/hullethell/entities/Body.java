@@ -61,8 +61,9 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
 
     public void scale(float scale) {
         setSize(getSize().scl(scale));
-        List<Circle> newCollisionBody = new ArrayList<>();
-        for (Circle circle : getCollisionBodyManager().getCollisionBodyCopy())
+        List<Circle> oldCollisionBody = getCollisionBodyManager().getCollisionBodyCopy();
+        List<Circle> newCollisionBody = new ArrayList<>(oldCollisionBody.size());
+        for (Circle circle : oldCollisionBody)
             newCollisionBody.add(circle.scl(scale));
         getCollisionBodyManager().setCollisionBody(newCollisionBody);
     }

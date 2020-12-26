@@ -45,7 +45,7 @@ public class ConfigurationsHelper {
 
     public static List<Circle> parseCircles(String t) {
         String[] circleStrings = t.split(" / ");
-        List<Circle> collisionCircles = new ArrayList<>();
+        List<Circle> collisionCircles = new ArrayList<>(circleStrings.length);
         for (String circleString : circleStrings) {
             collisionCircles.add(parseCircle(circleString));
         }

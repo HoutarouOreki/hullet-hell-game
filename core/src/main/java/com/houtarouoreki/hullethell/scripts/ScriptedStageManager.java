@@ -5,15 +5,12 @@ import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ScriptedStageManager {
     private final HashMap<String, Integer> flags = new HashMap<>();
-    private final List<ScriptedSection> waitingSections = new ArrayList<>();
-    private final List<ScriptedSection> activeSections = new ArrayList<>();
+    private final LinkedList<ScriptedSection> waitingSections = new LinkedList<>();
+    private final LinkedList<ScriptedSection> activeSections = new LinkedList<>();
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 

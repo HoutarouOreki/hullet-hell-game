@@ -4,21 +4,23 @@ import com.houtarouoreki.hullethell.configurations.ScriptedActionConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
-import com.houtarouoreki.hullethell.entities.Entity;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ScriptedSection {
-    public final Queue<ScriptedAction> waitingActions;
-    public final List<ScriptedAction> currentActions;
+    public final Queue<ScriptedAction> waitingActions = new LinkedList<>();
+    public final LinkedList<ScriptedAction> currentActions = new LinkedList<>();
     public final HashMap<String, Integer> flagsRequiredToStart;
-    protected final World world;
-    protected final Queue<ScriptedBody> waitingBodies;
-    protected final List<ScriptedBody> activeBodies;
-    private final List<Body> bodies;
     public final String name;
+    protected final Queue<ScriptedBody> waitingBodies = new LinkedList<>();
+    protected final LinkedList<ScriptedBody> activeBodies = new LinkedList<>();
+    protected final World world;
+    private final LinkedList<Body> physicalBodies = new LinkedList<>();
     protected double timePassed;
     protected int allBodiesAmount;
     private int bodiesRemovedAmount;
@@ -26,13 +28,8 @@ public class ScriptedSection {
     public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
         flagsRequiredToStart = new HashMap<>(conf.flagsRequiredToStart);
         this.world = world;
-        waitingBodies = new PriorityQueue<>();
         generateWaitingBodies(conf, dialogueBox);
-        activeBodies = new ArrayList<>();
-        bodies = new ArrayList<>();
         name = conf.name;
-        waitingActions = new LinkedList<>();
-        currentActions = new ArrayList<>();
         generateWaitingActions(conf, dialogueBox);
     }
 
@@ -53,14 +50,14 @@ public class ScriptedSection {
     }
 
     public boolean isFinished() {
-        return waitingBodies.size() == 0 && activeBodies.size() == 0 && bodies.size() == 0
-                && waitingActions.size() == 0 && currentActions.size() == 0;
+        return waitingBodies.isEmpty() && activeBodies.isEmpty() && physicalBodies.isEmpty()
+                && waitingActions.isEmpty() && currentActions.isEmpty();
     }
 
     public void update(double delta) {
         timePassed += delta;
 
-        while (waitingBodies.size() > 0 && waitingBodies.peek()
+        while (!waitingBodies.isEmpty() && waitingBodies.peek()
                 .waitingActions.element().getScriptedTime() <= getTimePassed()) {
             ScriptedBody body = waitingBodies.remove();
             activeBodies.add(body);
@@ -77,7 +74,7 @@ public class ScriptedSection {
             }
         }
 
-        while (waitingActions.size() > 0
+        while (!waitingActions.isEmpty()
                 && waitingActions.peek().getScriptedTime() <= getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
@@ -115,15 +112,15 @@ public class ScriptedSection {
     }
 
     public int getBodiesCount() {
-        return bodies.size();
+        return physicalBodies.size();
     }
 
     public void registerBody(Body body) {
-        bodies.add(body);
+        physicalBodies.add(body);
     }
 
     public void unregisterBody(Body body) {
-        bodies.remove(body);
+        physicalBodies.remove(body);
         bodiesRemovedAmount++;
     }
 

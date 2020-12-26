@@ -65,7 +65,7 @@ public class CollisionBodyManager {
         if (!withAbsolutePositions)
             return Collections.unmodifiableList(collisionBody);
 
-        List<Circle> list = new ArrayList<>();
+        List<Circle> list = new ArrayList<>(collisionBody.size());
         for (Circle c : collisionBody)
             list.add(c.add(body.getPosition()));
         return list;

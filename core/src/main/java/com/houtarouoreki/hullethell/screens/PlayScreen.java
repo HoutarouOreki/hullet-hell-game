@@ -26,7 +26,8 @@ import java.util.List;
 
 public class PlayScreen extends HulletHellScreen {
     public static Viewport viewport;
-    private final List<BackgroundObject> stars = new ArrayList<>();
+    private final int starsAmount = 200;
+    private final List<BackgroundObject> stars = new ArrayList<>(starsAmount);
     private final DialogueBox dialogueBox;
     private StageConfiguration script;
     private World world;
@@ -119,7 +120,6 @@ public class PlayScreen extends HulletHellScreen {
     }
 
     private void initialiseBackground() {
-        float starsAmount = 200;
         final float minStarSize = 0.04f;
         final float maxStarSize = 0.07f;
         for (int i = 0; i < starsAmount; i++) {

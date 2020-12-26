@@ -10,18 +10,18 @@ import java.util.List;
 public abstract class MenuComponent extends Drawable implements ControlProcessor {
     public static Color ACTIVE_COLOR = Color.valueOf("0066cc");
     public static Color UNACTIVE_COLOR = Color.valueOf("204060");
-    private final List<MenuComponentListener> listeners = new ArrayList<MenuComponentListener>();
+    private final List<MenuComponentListener> listeners = new ArrayList<>();
     public MenuComponent lowerNeighbor;
     public MenuComponent upperNeighbor;
     public MenuComponent leftNeighbor;
     public MenuComponent rightNeighbor;
     private boolean currentlyFocused;
 
-    public <T extends MenuComponent> void addListener(MenuComponentListener listener) {
+    public void addListener(MenuComponentListener listener) {
         listeners.add(listener);
     }
 
-    public <T extends MenuComponent> void removeListener(MenuComponentListener listener) {
+    public void removeListener(MenuComponentListener listener) {
         listeners.remove(listener);
     }
 

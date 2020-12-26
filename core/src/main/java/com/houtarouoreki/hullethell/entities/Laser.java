@@ -109,7 +109,7 @@ public class Laser extends Body {
         }
 
         private void generateCollisionCircles() {
-            List<Circle> newCollisionBody = new ArrayList<>();
+            List<Circle> newCollisionBody = new ArrayList<>((int) (getLength() / getWidth() + 3));
             float highestY = 0;
             float radius = getWidth() * 0.5f;
             do {
@@ -127,8 +127,9 @@ public class Laser extends Body {
         public List<Circle> getCollisionBodyCopy(boolean withAbsolutePositions) {
             if (collisionBodyInvalid)
                 generateCollisionCircles();
-            List<Circle> rotatedCircles = new ArrayList<>();
-            for (Circle circle : super.getCollisionBodyCopy(false)) {
+            List<Circle> baseCollisionBody = super.getCollisionBodyCopy(false);
+            List<Circle> rotatedCircles = new ArrayList<>(baseCollisionBody.size());
+            for (Circle circle : baseCollisionBody) {
                 Vector2 rotatedPosition = circle.position.rotated(rotation, true);
                 if (withAbsolutePositions)
                     rotatedPosition = rotatedPosition.add(getPosition());

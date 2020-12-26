@@ -15,7 +15,7 @@ public class ScriptedDialogueSection extends ScriptedSection {
     public void update(double delta) {
         timePassed += delta;
 
-        while (waitingActions.size() > 0) {
+        while (!waitingActions.isEmpty()) {
             ScriptedAction action = waitingActions.remove();
             action.initialise(world, this, null);
             currentActions.add(action);

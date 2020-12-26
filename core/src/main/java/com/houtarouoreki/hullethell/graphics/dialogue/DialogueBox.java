@@ -9,16 +9,16 @@ import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class DialogueBox extends Drawable implements ControlProcessor {
     private final HashMap<Float, Integer> timeTable
             = new HashMap<>();
-    private final List<DialogueMessage> messages
-            = new ArrayList<>();
+    private final Queue<DialogueMessage> messages
+            = new LinkedList<>();
     private final Label textLabel;
     private final Label characterLabel;
     private String timeTableIsFor;
@@ -84,8 +84,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private void nextMessage() {
-        DialogueMessage completedMessage = messages.get(0);
-        messages.remove(completedMessage);
+        DialogueMessage completedMessage = messages.remove();
         completedMessage.completionListener.onAction();
         setState(messages.isEmpty() ? State.TIMING_OUT : State.VISIBLE);
     }
@@ -166,7 +165,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     private void generateTimeTable() {
         timeTable.clear();
         float totalTime = 0;
-        String message = messages.get(0).message;
+        String message = messages.element().message;
         for (int i = 0; i < message.length(); i++) {
             timeTable.put(totalTime, i);
             totalTime += getCharacterDuration(message.charAt(i));
@@ -176,8 +175,8 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     }
 
     private void handleVisible() {
-        String message = messages.get(0).message;
-        characterLabel.setText(messages.get(0).character);
+        String message = messages.element().message;
+        characterLabel.setText(messages.element().character);
         if (timeTableIsFor == null || !timeTableIsFor.equals(message))
             generateTimeTable();
         float maxTime = 0;

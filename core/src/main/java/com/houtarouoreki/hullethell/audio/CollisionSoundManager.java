@@ -32,7 +32,7 @@ public class CollisionSoundManager implements Updatable {
     public void update(float delta) {
         if (!started)
             start();
-        if (collisionManager.currentStepCollisions.size() > 0)
+        if (!collisionManager.currentStepCollisions.isEmpty())
             sinceLastCollision = 0;
         float margin = 0.2f;
 

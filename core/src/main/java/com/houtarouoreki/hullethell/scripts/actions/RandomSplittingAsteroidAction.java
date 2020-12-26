@@ -20,7 +20,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     @Override
     protected void initialiseArguments() {
         super.initialiseArguments();
-        if (arguments.size() == 0)
+        if (arguments.isEmpty())
             return;
 
         random = new Random();
@@ -99,7 +99,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
         toRemove.clear();
         asteroids.addAll(toAdd);
         toAdd.clear();
-        if (asteroids.size() == 0)
+        if (asteroids.isEmpty())
             setFinished();
     }
 

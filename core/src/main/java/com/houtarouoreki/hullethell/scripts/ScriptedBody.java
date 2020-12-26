@@ -13,7 +13,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final String name;
     public final String configName;
     public final Queue<ScriptedAction> waitingActions = new LinkedList<>();
-    public final List<ScriptedAction> currentActions = new ArrayList<>();
+    public final LinkedList<ScriptedAction> currentActions = new LinkedList<>();
     private final boolean wasInPreviousSections;
     private final boolean willBeInFutureSections;
     private Body controlledBody;
@@ -40,15 +40,13 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     }
 
     public boolean isFinished() {
-        if (controlledBody == null)
-            return true;
-        if (controlledBody.isRemoved()) {
+        if (controlledBody == null || controlledBody.isRemoved()) {
             return true;
         }
         if (controlledBody instanceof Entity && !((Entity) controlledBody).isAlive()) {
             return true;
         }
-        if (currentActions.size() == 0 && waitingActions.size() == 0) {
+        if (currentActions.isEmpty() && waitingActions.isEmpty()) {
             if (!willBeInFutureSections)
                 world.removeBody(controlledBody);
             return true;
@@ -74,7 +72,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public void update() {
         if (controlledBody == null)
             return;
-        while (waitingActions.size() > 0 && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
+        while (!waitingActions.isEmpty() && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
             action.initialise(world, section, controlledBody);

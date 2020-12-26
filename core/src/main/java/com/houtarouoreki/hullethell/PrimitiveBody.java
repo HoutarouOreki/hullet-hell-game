@@ -3,7 +3,6 @@ package com.houtarouoreki.hullethell;
 import com.badlogic.gdx.graphics.Texture;
 import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.environment.Updatable;
-import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.BodySpriteManager;
 import com.houtarouoreki.hullethell.graphics.Renderable;
 import com.houtarouoreki.hullethell.graphics.SpriteInfo;
@@ -67,7 +66,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     }
 
     private void renderSpriteLayer(Graphics g, SpriteLayer layer) {
-        if (layer.size() == 0)
+        if (layer.isEmpty())
             return;
         Vector2 renderSize = getRenderSize().scl(layer.scale);
         Vector2 renderPos = RenderHelpers.translateToRenderPosition(getPosition()

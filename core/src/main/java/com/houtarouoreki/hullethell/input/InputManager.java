@@ -1,19 +1,20 @@
 package com.houtarouoreki.hullethell.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.houtarouoreki.hullethell.environment.Updatable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class InputManager implements InputProcessor {
+public class InputManager implements InputProcessor, Updatable {
     public final HashSet<ControlProcessor> managedProcessors;
     private final KeyBindingManager keyBindingManager;
     private final HashSet<Integer> pressedKeys;
 
     public InputManager() {
-        managedProcessors = new HashSet<ControlProcessor>();
+        managedProcessors = new HashSet<>();
         keyBindingManager = new KeyBindingManager();
-        pressedKeys = new HashSet<Integer>();
+        pressedKeys = new HashSet<>();
     }
 
     public void clearPressedKeys() {
@@ -37,7 +38,7 @@ public class InputManager implements InputProcessor {
         Controls control = keyBindingManager.getControlFromKey(keycode);
         if (control == null)
             return false;
-        for (ControlProcessor processor : new ArrayList<ControlProcessor>(managedProcessors))
+        for (ControlProcessor processor : new ArrayList<>(managedProcessors))
             processor.handleControl(control);
         return true;
     }

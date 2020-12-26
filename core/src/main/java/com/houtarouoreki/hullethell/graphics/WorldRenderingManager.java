@@ -9,17 +9,17 @@ import com.houtarouoreki.hullethell.environment.Finishable;
 import com.houtarouoreki.hullethell.environment.Updatable;
 import org.mini2Dx.core.graphics.Graphics;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WorldRenderingManager {
-    private final List<BulletIndicator> bulletIndicators = new ArrayList<>();
-    private final List<Bullet> bullets = new ArrayList<>();
-    private final List<Ship> ships = new ArrayList<>();
-    private final List<Body> otherBodies = new ArrayList<>();
-    private final List<CollisionIndicator> collisions = new ArrayList<>();
-    private final List<ExplosionEffect> explosionEffects = new ArrayList<>();
+    private final LinkedList<BulletIndicator> bulletIndicators = new LinkedList<>();
+    private final LinkedList<Bullet> bullets = new LinkedList<>();
+    private final LinkedList<Ship> ships = new LinkedList<>();
+    private final LinkedList<Body> otherBodies = new LinkedList<>();
+    private final LinkedList<CollisionIndicator> collisions = new LinkedList<>();
+    private final LinkedList<ExplosionEffect> explosionEffects = new LinkedList<>();
 
     public void update(float delta) {
         updateList(delta, bulletIndicators);

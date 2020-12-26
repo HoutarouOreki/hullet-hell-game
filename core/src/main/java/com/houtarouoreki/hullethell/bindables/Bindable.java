@@ -10,8 +10,8 @@ public final class Bindable<T> {
     private T value;
 
     public Bindable(T value) {
-        listeners = new ArrayList<ValueChangeListener<T>>();
-        binds = new HashSet<Bindable<T>>();
+        listeners = new ArrayList<>();
+        binds = new HashSet<>();
         setValue(value);
     }
 
