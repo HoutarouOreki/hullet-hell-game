@@ -15,6 +15,7 @@ public class SerializableSettings {
     public Boolean renderFPS;
     @Field
     public Boolean fullScreen;
+    public Boolean healthBars;
 
     public SerializableSettings() {
         musicVolume = 0.7f;
@@ -23,6 +24,7 @@ public class SerializableSettings {
         debugging = false;
         renderFPS = false;
         fullScreen = true;
+        healthBars = false;
     }
 
     public SerializableSettings(Settings settings) {

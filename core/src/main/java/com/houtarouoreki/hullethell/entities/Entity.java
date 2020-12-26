@@ -1,6 +1,8 @@
 package com.houtarouoreki.hullethell.entities;
 
 import com.badlogic.gdx.graphics.Color;
+import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.collisions.CollisionBodyManager;
 import com.houtarouoreki.hullethell.helpers.HealthBarsInfo;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
@@ -45,7 +47,8 @@ public class Entity extends Body {
     @Override
     public void render(Graphics g) {
         super.render(g);
-        //renderHealthBar(g);
+        if (HulletHellGame.getSettings().healthBars.getValue())
+            renderHealthBar(g);
     }
 
     private void renderHealthBar(Graphics g) {
