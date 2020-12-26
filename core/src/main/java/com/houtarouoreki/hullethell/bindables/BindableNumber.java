@@ -83,6 +83,14 @@ public class BindableNumber<T extends Comparable<T>> {
             throw new Error("max (" + max + ") cannot be lower than min (" + min + ")");
     }
 
+    public boolean isMax() {
+        return getValue().equals(getMax());
+    }
+
+    public boolean isMin() {
+        return getValue().equals(getMin());
+    }
+
     public final BindableNumber<T> cpyLimitedNumber() {
         return new BindableNumber<>(value, min, max);
     }

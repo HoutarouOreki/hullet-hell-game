@@ -17,14 +17,22 @@ public class ScriptedStageManager {
     public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) {
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
             ScriptedSection section;
-            if (sectionConfiguration.type.equals("dialogue"))
-                section = new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);
-            else if (sectionConfiguration.type.equals("while"))
-                section = new ScriptedWhileSection(world, sectionConfiguration, dialogueBox);
-            else
-                section = new ScriptedSection(world, sectionConfiguration, dialogueBox);
+            section = createScriptedSection(world, dialogueBox, sectionConfiguration);
             waitingSections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
+        }
+    }
+
+    private ScriptedSection createScriptedSection(World world, DialogueBox dialogueBox, ScriptedSectionConfiguration sectionConfiguration) {
+        switch (sectionConfiguration.type) {
+            case "dialogue":
+                return new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);
+            case "while":
+                return new ScriptedWhileSection(world, sectionConfiguration, dialogueBox);
+            case "recurring":
+                return new ScriptedRecurringSection(world, sectionConfiguration, dialogueBox);
+            default:
+                return new ScriptedSection(world, sectionConfiguration, dialogueBox);
         }
     }
 
