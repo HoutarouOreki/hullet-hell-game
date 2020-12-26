@@ -13,8 +13,8 @@ public class Environmental extends Entity {
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
-        collisionBodyManager.setCollisionBody(c.collisionCircles);
-        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
+        getCollisionBodyManager().setCollisionBody(c.collisionCircles);
+        getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
         setShouldDespawnOOBounds(true);
     }
 

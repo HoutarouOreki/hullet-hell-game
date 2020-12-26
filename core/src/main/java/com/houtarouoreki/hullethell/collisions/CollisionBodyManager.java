@@ -20,7 +20,7 @@ public class CollisionBodyManager {
     private boolean acceptsCollisions = true;
     private float collisionsDisabledFor;
     private double collisionsDisabledOn;
-    private float farthestPointDistance;
+    protected float farthestPointDistance;
 
     public CollisionBodyManager(Body body) {
         this.body = body;
@@ -35,9 +35,11 @@ public class CollisionBodyManager {
         collidesWith.clear();
         switch (team) {
             case ENEMY:
+                collidesWith = EnumSet.of(CollisionTeam.PLAYER_SHIP, CollisionTeam.PLAYER_BULLETS);
+                break;
             case ENVIRONMENT:
-                collidesWith = EnumSet
-                        .of(CollisionTeam.PLAYER_SHIP, CollisionTeam.PLAYER_BULLETS);
+                collidesWith = EnumSet.of(CollisionTeam.PLAYER_SHIP,
+                        CollisionTeam.PLAYER_BULLETS, CollisionTeam.ENVIRONMENT);
                 break;
             case ENEMY_BULLETS:
             case ITEMS:
@@ -55,13 +57,13 @@ public class CollisionBodyManager {
         }
     }
 
-    public List<Circle> getCollisionBodyCopy() {
-        return Collections.unmodifiableList(collisionBody);
+    public final List<Circle> getCollisionBodyCopy() {
+        return getCollisionBodyCopy(false);
     }
 
     public List<Circle> getCollisionBodyCopy(boolean withAbsolutePositions) {
         if (!withAbsolutePositions)
-            return getCollisionBodyCopy();
+            return Collections.unmodifiableList(collisionBody);
 
         List<Circle> list = new ArrayList<>();
         for (Circle c : collisionBody)
@@ -91,7 +93,7 @@ public class CollisionBodyManager {
         return acceptsCollisions;
     }
 
-    public boolean isAcceptingCollisions(int onTick) {
+    public final boolean isAcceptingCollisions(int onTick) {
         return isAcceptingCollisions() && getLastCollisionTick() != onTick;
     }
 
@@ -119,7 +121,7 @@ public class CollisionBodyManager {
     }
 
     public void disableCollisionsWith(Body body) {
-        dontCollideWith.add(body.collisionBodyManager);
+        dontCollideWith.add(body.getCollisionBodyManager());
     }
 
     public boolean canCollideWith(CollisionBodyManager other) {
@@ -127,9 +129,8 @@ public class CollisionBodyManager {
                 && !dontCollideWith.contains(other);
     }
 
-    public boolean canCollideWith(CollisionBodyManager other, int onTick) {
-        return isAcceptingCollisions(onTick) && collidesWith.contains(other.getTeam())
-                && !dontCollideWith.contains(other);
+    public final boolean canCollideWith(CollisionBodyManager other, int onTick) {
+        return isAcceptingCollisions(onTick) && canCollideWith(other);
     }
 
     public void disableCollisionsWith(List<? extends Body> bodies) {

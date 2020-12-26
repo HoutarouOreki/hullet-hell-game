@@ -42,4 +42,12 @@ public class Circle {
     public boolean intersectsWith(Circle other) {
         return shortestDistanceTo(other) == 0;
     }
+
+    @Override
+    public String toString() {
+        return "Circle{" +
+                "position=" + position +
+                ", radius=" + radius +
+                '}';
+    }
 }

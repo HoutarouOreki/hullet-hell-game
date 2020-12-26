@@ -18,12 +18,12 @@ public class CollisionManager {
     public void RunCollisions() {
         currentStepCollisions.clear();
         for (int i = 0; i < world.getBodies().size() - 1; i++) {
-            CollisionBodyManager a = world.getBodies().get(i).collisionBodyManager;
+            CollisionBodyManager a = world.getBodies().get(i).getCollisionBodyManager();
             if (!a.isAcceptingCollisions(world.getTicksPassed()))
                 continue;
 
             for (int j = i + 1; j < world.getBodies().size(); j++) {
-                CollisionBodyManager b = world.getBodies().get(j).collisionBodyManager;
+                CollisionBodyManager b = world.getBodies().get(j).getCollisionBodyManager();
 
                 if (!a.canCollideWith(b, world.getTicksPassed())
                         || !b.canCollideWith(a, world.getTicksPassed())) {

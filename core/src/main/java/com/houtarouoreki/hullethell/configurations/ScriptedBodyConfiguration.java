@@ -19,6 +19,6 @@ public class ScriptedBodyConfiguration {
         this.path = path;
         String[] temp = path.split("/");
         type = temp[0];
-        configName = temp[1];
+        configName = temp.length > 1 ? temp[1] : null;
     }
 }

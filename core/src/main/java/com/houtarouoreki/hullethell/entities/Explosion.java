@@ -17,10 +17,10 @@ public class Explosion extends Entity {
         this.damage = damage;
         this.duration = duration;
         setSize(new Vector2(radius * 2));
-        collisionBodyManager.setCollisionBody(Collections
+        getCollisionBodyManager().setCollisionBody(Collections
                 .singletonList(new Circle(Vector2.ZERO, radius)));
         addAnimation("effects/Explosion", 6, 6 / duration);
-        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
+        getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Explosion extends Entity {
     public void onCollision(CollisionResult collision) {
         if (collision.other instanceof Entity) {
             ((Entity) collision.other).applyDamage(damage);
-            collisionBodyManager.disableCollisionsWith(collision.other);
+            getCollisionBodyManager().disableCollisionsWith(collision.other);
         }
     }
 

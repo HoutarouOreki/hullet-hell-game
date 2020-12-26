@@ -19,13 +19,14 @@ import java.util.List;
 public class Body extends PrimitiveBody implements Renderable, Updatable {
     public Vector2 acceleration = new Vector2();
     public String name;
-    public final CollisionBodyManager collisionBodyManager = generateCollisionBodyManager();
+    private CollisionBodyManager collisionBodyManager;
     private boolean removed;
     private ScriptedSection section;
     private boolean shouldDespawnOOBounds;
 
     public Body() {
-        collisionBodyManager.addCollisionListener(this::onCollision);
+        collisionBodyManager = generateCollisionBodyManager();
+        getCollisionBodyManager().addCollisionListener(this::onCollision);
     }
 
     public ScriptedSection getSection() {
@@ -53,19 +54,17 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
 
     private void renderCollisionBody(Graphics g) {
         g.setColor(Color.YELLOW);
-        for (Circle circle : collisionBodyManager.getCollisionBodyCopy()) {
-            RenderHelpers.drawWorldCircle(
-                    getPosition().add(circle.position),
-                    circle.radius, g);
+        for (Circle circle : getCollisionBodyManager().getCollisionBodyCopy(true)) {
+            RenderHelpers.drawWorldCircle(circle.position, circle.radius, g);
         }
     }
 
     public void scale(float scale) {
         setSize(getSize().scl(scale));
         List<Circle> newCollisionBody = new ArrayList<>();
-        for (Circle circle : collisionBodyManager.getCollisionBodyCopy())
+        for (Circle circle : getCollisionBodyManager().getCollisionBodyCopy())
             newCollisionBody.add(circle.scl(scale));
-        collisionBodyManager.setCollisionBody(newCollisionBody);
+        getCollisionBodyManager().setCollisionBody(newCollisionBody);
     }
 
     protected void onCollision(CollisionResult collision) {
@@ -92,5 +91,11 @@ public class Body extends PrimitiveBody implements Renderable, Updatable {
 
     protected CollisionBodyManager generateCollisionBodyManager() {
         return new CollisionBodyManager(this);
+    }
+
+    public CollisionBodyManager getCollisionBodyManager() {
+        if (collisionBodyManager == null)
+            collisionBodyManager = generateCollisionBodyManager();
+        return collisionBodyManager;
     }
 }

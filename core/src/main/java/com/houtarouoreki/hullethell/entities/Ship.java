@@ -31,8 +31,8 @@ public class Ship extends Entity {
         sprintTimeOut = new BindableNumber<>(0f, 0f, c.sprintTimeOut);
         setHealth(c.maxHealth);
         setSize(c.size);
-        collisionBodyManager.setCollisionBody(c.collisionCircles);
-        collisionBodyManager.setTeam(CollisionTeam.ENEMY);
+        getCollisionBodyManager().setCollisionBody(c.collisionCircles);
+        getCollisionBodyManager().setTeam(CollisionTeam.ENEMY);
         shootsExplosives = c.ammunitionType.equals("explosives");
         ammunitionName = c.ammunitionName;
         ammunitionSpeed = c.ammunitionSpeed;
@@ -68,7 +68,7 @@ public class Ship extends Entity {
             }
 
             if (remainingCollisionCooldown <= 0) {
-                collisionBodyManager.setAcceptsCollisions(true);
+                getCollisionBodyManager().setAcceptsCollisions(true);
                 for (Sprite sprite : spritesLayers.get(0)) {
                     sprite.setAlpha(1);
                 }
@@ -88,7 +88,7 @@ public class Ship extends Entity {
             return;
         }
         if (collisionCooldown > 0) {
-            collisionBodyManager.setAcceptsCollisions(false);
+            getCollisionBodyManager().setAcceptsCollisions(false);
             remainingCollisionCooldown = collisionCooldown;
             for (Sprite sprite : spritesLayers.get(0)) {
                 sprite.setAlpha(0.5f);

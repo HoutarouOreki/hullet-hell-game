@@ -19,7 +19,7 @@ public class BulletIndicator extends PrimitiveBody implements Finishable {
 
     public void update(float delta) {
         timeLeft -= delta;
-        float size = Interpolation.exp5.apply(0, bullet.collisionBodyManager
+        float size = Interpolation.exp5.apply(0, bullet.getCollisionBodyManager()
                 .getFarthestPointDistance() * 10, timeLeft / length);
         this.setSize(new Vector2(size));
         setPosition(bullet.getPosition());

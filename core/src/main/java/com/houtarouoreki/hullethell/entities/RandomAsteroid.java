@@ -20,8 +20,8 @@ public class RandomAsteroid extends Entity {
         this.scale = scale;
         setShouldDespawnOOBounds(true);
         this.setSize(new Vector2(1, 1));
-        collisionBodyManager.setTeam(CollisionTeam.ENVIRONMENT);
-        collisionBodyManager.setCollisionBody(Collections
+        getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
+        getCollisionBodyManager().setCollisionBody(Collections
                 .singletonList(new Circle(Vector2.ZERO, 0.5f)));
         Random random = new Random();
         Vector2 velocity = new Vector2(
@@ -35,7 +35,6 @@ public class RandomAsteroid extends Entity {
                 1,
                 random.nextFloat()
         ).scl(World.viewArea).add(getSize().scl(new Vector2(0.5f, 0))));
-        collisionBodyManager.collidesWith.add(CollisionTeam.ENVIRONMENT);
         clockwiseRotation = random.nextBoolean();
         setTexture(scale);
     }
@@ -73,9 +72,6 @@ public class RandomAsteroid extends Entity {
     @Override
     public void onCollision(CollisionResult collision) {
         super.onCollision(collision);
-        if (collision.other instanceof RandomAsteroid) {
-            System.out.println();
-        }
         if (collision.other instanceof Entity)
             ((Entity) collision.other).applyDamage(scale * getVelocity().len2());
     }

@@ -14,7 +14,7 @@ public class Explosive extends Entity {
         configuration = c;
         setHealth(c.maxHealth);
         setSize(c.size);
-        collisionBodyManager.setCollisionBody(c.collisionCircles);
+        getCollisionBodyManager().setCollisionBody(c.collisionCircles);
         setShouldDespawnOOBounds(true);
         explosionRadius = c.explosionRadius;
         explosionDamage = c.explosionDamage;

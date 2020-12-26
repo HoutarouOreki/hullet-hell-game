@@ -49,7 +49,7 @@ public class PlayScreen extends HulletHellScreen {
         world = new World(script, dialogueBox);
         Ship player = world.player;
         player.setCollisionCooldown(2);
-        player.collisionBodyManager.setTeam(CollisionTeam.PLAYER_SHIP);
+        player.getCollisionBodyManager().setTeam(CollisionTeam.PLAYER_SHIP);
         player.setPosition(new Vector2(World.viewArea.x * 0.1f, World.viewArea.y * 0.5f));
         player.onItemCollected =
                 item -> world.statistics.addItem(item.name);
@@ -105,7 +105,7 @@ public class PlayScreen extends HulletHellScreen {
             Entity ammunition = player.shoot();
             if (ammunition != null) {
                 world.addBody(ammunition);
-                ammunition.collisionBodyManager.setTeam(CollisionTeam.PLAYER_BULLETS);
+                ammunition.getCollisionBodyManager().setTeam(CollisionTeam.PLAYER_BULLETS);
                 HulletHellGame.getSoundManager()
                         .playSound("laser1", 0.3f);
             }

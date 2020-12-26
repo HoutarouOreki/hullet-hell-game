@@ -20,13 +20,13 @@ public class Item extends Entity {
 
     public Item(String itemName) {
         name = itemName;
-        collisionBodyManager.setCollisionBody(Collections
+        getCollisionBodyManager().setCollisionBody(Collections
                 .singletonList(new Circle(Vector2.ZERO, 0.5f)));
         setSize(new Vector2(1));
         setVelocity(new Vector2(-1, 0));
         rotatingClockwise = new Random().nextBoolean();
         setHealth(1);
-        collisionBodyManager.setTeam(CollisionTeam.ITEMS);
+        getCollisionBodyManager().setTeam(CollisionTeam.ITEMS);
         spriteInfo = new SpriteInfo();
         spriteInfo.textureName = itemName;
         spriteInfo.textureFolder = "items";

@@ -28,8 +28,8 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     }
 
     private void addAsteroid(RandomAsteroid asteroid) {
-        asteroid.collisionBodyManager.disableCollisionsWith(asteroids);
-        asteroid.collisionBodyManager.disableCollisionsWith(toAdd);
+        asteroid.getCollisionBodyManager().disableCollisionsWith(asteroids);
+        asteroid.getCollisionBodyManager().disableCollisionsWith(toAdd);
         toAdd.add(asteroid);
         world.addBody(asteroid);
     }
@@ -41,7 +41,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
         else
             asteroid = new RandomAsteroid();
 
-        if (asteroid.collisionBodyManager.getFarthestPointDistance() <= itemDropMaxRadius) {
+        if (asteroid.getCollisionBodyManager().getFarthestPointDistance() <= itemDropMaxRadius) {
             Item itemDrop = getNewRandomItem();
             if (itemDrop != null)
                 asteroid.items.add(itemDrop);
@@ -60,7 +60,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     private void handleAsteroid(final RandomAsteroid asteroid) {
         if (asteroid.isRemoved())
             toRemove.add(asteroid);
-        if (asteroid.collisionBodyManager.getFarthestPointDistance() > itemDropMaxRadius
+        if (asteroid.getCollisionBodyManager().getFarthestPointDistance() > itemDropMaxRadius
                 && !asteroid.isAlive())
             addChildAsteroids(asteroid);
     }
@@ -69,9 +69,9 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
         int amount = random.nextInt(2) + 2;
         float lastAngle = 0;
         for (int i = 0; i < amount; i++) {
-            float maxScale = asteroid.collisionBodyManager.getFarthestPointDistance() * 1.2f;
+            float maxScale = asteroid.getCollisionBodyManager().getFarthestPointDistance() * 1.2f;
             float minScale = Math.max(itemDropMaxRadius,
-                    asteroid.collisionBodyManager.getFarthestPointDistance() * 2 - 1.5f);
+                    asteroid.getCollisionBodyManager().getFarthestPointDistance() * 2 - 1.5f);
             float scaleRange = maxScale - minScale;
             float scale = random.nextFloat() * scaleRange + minScale;
             RandomAsteroid childAsteroid = generateAsteroid(scale);
@@ -83,7 +83,7 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
                     .add(new Vector2(-2, 0))
                     .scl(1 / scale));
             childAsteroid.setPosition(asteroid.getPosition());
-            childAsteroid.collisionBodyManager.disableCollisionsFor(0.1f);
+            childAsteroid.getCollisionBodyManager().disableCollisionsFor(0.1f);
             addAsteroid(childAsteroid);
         }
     }

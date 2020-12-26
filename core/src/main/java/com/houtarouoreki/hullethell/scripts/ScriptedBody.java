@@ -98,6 +98,8 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
                 return new Bullet(configName);
             case "environmentals":
                 return new Environmental(configName);
+            case "lasers":
+                return new Laser();
             default:
                 throw new Error("Error creating body from script");
         }
