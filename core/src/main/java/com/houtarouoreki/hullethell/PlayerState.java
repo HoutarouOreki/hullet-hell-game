@@ -27,14 +27,12 @@ public class PlayerState {
     public List<ShipConfiguration> getUnlockedShipConfigurations() {
         List<ShipConfiguration> shipConfigurations = new ArrayList<>();
         for (String unlockedShip : unlockedShips) {
-            shipConfigurations.add(HulletHellGame.getAssetManager()
-                    .get("ships/" + unlockedShip + ".cfg"));
+            shipConfigurations.add(ShipConfiguration.fromName(unlockedShip));
         }
         return shipConfigurations;
     }
 
     public ShipConfiguration getCurrentShipConfiguration() {
-        return HulletHellGame.getAssetManager()
-                .get("ships/" + currentShipFileName.getValue() + ".cfg");
+        return ShipConfiguration.fromName(currentShipFileName.getValue());
     }
 }

@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.screens.garage;
 
 import com.houtarouoreki.hullethell.HulletHellGame;
+import com.houtarouoreki.hullethell.configurations.BodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ShipConfiguration;
 import com.houtarouoreki.hullethell.graphics.*;
 import com.houtarouoreki.hullethell.numbers.Vector2;
@@ -85,9 +86,18 @@ public class GarageScreen extends HulletHellScreen {
 
     private String getShipDescription() {
         ShipConfiguration c = HulletHellGame.getPlayerState().getCurrentShipConfiguration();
-        return "Bullets per second: " + 1 / c.cannonTimeOut + '\n' +
-                "Durability: " + c.maxHealth + '\n' +
-                "Bullets: " + c.ammunitionName;
+        BodyConfiguration b = BodyConfiguration.fromPath("bullets/" + c.ammunitionName);
+        float bps = 1 / c.cannonTimeOut;
+        float dps = bps * b.damage;
+        return "Durability: " + roundNumber(c.maxHealth) + '\n' +
+                "Bullets per second: " + roundNumber(bps) + '\n' +
+                "Bullet speed: " +  roundNumber(c.ammunitionSpeed) + '\n' +
+                "Bullet damage: " + roundNumber(b.damage) + '\n' +
+                "DPS: " + roundNumber(dps);
+    }
+
+    private String roundNumber(Number number) {
+        return String.format("%.0f", number.floatValue());
     }
 
     @Override

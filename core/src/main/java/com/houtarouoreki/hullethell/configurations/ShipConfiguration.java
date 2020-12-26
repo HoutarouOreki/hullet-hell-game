@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.houtarouoreki.hullethell.HulletHellGame;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,5 +32,9 @@ public class ShipConfiguration extends BodyConfiguration {
         ammunitionType = keyValues.getOrDefault("ammunitionType", "bullets");
         ammunitionName = keyValues.get("ammunitionName");
         ammunitionSpeed = Float.parseFloat(keyValues.getOrDefault("ammunitionSpeed", "0"));
+    }
+
+    public static ShipConfiguration fromName(String name) {
+        return HulletHellGame.getAssetManager().get("ships/" + name + ".cfg");
     }
 }

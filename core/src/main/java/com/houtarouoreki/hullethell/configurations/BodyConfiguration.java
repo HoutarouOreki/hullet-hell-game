@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import org.mini2Dx.core.engine.geom.CollisionCircle;
 
@@ -40,5 +41,11 @@ public class BodyConfiguration {
         size = ConfigurationsHelper.parseVector2(keyValues.get("size"));
         collisionCircles = ConfigurationsHelper.parseCollisionCircles(keyValues.get("collisionCircles"));
         damage = Integer.parseInt(keyValues.getOrDefault("damage", "0"));
+    }
+
+    public static BodyConfiguration fromPath(String path) {
+        if (!path.endsWith(".cfg"))
+            path += ".cfg";
+        return HulletHellGame.getAssetManager().get(path);
     }
 }

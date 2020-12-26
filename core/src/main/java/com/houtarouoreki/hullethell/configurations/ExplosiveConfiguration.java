@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.configurations;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.houtarouoreki.hullethell.HulletHellGame;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,5 +26,9 @@ public class ExplosiveConfiguration extends BodyConfiguration {
         explosionRadius = Float.parseFloat(keyValues.get("explosionRadius"));
         explosionDamage = Float.parseFloat(keyValues.get("explosionDamage"));
         explosionDuration = Float.parseFloat(keyValues.get("explosionDuration"));
+    }
+
+    public static ExplosiveConfiguration fromName(String name) {
+        return HulletHellGame.getAssetManager().get("explosives/" + name + ".cfg");
     }
 }
