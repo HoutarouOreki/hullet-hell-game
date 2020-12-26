@@ -10,11 +10,11 @@ public class ScriptedSectionConfiguration {
     public final List<ScriptedActionConfiguration> actions = new ArrayList<>();
     public final String name;
     public final String type;
-    public final String whileParameters;
+    public final String parameters;
 
-    public ScriptedSectionConfiguration(String type, String name, String whileParameters) {
+    public ScriptedSectionConfiguration(String type, String name, String parameters) {
         this.type = type;
         this.name = name;
-        this.whileParameters = whileParameters;
+        this.parameters = parameters;
     }
 }

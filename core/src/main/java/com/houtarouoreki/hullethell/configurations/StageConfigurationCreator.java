@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class StageConfigurationCreator {
     public final List<ScriptedSectionConfiguration> sections = new ArrayList<>(50);
     final HashMap<String, ScriptedBodyConfiguration> allBodies = new HashMap<>(100);
-    private final Pattern sectionPattern = Pattern.compile("^!(?<type>\\w*)(?:\\(?(?<whileParams>.*)\\))?(?: ?(?<name>\\w*))?(?: ?@(?<startFlags>.*))?$");
+    private final Pattern sectionPattern = Pattern.compile("^!(?<type>\\w*)(?:\\(?(?<params>.*)\\))?(?: ?(?<name>\\w*))?(?: ?@(?<startFlags>.*))?$");
     private final Pattern dialogueSectionCharacterPattern = Pattern.compile("^(?<characterName>.*):$");
     private final Pattern dialogueSectionTextPattern = Pattern.compile("\\s(?<text>.*)");
     private final Pattern bodyPattern = Pattern.compile("^(?<name>\\w+):(?:\\s+\"(?<path>.*)\"$)?");
@@ -31,7 +31,7 @@ public class StageConfigurationCreator {
                 continue;
             if ((matcher = sectionPattern.matcher(line)).matches()) {
                 currentSection.setValue(new ScriptedSectionConfiguration(matcher.group("type"),
-                        matcher.group("name"), matcher.group("whileParams")));
+                        matcher.group("name"), matcher.group("params")));
                 setStartFlags(currentSection.getValue(), matcher.group("startFlags"));
                 sections.add(currentSection.getValue());
                 currentBody.setValue(null);

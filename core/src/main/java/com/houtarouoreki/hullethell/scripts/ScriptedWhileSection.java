@@ -14,7 +14,7 @@ public class ScriptedWhileSection extends ScriptedSection {
 
     public ScriptedWhileSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
         super(world, conf, dialogueBox);
-        this.parameters = conf.whileParameters;
+        this.parameters = conf.parameters;
         this.conf = conf;
         this.dialogueBox = dialogueBox;
     }
