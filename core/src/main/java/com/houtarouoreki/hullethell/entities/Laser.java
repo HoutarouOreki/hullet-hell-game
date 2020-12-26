@@ -1,24 +1,51 @@
 package com.houtarouoreki.hullethell.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.bindables.Bindable;
 import com.houtarouoreki.hullethell.collisions.Circle;
 import com.houtarouoreki.hullethell.collisions.CollisionBodyManager;
 import com.houtarouoreki.hullethell.collisions.CollisionResult;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
+import com.houtarouoreki.hullethell.helpers.RenderHelpers;
 import com.houtarouoreki.hullethell.numbers.Vector2;
+import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Laser extends Body {
+    private final Sprite sprite;
     public float damage;
+    public float rotation;
     private Bindable<Float> length;
     private Bindable<Float> width;
     private Bindable<Float> rotationSpeed;
-    public float rotation;
 
     public Laser() {
         getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
+        Texture texture = HulletHellGame.getAssetManager().get("lasers/laser.png");
+        sprite = new Sprite(texture);
+        length.addListener(this::onSizeChanged);
+        width.addListener(this::onSizeChanged);
+    }
+
+    private void onSizeChanged(Float oldValue, Float newValue) {
+        setSize(new Vector2(width.getValue(), 0));
+    }
+
+    @Override
+    public void render(Graphics g) {
+        super.render(g);
+        Vector2 size = RenderHelpers
+                .translateToRenderSize(new Vector2(width.getValue(), length.getValue()));
+        sprite.setSize(size.x, 0);
+        sprite.setOriginCenter();
+        sprite.setOriginBasedPosition(getRenderPosition().x, getRenderPosition().y);
+        sprite.setRotation(rotation + 180);
+        sprite.setSize(size.x, size.y);
+        g.drawSprite(sprite);
     }
 
     @Override
@@ -87,7 +114,7 @@ public class Laser extends Body {
             float radius = getWidth() * 0.5f;
             do {
                 float circleCenterY = highestY + radius;
-                newCollisionBody.add(new Circle(new Vector2(0, circleCenterY), getWidth()));
+                newCollisionBody.add(new Circle(new Vector2(0, circleCenterY), radius));
                 highestY += getWidth();
             } while (highestY < getLength());
             setCollisionBody(newCollisionBody);

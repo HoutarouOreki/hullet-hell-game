@@ -57,8 +57,7 @@ public abstract class PrimitiveBody implements Renderable, Updatable {
     }
 
     public Vector2 getRenderSize() {
-        return getSize().scl(RenderHelpers.getViewport())
-                .scl(World.viewArea.divideNumber(1));
+        return RenderHelpers.translateToRenderSize(getSize());
     }
 
     public void render(Graphics g) {

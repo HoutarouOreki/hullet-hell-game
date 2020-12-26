@@ -10,6 +10,10 @@ public class RenderHelpers {
         return new Vector2(position.x, World.viewArea.y - position.y).scl(getViewport()).div(World.viewArea);
     }
 
+    public static Vector2 translateToRenderSize(Vector2 size) {
+        return size.scl(getViewport()).div(World.viewArea);
+    }
+
     public static void drawWorldCircle(Vector2 worldPosition, float radius, Graphics g) {
         Vector2 vp = new Vector2(PlayScreen.viewport.getWidth(), PlayScreen.viewport.getHeight());
         Vector2 renderPos = translateToRenderPosition(worldPosition);

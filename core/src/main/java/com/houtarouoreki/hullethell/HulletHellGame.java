@@ -145,6 +145,7 @@ public class HulletHellGame extends ScreenBasedGame {
 
         //assetManager.load("environmentals/asteroid-large.png", Texture.class);
         loadSpriteInfo("environmentals/asteroid");
+        loadSpriteInfo("lasers/laser");
 
         loadConfigsAndTextures("bullets", Arrays.asList(
                 "Bullet 1", "Player bullet 1"));

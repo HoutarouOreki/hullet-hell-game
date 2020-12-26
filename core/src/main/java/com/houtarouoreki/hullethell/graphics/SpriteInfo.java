@@ -49,6 +49,9 @@ public class SpriteInfo {
         }
     }
 
+    public static SpriteInfo fromPath(String path) {
+        return HulletHellGame.getAssetManager().get(path + "-sprite.cfg");
+    }
 
 
     public String getPathWithoutExtension() {
