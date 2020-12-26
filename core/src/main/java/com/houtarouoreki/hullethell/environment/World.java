@@ -1,5 +1,7 @@
 package com.houtarouoreki.hullethell.environment;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.audio.CollisionSoundManager;
@@ -10,6 +12,7 @@ import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
+import com.houtarouoreki.hullethell.scripts.quests.Quest;
 import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
 import com.houtarouoreki.hullethell.scripts.quests.Statistics;
 import org.mini2Dx.core.graphics.Graphics;
@@ -19,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class World {
-    public final static Vector2 viewArea = new Vector2(36, 20);
+    public final static Vector2 viewArea = new Vector2(36, 20).scl(1.2f);
     public final static float time_step_duration = 0.01f;
     public final QuestManager questManager;
     public final Statistics statistics;
@@ -45,6 +48,11 @@ public class World {
         collisionSoundManager = new CollisionSoundManager(collisionManager);
         scriptedStageManager = new ScriptedStageManager(this, script, dialogueBox);
         renderingManager = new WorldRenderingManager();
+        questManager.onQuestCompleted = this::onQuestCompleted;
+    }
+
+    private void onQuestCompleted(Quest quest) {
+        scriptedStageManager.incrementFlag("quest:" + quest.name);
     }
 
     public List<Body> getBodies() {
@@ -98,6 +106,8 @@ public class World {
                 + scriptedStageManager.getSectionWaitingActions(), 20, 95);
         g.drawString("Current section actions: "
                 + scriptedStageManager.getSectionCurrentActions(), 20, 110);
+        g.setColor(Color.WHITE);
+        g.drawString(scriptedStageManager.toString(), 700, 10, 500);
     }
 
     private void renderProgressBar(Graphics g) {
@@ -106,6 +116,8 @@ public class World {
     }
 
     public void update(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.FORWARD_DEL))
+            return;
         bufferedTime += delta;
         while (bufferedTime >= time_step_duration) {
             physics();

@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScriptedSection {
     public final Queue<ScriptedAction> waitingActions = new LinkedList<>();
@@ -54,11 +55,14 @@ public class ScriptedSection {
     public void update(double delta) {
         timePassed += delta;
 
-        while (!waitingBodies.isEmpty() && waitingBodies.peek()
-                .waitingActions.element().getScriptedTime() <= getTimePassed()) {
-            ScriptedBody body = waitingBodies.remove();
-            activeBodies.add(body);
-            body.initialise(world, this);
+        while (!waitingBodies.isEmpty()) {
+            ScriptedBody body = waitingBodies.peek();
+            if (body.waitingActions.isEmpty()
+                    || body.waitingActions.peek().scriptedTime <= getTimePassed()) {
+                waitingBodies.remove();
+                activeBodies.add(body);
+                body.initialise(world, this);
+            }
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();
         while (i.hasNext()) {
@@ -66,6 +70,7 @@ public class ScriptedSection {
             body.update();
             if (body.isFinished()) {
                 i.remove();
+                physicalBodies.remove(body.controlledBody);
                 if (body.isControlledBodyDead())
                     world.scriptedStageManager.incrementFlag(body.type + ":" + body.name);
             }
@@ -127,5 +132,12 @@ public class ScriptedSection {
 
     public int getBodiesRemovedAmount() {
         return bodiesRemovedAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "   ScriptedSection " + name + ":\n" +
+                "    waitingBodies (" + waitingBodies.size() + "): " + waitingBodies.stream().map(scriptedBody -> scriptedBody.name).collect(Collectors.joining(", ")) + '\n' +
+                "    activeBodies (" + activeBodies.size() + "): \n" + activeBodies.stream().map(Object::toString).collect(Collectors.joining("\n     "));
     }
 }

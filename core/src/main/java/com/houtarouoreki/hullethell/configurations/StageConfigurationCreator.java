@@ -111,6 +111,9 @@ public class StageConfigurationCreator {
         if (hasBodyName)
             allBodies.put(bodyName, currentBody.getValue());
 
+        if (currentSection.getValue().type.equals("recurring") || currentSection.getValue().type.equals("while"))
+            currentBody.getValue().hasNextSection = true;
+
         currentSection.getValue().bodies.add(currentBody.getValue());
     }
 

@@ -16,7 +16,7 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     public final LinkedList<ScriptedAction> currentActions = new LinkedList<>();
     private final boolean wasInPreviousSections;
     private final boolean willBeInFutureSections;
-    private Body controlledBody;
+    public Body controlledBody;
     private int allSubbodiesAmount;
     private World world;
     private ScriptedSection section;
@@ -63,10 +63,10 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         else {
             controlledBody = createBodyFromScript(type);
             controlledBody.name = name;
+            world.addBody(controlledBody);
         }
         this.world = world;
         this.section = section;
-        world.addBody(controlledBody);
     }
 
     public void update() {
@@ -122,5 +122,10 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         if (otherFirstAction == null)
             return 1;
         return (int) Math.signum(firstAction.getScriptedTime() - otherFirstAction.getScriptedTime());
+    }
+
+    @Override
+    public String toString() {
+        return "ScriptedBody " + name + ", " + waitingActions.size() + " waiting, " + currentActions.size() + " active actions";
     }
 }

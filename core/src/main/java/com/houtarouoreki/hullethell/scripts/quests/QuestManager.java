@@ -5,15 +5,19 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.houtarouoreki.hullethell.graphics.Axes;
 import com.houtarouoreki.hullethell.graphics.Container;
 import com.houtarouoreki.hullethell.graphics.Fonts;
+import com.houtarouoreki.hullethell.helpers.BasicObjectListener;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.ui.Label;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class QuestManager extends Container {
     public final List<Quest> quests = new ArrayList<>();
+
+    public BasicObjectListener<Quest> onQuestCompleted;
 
     public QuestManager() {
         setAnchor(new Vector2(1, 0));
@@ -24,6 +28,20 @@ public class QuestManager extends Container {
     public void registerQuest(Quest quest) {
         quests.add(quest);
         add(new QuestDrawable(quest));
+    }
+
+    @Override
+    protected void onUpdate(float delta) {
+        super.onUpdate(delta);
+        Iterator<Quest> i = quests.listIterator();
+        while (i.hasNext()) {
+            Quest quest = i.next();
+            if (quest.isDone()) {
+                i.remove();
+                if (onQuestCompleted != null)
+                    onQuestCompleted.onAction(quest);
+            }
+        }
     }
 
     private static class QuestDrawable extends Container {

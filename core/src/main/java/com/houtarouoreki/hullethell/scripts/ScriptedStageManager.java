@@ -6,6 +6,7 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScriptedStageManager {
     private final HashMap<String, Integer> flags = new HashMap<>();
@@ -117,5 +118,13 @@ public class ScriptedStageManager {
 
     public boolean isFinished() {
         return waitingSections.isEmpty() && activeSections.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "ScriptedStageManager:\n" +
+                " waiting sections (" + waitingSections.size() + "): " +
+                waitingSections.stream().map(scriptedSection -> scriptedSection.name).collect(Collectors.joining(", ")) + '\n' +
+                " active sections: (" + activeSections.size() + "):\n" + activeSections.stream().map(Object::toString).collect(Collectors.joining("\n"));
     }
 }
