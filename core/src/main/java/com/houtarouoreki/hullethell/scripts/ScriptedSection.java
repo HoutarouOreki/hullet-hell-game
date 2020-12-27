@@ -52,17 +52,18 @@ public class ScriptedSection {
                 && waitingActions.isEmpty() && currentActions.isEmpty();
     }
 
+    private boolean isWaitingBodyReady(ScriptedBody scriptedBody) {
+        return scriptedBody.waitingActions.isEmpty()
+            || scriptedBody.waitingActions.peek().scriptedTime <= getTimePassed();
+    }
+
     public void update(double delta) {
         timePassed += delta;
 
-        while (!waitingBodies.isEmpty()) {
-            ScriptedBody body = waitingBodies.peek();
-            if (body.waitingActions.isEmpty()
-                    || body.waitingActions.peek().scriptedTime <= getTimePassed()) {
-                waitingBodies.remove();
-                activeBodies.add(body);
-                body.initialise(world, this);
-            }
+        while (!waitingBodies.isEmpty() && isWaitingBodyReady(waitingBodies.peek())) {
+            ScriptedBody body = waitingBodies.remove();
+            activeBodies.add(body);
+            body.initialise(world, this);
         }
         Iterator<ScriptedBody> i = activeBodies.iterator();
         while (i.hasNext()) {

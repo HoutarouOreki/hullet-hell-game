@@ -7,6 +7,7 @@ import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public String type;
@@ -16,7 +17,6 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     public double scriptedTime;
     protected World world;
     protected ScriptedSection section;
-    private double totalTime;
     private int ticks;
     private boolean finished;
 
@@ -68,6 +68,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new SetLaserPropertiesAction();
             case "holdPositionFor":
                 return new HoldPositionForAction();
+            case "shootSineCircleSeries":
+                return new ShootSineCircleSeries();
             default:
                 throw new Error("Could not find action of type \"" + conf.type + "\""
                         + "\nSource line: " + conf.line);
@@ -95,8 +97,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         ticks++;
     }
 
-    public double getTotalTime() {
-        return totalTime;
+    public double getTimeSinceStarted() {
+        return section.getTimePassed() - getScriptedTime();
     }
 
     public int getTicks() {
@@ -116,5 +118,13 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     @Override
     public int compareTo(ScriptedAction o) {
         return (int) Math.signum(getScriptedTime() - o.getScriptedTime());
+    }
+
+    protected float parseFloatFirstGroup(Matcher matcher) {
+        return Float.parseFloat(matcher.group(1));
+    }
+
+    protected int parseIntFirstGroup(Matcher matcher) {
+        return Integer.parseInt(matcher.group(1));
     }
 }

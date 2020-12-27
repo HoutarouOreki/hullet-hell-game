@@ -6,5 +6,14 @@ public enum CollisionTeam {
     PLAYER_SHIP,
     PLAYER_BULLETS,
     ENVIRONMENT,
-    ITEMS
+    ITEMS;
+
+    public CollisionTeam getBulletTeam() {
+        if (this == PLAYER_SHIP)
+            return PLAYER_BULLETS;
+        else if (this == ENEMY)
+            return ENEMY_BULLETS;
+        else
+            throw new IllegalArgumentException();
+    }
 }

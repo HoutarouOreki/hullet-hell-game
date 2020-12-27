@@ -40,38 +40,42 @@ coin4: "items/hologramCoin"
 3 movePlayerTo: 0.1, 0.5, 2
 
 
-!recurring(every 8.5 seconds until quest:1) firstLoop @sectionDone:firstIn
+!recurring(every 29 seconds until quest:1) firstLoop @sectionDone:firstIn
 
 bulletSpawner:
-	0	shootMultiple: hologramBullet, 9, 00, 40, 4
-	0.1	shootMultiple: hologramBullet, 9, 02, 40, 5
-	0.2	shootMultiple: hologramBullet, 9, 04, 40, 6
-	0.3	shootMultiple: hologramBullet, 9, 06, 40, 7
-	0.4	shootMultiple: hologramBullet, 9, 08, 40, 8
-	4.2 shootMultiple: hologramBullet, 9, 20, 40, 3
-	4.3 shootMultiple: hologramBullet, 9, 22, 40, 4
-	4.4	shootMultiple: hologramBullet, 9, 24, 40, 5
-	4.5	shootMultiple: hologramBullet, 9, 26, 40, 6
-	4.6 shootMultiple: hologramBullet, 9, 28, 40, 7
-	4.7 shootMultiple: hologramBullet, 9, 30, 40, 8
-	4.8	shootMultiple: hologramBullet, 9, 32, 40, 9
+	0	shootMultiple: hologramBullet, 12, 00, 30, 3
+	0.1	shootMultiple: hologramBullet, 12, 02, 30, 3.5
+	0.2	shootMultiple: hologramBullet, 12, 04, 30, 4
+	0.3	shootMultiple: hologramBullet, 12, 06, 30, 4.5
+	0.4	shootMultiple: hologramBullet, 12, 08, 30, 5
+	4.2 shootMultiple: hologramBullet, 12, 16, 30, 3
+	4.3 shootMultiple: hologramBullet, 12, 18, 30, 3.5
+	4.4	shootMultiple: hologramBullet, 12, 20, 30, 4
+	4.5	shootMultiple: hologramBullet, 12, 22, 30, 4.5
+	4.6 shootMultiple: hologramBullet, 12, 24, 30, 5
+	4.7 shootMultiple: hologramBullet, 12, 26, 30, 5.5
+	4.8	shootMultiple: hologramBullet, 12, 28, 30, 6
+
+	9.0 shootSineCircleSeries: 14 hologramBullet per shot, spanning 15 seconds, 0.2 second intervals, max 25 degree rotation, 6.5 speed, 1 repeat
 
 coin1:
-	0 holdPositionFor 8.5
+	0 holdPositionFor 29
 
 coin2:
-	0 holdPositionFor 8.5
+	0 holdPositionFor 29
 
 coin3:
-	0 holdPositionFor 8.5
+	0 holdPositionFor 29
 
 coin4:
-	0 holdPositionFor 8.5
+	0 holdPositionFor 29
 
 laserWall:
-	8.5 nullAction
+	29 nullAction
 
 
 ! firstOut @sectionDone:firstLoop
 bulletSpawner:
-	moveTo: 1.2, 0.5, 4, sineIn
+	0	moveTo: 1.2, 0.5, 4, sineIn
+
+! secondIn
