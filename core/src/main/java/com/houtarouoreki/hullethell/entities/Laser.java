@@ -23,7 +23,7 @@ public class Laser extends Body {
     public float rotation;
     private Bindable<Float> length;
     private Bindable<Float> width;
-    private Bindable<Float> rotationSpeed;
+    private Bindable<Float> rotationDuration;
 
     public Laser() {
         getCollisionBodyManager().setTeam(CollisionTeam.ENVIRONMENT);
@@ -45,6 +45,12 @@ public class Laser extends Body {
 
     private void onSizeChanged(Float oldValue, Float newValue) {
         setSize(new Vector2(width.getValue(), 0));
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        rotation += 360 * delta / rotationDuration.getValue();
     }
 
     @Override
@@ -79,24 +85,18 @@ public class Laser extends Body {
     }
 
     @Override
-    protected CollisionBodyManager generateCollisionBodyManager() {
-        length = new Bindable<>(0f);
-        width = new Bindable<>(0f);
-        rotationSpeed = new Bindable<>(0f);
-        return new LaserCollisionBodyManager(this);
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-        rotation += rotationSpeed.getValue() * 360 * delta;
-    }
-
-    @Override
     protected void onCollision(CollisionResult collision) {
         super.onCollision(collision);
         if (collision.other instanceof Entity)
             ((Entity) collision.other).applyDamage(damage);
+    }
+
+    @Override
+    protected CollisionBodyManager generateCollisionBodyManager() {
+        length = new Bindable<>(0f);
+        width = new Bindable<>(0f);
+        rotationDuration = new Bindable<>(0f);
+        return new LaserCollisionBodyManager(this);
     }
 
     public float getLength() {
@@ -115,12 +115,12 @@ public class Laser extends Body {
         this.width.setValue(width);
     }
 
-    public float getRotationSpeed() {
-        return rotationSpeed.getValue();
+    public float getRotationDuration() {
+        return rotationDuration.getValue();
     }
 
-    public void setRotationSpeed(float rotationSpeed) {
-        this.rotationSpeed.setValue(rotationSpeed);
+    public void setRotationDuration(float rotationDuration) {
+        this.rotationDuration.setValue(rotationDuration);
     }
 
     public class LaserCollisionBodyManager extends CollisionBodyManager {
@@ -130,26 +130,12 @@ public class Laser extends Body {
             super(laser);
             length.addListener(this::onLaserPropertyUpdated);
             width.addListener(this::onLaserPropertyUpdated);
-            rotationSpeed.addListener(this::onLaserPropertyUpdated);
+            rotationDuration.addListener(this::onLaserPropertyUpdated);
         }
 
         private void onLaserPropertyUpdated(float oldValue, float newValue) {
             if (oldValue != newValue)
                 collisionBodyInvalid = true;
-        }
-
-        private void generateCollisionCircles() {
-            List<Circle> newCollisionBody = new ArrayList<>((int) (getLength() / getWidth() + 3));
-            float highestY = 0;
-            float radius = getWidth() * 0.5f;
-            do {
-                float circleCenterY = highestY + radius;
-                newCollisionBody.add(new Circle(new Vector2(0, circleCenterY), radius));
-                highestY += getWidth();
-            } while (highestY < getLength());
-            setCollisionBody(newCollisionBody);
-            collisionBodyInvalid = false;
-            farthestPointDistance = getLength();
         }
 
         @Override
@@ -168,11 +154,18 @@ public class Laser extends Body {
             return rotatedCircles;
         }
 
-        @Override
-        public boolean canCollideWith(CollisionBodyManager other) {
-            if (collisionBodyInvalid)
-                generateCollisionCircles();
-            return !(other instanceof LaserCollisionBodyManager) && super.canCollideWith(other);
+        private void generateCollisionCircles() {
+            List<Circle> newCollisionBody = new ArrayList<>((int) (getLength() / getWidth() + 3));
+            float highestY = 0;
+            float radius = getWidth() * 0.5f;
+            do {
+                float circleCenterY = highestY + radius;
+                newCollisionBody.add(new Circle(new Vector2(0, circleCenterY), radius));
+                highestY += getWidth();
+            } while (highestY < getLength());
+            setCollisionBody(newCollisionBody);
+            collisionBodyInvalid = false;
+            farthestPointDistance = getLength();
         }
 
         @Override
@@ -187,6 +180,13 @@ public class Laser extends Body {
             if (collisionBodyInvalid)
                 generateCollisionCircles();
             return super.isAcceptingCollisions();
+        }
+
+        @Override
+        public boolean canCollideWith(CollisionBodyManager other) {
+            if (collisionBodyInvalid)
+                generateCollisionCircles();
+            return !(other instanceof LaserCollisionBodyManager) && super.canCollideWith(other);
         }
     }
 }
