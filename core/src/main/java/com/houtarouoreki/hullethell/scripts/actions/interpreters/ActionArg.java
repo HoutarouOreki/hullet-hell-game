@@ -2,7 +2,7 @@ package com.houtarouoreki.hullethell.scripts.actions.interpreters;
 
 import java.util.regex.Pattern;
 
-public class ActionArg<E, T extends ActionArgsParserCallback<E>> {
+public class ActionArg<E, T extends ActionArgsParserSetter<E>> {
     public final String name;
     public final String description;
     public final String example;

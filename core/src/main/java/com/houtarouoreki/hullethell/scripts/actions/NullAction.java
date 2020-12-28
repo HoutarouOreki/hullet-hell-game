@@ -12,4 +12,8 @@ public class NullAction extends ScriptedAction {
     public int bodiesAmount() {
         return 0;
     }
+
+    @Override
+    protected void addArgumentsInfo() {
+    }
 }

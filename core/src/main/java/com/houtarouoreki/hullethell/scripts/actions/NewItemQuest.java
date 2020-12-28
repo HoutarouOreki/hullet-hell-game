@@ -1,24 +1,18 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionMatcherArg;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionStringArg;
 import com.houtarouoreki.hullethell.scripts.quests.ItemQuest;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewItemQuest extends ScriptedAction {
     private String name;
-    private final HashMap<String, Integer> items = new HashMap<String, Integer>();
-
-    @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        name = arguments.get(0);
-        String[] amountItems = arguments.get(1).split(" / ");
-        for (String amountItem : amountItems) {
-            String[] s = amountItem.split(" ");
-            items.put(s[1], Integer.parseInt(s[0]));
-        }
-    }
+    private final HashMap<String, Integer> items = new HashMap<>();
+    private static final Pattern quest_id_pattern = Pattern.compile("id: \"(\\w+)\"");
 
     @Override
     protected void performAction() {
@@ -29,5 +23,36 @@ public class NewItemQuest extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    @Override
+    protected void addArgumentsInfo() {
+        parser.stringArgs.add(new ActionStringArg(
+                "Quest name",
+                "Used for flags. The portion inside quotation " +
+                        "marks is the quest name. It can only contain letters, " +
+                        "numbers and underscores.",
+                "id: \"copperQuest\"",
+                quest_id_pattern,
+                this::setName,
+                false
+        ));
+        parser.matcherArgs.add(new ActionMatcherArg(
+                "Item",
+                "How many of an item",
+                "3 copperOre, 9 ironOre",
+                item_amount_pattern,
+                this::addItem,
+                false
+        ));
+    }
+
+    private void addItem(Matcher matcher) {
+        items.put(matcher.group("itemName"),
+                Integer.parseInt(matcher.group("itemAmount")));
+    }
+
+    private void setName(String s) {
+        name = s;
     }
 }

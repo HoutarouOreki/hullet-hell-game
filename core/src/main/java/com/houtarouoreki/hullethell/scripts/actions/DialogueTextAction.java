@@ -3,6 +3,7 @@ package com.houtarouoreki.hullethell.scripts.actions;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueMessage;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionStringArg;
 
 public class DialogueTextAction extends ScriptedAction {
     private final DialogueBox dialogueBox;
@@ -10,15 +11,6 @@ public class DialogueTextAction extends ScriptedAction {
 
     public DialogueTextAction(DialogueBox dialogueBox) {
         this.dialogueBox = dialogueBox;
-    }
-
-    @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        if (arguments.get(0) != null)
-            text = arguments.get(0).replace(",\\", ",");
-        else
-            text = "";
     }
 
     @Override
@@ -31,5 +23,21 @@ public class DialogueTextAction extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    @Override
+    protected void addArgumentsInfo() {
+        parser.stringArgs.add(new ActionStringArg(
+                "Text",
+                null,
+                "Aren't circles clickable?",
+                match_everything_pattern,
+                this::setText,
+                false
+        ));
+    }
+
+    private void setText(String text) {
+        this.text = text.replace(",\\", ",");
     }
 }

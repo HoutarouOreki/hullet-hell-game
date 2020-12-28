@@ -2,6 +2,7 @@ package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionStringArg;
 
 public class DialogueCharacterAction extends ScriptedAction {
     private final DialogueBox dialogueBox;
@@ -24,6 +25,17 @@ public class DialogueCharacterAction extends ScriptedAction {
 
     @Override
     protected void addArgumentsInfo() {
+        parser.stringArgs.add(new ActionStringArg(
+                "Person's name",
+                null,
+                "Lieutenant George",
+                match_everything_pattern,
+                this::setCharacterName,
+                false
+        ));
+    }
 
+    private void setCharacterName(String s) {
+        characterName = s;
     }
 }

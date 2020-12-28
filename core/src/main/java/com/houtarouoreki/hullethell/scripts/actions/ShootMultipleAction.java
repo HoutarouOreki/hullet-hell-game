@@ -5,20 +5,26 @@ import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.entities.Bullet;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionFloatArg;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShootMultipleAction extends ScriptedAction {
+    private static final Pattern at_angle_pattern = Pattern.compile("at (\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°) angle");
+    private static final Pattern spacing_pattern = Pattern.compile("(\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°) spacing");
     protected String bulletType;
-    protected int amount;
-    protected double direction;
-    protected double spread;
-    protected double speed;
+    private int amount;
+    private float direction;
+    private float spread;
+    private float speed;
 
     @Override
     protected void performAction() {
         for (int i = 0; i < amount; i++) {
-            double directionDegrees = this.direction + spread * (-(amount - 1) * 0.5 + i);
-            Vector2 initialVelocity = new Vector2(0, 1).rotated((float) directionDegrees, true)
-                    .scl((float) speed);
+            float directionDegrees = this.direction + spread * (-(amount - 1) * 0.5f + i);
+            Vector2 initialVelocity = new Vector2(0, 1).rotated(directionDegrees, true)
+                    .scl(speed);
             Bullet bullet = new Bullet(bulletType);
             bullet.setVelocity(initialVelocity);
             bullet.setPosition(body.getPosition());
@@ -34,17 +40,54 @@ public class ShootMultipleAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialiseArguments() {
-        bulletType = arguments.get(0);
-        amount = Integer.parseInt(arguments.get(1));
-        direction = Double.parseDouble(arguments.get(2));
-        spread = Double.parseDouble(arguments.get(3));
-        speed = Double.parseDouble(arguments.get(4));
+    public int bodiesAmount() {
+        return amount;
     }
 
     @Override
-    public int bodiesAmount() {
-        initialiseArguments();
+    protected void addArgumentsInfo() {
+        addBulletsPerShotArg(this::setBulletTypeAndAmount, false);
+        parser.floatArgs.add(new ActionFloatArg(
+                "Angle",
+                null,
+                "at 4.2 degree angle",
+                at_angle_pattern,
+                this::setDirection,
+                true
+        ));
+        parser.floatArgs.add(new ActionFloatArg(
+                "Spacing",
+                "How many degrees there are between each bullet",
+                "30 degree spacing",
+                spacing_pattern,
+                this::setSpread,
+                false
+        ));
+        addSpeedArg(this::setSpeed, false);
+    }
+
+    private void setBulletTypeAndAmount(Matcher matcher) {
+        amount = Integer.parseInt(matcher.group("amount"));
+        bulletType = matcher.group("type");
+    }
+
+    protected void setDirection(float direction) {
+        this.direction = direction;
+    }
+
+    protected void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    protected float getSpread() {
+        return spread;
+    }
+
+    protected int getAmount() {
         return amount;
+    }
+
+    protected void setSpread(float spread) {
+        this.spread = spread;
     }
 }

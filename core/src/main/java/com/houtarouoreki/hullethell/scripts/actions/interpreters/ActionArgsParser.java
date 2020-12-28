@@ -27,11 +27,11 @@ public class ActionArgsParser {
         callMatchingCallback(arg, interpolationArgs);
     }
 
-    private <E, S extends ActionArgsParserCallback<E>, T extends ActionArg<E, S>> boolean callMatchingCallback(String s, List<T> args) {
+    private <E, S extends ActionArgsParserSetter<E>, T extends ActionArg<E, S>> boolean callMatchingCallback(String s, List<T> args) {
         Matcher matcher;
         for (T arg : args) {
             if ((matcher = arg.pattern.matcher(s)).matches()) {
-                arg.callback.run(arg.callback.parseMatcher(matcher));
+                arg.callback.set(arg.callback.parseMatcher(matcher));
                 return true;
             }
         }

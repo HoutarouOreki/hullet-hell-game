@@ -5,7 +5,7 @@ import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 
 import java.util.regex.Matcher;
 
-public interface ActionArgsParserInterpolationCallback extends ActionArgsParserCallback<Interpolation> {@Override
+public interface ActionArgsParserInterpolationSetter extends ActionArgsParserSetter<Interpolation> {@Override
     default Interpolation parseMatcher(Matcher matcher) {
         return ParsingHelpers.getInterpolationFromString(matcher.group(1));
     }

@@ -43,7 +43,7 @@ coin4: "items/hologramCoin"
 !recurring(every 29 seconds until quest:1) firstLoop @sectionDone:firstIn
 
 bulletSpawner:
-	0	shootMultiple: hologramBullet, 12, 00, 30, 3
+	0	shootMultiple: 12 hologramBullet per shot, at 0 degree angle, 30 degree spacing, 3 speed
 	0.1	shootMultiple: hologramBullet, 12, 02, 30, 3.5
 	0.2	shootMultiple: hologramBullet, 12, 04, 30, 4
 	0.3	shootMultiple: hologramBullet, 12, 06, 30, 4.5
@@ -78,5 +78,5 @@ laserWall:
 bulletSpawner:
 	0	moveTo: 1.2, 0.5, 4, sineIn
 
-! secondIn @sectionDone:firstOut
-	0	moveTo:
+#! secondIn @sectionDone:firstOut
+#	0	moveTo:

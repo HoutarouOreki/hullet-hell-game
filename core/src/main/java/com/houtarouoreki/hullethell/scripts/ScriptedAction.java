@@ -5,11 +5,29 @@ import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
-import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionArgsParser;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class ScriptedAction implements Comparable<ScriptedAction> {
+    protected static final Pattern match_everything_pattern = Pattern.compile("(.*)");
+    protected static final Pattern vector2_pattern
+            = Pattern.compile("\\((\\d+(?:\\.\\d+)?, \\d+(?:\\.\\d+)?)\\)");
+    protected static final Pattern bullets_per_shot_pattern
+            = Pattern.compile("(?<amount>\\d+) (?<type>\\w+) per shot");
+    protected static final Pattern duration_pattern
+            = Pattern.compile("spanning ([0-9]+(?:[.][0-9]+)?) s(?:econds?)?");
+    protected static final Pattern intervals_pattern
+            = Pattern.compile("(\\d+(?:\\.\\d+)?) ?s(?:\\w+)?(?: long)? intervals?");
+    protected static final Pattern max_rotation_pattern
+            = Pattern.compile("max (\\d+(?:\\.\\d+)?)(?:°| degrees?)(?: of)? ?rotation");
+    protected static final Pattern speed_pattern
+            = Pattern.compile("(\\d+(?:\\.\\d+)?)(?: ?m| meters?|) speed");
+    protected static final Pattern repeats_pattern
+            = Pattern.compile("(\\d+(?:\\.\\d+)?) repeats?");
+    protected static final Pattern item_amount_pattern
+            = Pattern.compile("(?<itemAmount>\\d+) (?<itemName>\\w+)");
     protected final ActionArgsParser parser = new ActionArgsParser();
     public String type;
     public List<String> arguments;
@@ -120,5 +138,71 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
 
     protected void setFinished() {
         this.finished = true;
+    }
+
+    protected void addDurationArg(ActionArgsParserFloatSetter callback, boolean optional) {
+        parser.floatArgs.add(new ActionFloatArg(
+                "Duration",
+                null,
+                "spanning 9.8 seconds",
+                duration_pattern,
+                callback,
+                optional
+        ));
+    }
+
+    protected void addIntervalArg(ActionArgsParserFloatSetter callback, boolean optional) {
+        parser.floatArgs.add(new ActionFloatArg(
+                "Interval duration",
+                null,
+                "2 seconds intervals",
+                intervals_pattern,
+                callback,
+                optional
+        ));
+    }
+
+    protected void addMaxRotationArg(ActionArgsParserFloatSetter callback, boolean optional) {
+        parser.floatArgs.add(new ActionFloatArg(
+                "Max rotation",
+                null,
+                "max 34 degrees of rotation",
+                max_rotation_pattern,
+                callback,
+                optional
+        ));
+    }
+
+    protected void addSpeedArg(ActionArgsParserFloatSetter callback, boolean optional) {
+        parser.floatArgs.add(new ActionFloatArg(
+                "Speed",
+                null,
+                "4 speed",
+                speed_pattern,
+                callback,
+                optional
+        ));
+    }
+
+    protected void addRepeatsArg(ActionArgsParserFloatSetter callback, boolean optional) {
+        parser.floatArgs.add(new ActionFloatArg(
+                "Repeats",
+                "How many times the actions is repeated during its duration",
+                "3 repeats",
+                repeats_pattern,
+                callback,
+                optional
+        ));
+    }
+
+    protected void addBulletsPerShotArg(ActionArgsParserMatcherSetter callback, boolean optional) {
+        parser.matcherArgs.add(new ActionMatcherArg(
+                "Bullet type and amount",
+                "What bullets to use and how many of them in a single shot",
+                "12 hologramBullet per shot",
+                bullets_per_shot_pattern,
+                callback,
+                optional
+        ));
     }
 }

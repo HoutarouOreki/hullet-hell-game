@@ -10,10 +10,6 @@ import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionVector2Ar
 import java.util.regex.Pattern;
 
 public class MoveToAction extends ScriptedAction {
-	private static final Pattern target_position_pattern
-			= Pattern.compile("\\((\\d+(?:\\.\\d+)?, \\d+(?:\\.\\d+)?)\\)");
-	private static final Pattern duration_pattern
-			= Pattern.compile("over ([0-9]+(?:[.][0-9]+)?) s(?:econds?)?");
 	private Vector2 startingPosition;
 	private Vector2 targetPosition;
 	private float duration;
@@ -50,7 +46,7 @@ public class MoveToAction extends ScriptedAction {
 				"Target position",
 				null,
 				"(0.3, 0.9)",
-				target_position_pattern,
+				vector2_pattern,
 				this::setTargetPosition,
 				false
 		));

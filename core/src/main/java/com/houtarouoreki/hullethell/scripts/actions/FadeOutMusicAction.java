@@ -7,12 +7,6 @@ public class FadeOutMusicAction extends ScriptedAction {
     private double duration;
 
     @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        duration = Double.parseDouble(arguments.get(0));
-    }
-
-    @Override
     protected void performAction() {
         HulletHellGame.getMusicManager().fadeOut((float) duration);
         setFinished();
@@ -21,5 +15,14 @@ public class FadeOutMusicAction extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    @Override
+    protected void addArgumentsInfo() {
+        addDurationArg(this::setDuration, true);
+    }
+
+    private void setDuration(double duration) {
+        this.duration = duration;
     }
 }

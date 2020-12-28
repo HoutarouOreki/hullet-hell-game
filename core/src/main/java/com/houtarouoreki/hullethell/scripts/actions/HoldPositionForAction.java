@@ -17,13 +17,16 @@ public class HoldPositionForAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        duration = Float.parseFloat(arguments.get(0));
+    public int bodiesAmount() {
+        return 0;
     }
 
     @Override
-    public int bodiesAmount() {
-        return 0;
+    protected void addArgumentsInfo() {
+        addDurationArg(this::setDuration, false);
+    }
+
+    private void setDuration(Float duration) {
+        this.duration = duration;
     }
 }

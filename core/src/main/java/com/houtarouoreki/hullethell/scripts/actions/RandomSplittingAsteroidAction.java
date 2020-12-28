@@ -4,28 +4,21 @@ import com.houtarouoreki.hullethell.entities.Item;
 import com.houtarouoreki.hullethell.entities.RandomAsteroid;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionMatcherArg;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
 
 public class RandomSplittingAsteroidAction extends ScriptedAction {
     private final List<RandomAsteroid> asteroids = new ArrayList<>();
     private final List<RandomAsteroid> toAdd = new ArrayList<>();
     private final List<RandomAsteroid> toRemove = new ArrayList<>();
     private final float itemDropMaxRadius = 0.5f;
-    private Random random;
-    private String[] itemStrings;
-
-    @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        if (arguments.isEmpty())
-            return;
-
-        random = new Random();
-        itemStrings = arguments.get(0).split(" / ");
-    }
+    private final Random random = new Random();
+    private final List<String> itemStrings = new LinkedList<>();
 
     private void addAsteroid(RandomAsteroid asteroid) {
         toAdd.add(asteroid);
@@ -48,8 +41,8 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     }
 
     private Item getNewRandomItem() {
-        int randomNumber = random.nextInt(itemStrings.length);
-        String itemName = itemStrings[randomNumber];
+        int randomNumber = random.nextInt(itemStrings.size());
+        String itemName = itemStrings.get(randomNumber);
         if (itemName.equals("null"))
             return null;
         return new Item(itemName);
@@ -104,5 +97,28 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    @Override
+    protected void addArgumentsInfo() {
+        parser.matcherArgs.add(new ActionMatcherArg(
+                "Items",
+                "What items the asteroid may drop." +
+                        " One item will be chosen out of all at random." +
+                        " Use \"null\" for no item. The example has " +
+                " 3/8 chance for copperOre, 2/8 chance for ironOre, " +
+                " and 3/8 chance for no item drop.",
+                "3 copperOre, 2 ironOre, 3 null",
+                item_amount_pattern,
+                this::addItemDrop,
+                true
+        ));
+    }
+
+    private void addItemDrop(Matcher matcher) {
+        int amount = Integer.parseInt(matcher.group("itemAmount"));
+        String itemName = matcher.group("itemName");
+        for (int i = 0; i < amount; i++)
+            itemStrings.add(itemName);
     }
 }
