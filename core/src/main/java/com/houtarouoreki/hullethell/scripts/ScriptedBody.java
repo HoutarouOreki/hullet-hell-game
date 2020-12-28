@@ -5,6 +5,8 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.*;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedBodyUpdateException;
 
 import java.util.*;
 
@@ -69,14 +71,18 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
         this.section = section;
     }
 
-    public void update() {
+    public void update() throws ScriptedBodyUpdateException {
         if (controlledBody == null)
             return;
 
         while (!waitingActions.isEmpty() && waitingActions.peek().getScriptedTime() <= section.getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(world, section, controlledBody);
+            try {
+                action.initialise(world, section, controlledBody);
+            } catch (ScriptedActionInitializationException e) {
+                throw new ScriptedBodyUpdateException(this, e);
+            }
         }
 
         Iterator<ScriptedAction> i = currentActions.iterator();

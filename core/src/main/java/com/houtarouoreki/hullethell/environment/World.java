@@ -12,6 +12,7 @@ import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
 import com.houtarouoreki.hullethell.scripts.quests.Quest;
 import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
 import com.houtarouoreki.hullethell.scripts.quests.Statistics;
@@ -115,7 +116,7 @@ public class World {
         g.fillRect(0, 700, scriptedStageManager.getProgression() * 1280, 20);
     }
 
-    public void update(float delta) {
+    public void update(float delta) throws ScriptedStageUpdateException {
         if (Gdx.input.isKeyPressed(Input.Keys.FORWARD_DEL))
             return;
         bufferedTime += delta;

@@ -32,6 +32,7 @@ public class LoadingScreen extends HulletHellScreen {
 
         if (HulletHellGame.getAssetManager().update() && loadingDuration > minimum_loading_time) {
             HulletHellGame.getScreensManager().addGameScreen(new MainMenuScreen());
+            HulletHellGame.getScreensManager().addGameScreen(new ScriptErrorScreen());
             HulletHellGame.getScreensManager().addGameScreen(new GarageScreen());
             PlayScreen ps = new PlayScreen();
             ps.setStage(HulletHellGame.getAssetManager().get("stages/Stage 1.hhc"));

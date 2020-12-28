@@ -6,6 +6,9 @@ import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedBodyUpdateException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +60,7 @@ public class ScriptedSection {
             || scriptedBody.waitingActions.peek().scriptedTime <= getTimePassed();
     }
 
-    public void update(double delta) {
+    public void update(double delta) throws ScriptedSectionUpdateException {
         timePassed += delta;
 
         while (!waitingBodies.isEmpty() && isWaitingBodyReady(waitingBodies.peek())) {
@@ -68,7 +71,11 @@ public class ScriptedSection {
         Iterator<ScriptedBody> i = activeBodies.iterator();
         while (i.hasNext()) {
             ScriptedBody body = i.next();
-            body.update();
+            try {
+                body.update();
+            } catch (ScriptedBodyUpdateException e) {
+                throw new ScriptedSectionUpdateException(this, e);
+            }
             if (body.isFinished()) {
                 i.remove();
                 physicalBodies.remove(body.controlledBody);
@@ -81,7 +88,11 @@ public class ScriptedSection {
                 && waitingActions.peek().getScriptedTime() <= getTimePassed()) {
             ScriptedAction action = waitingActions.remove();
             currentActions.add(action);
-            action.initialise(world, this, null);
+            try {
+                action.initialise(world, this, null);
+            } catch (ScriptedActionInitializationException e) {
+                throw new ScriptedSectionUpdateException(this, e);
+            }
         }
 
         Iterator<ScriptedAction> j = currentActions.iterator();

@@ -11,6 +11,7 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.Vector2;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -79,7 +80,12 @@ public class PlayScreen extends HulletHellScreen {
         updateSteering();
 
         updateBackground(delta);
-        world.update(delta);
+        try {
+            world.update(delta);
+        } catch (ScriptedStageUpdateException e) {
+            screenManager.enterGameScreen(SCRIPT_ERROR_SCREEN, new FadeOutTransition(), new FadeInTransition());
+            ((ScriptErrorScreen) screenManager.getGameScreen(SCRIPT_ERROR_SCREEN)).setException(e);
+        }
         if (world.isFinished()) {
             screenManager.enterGameScreen(3, new FadeOutTransition(), new FadeInTransition());
         }

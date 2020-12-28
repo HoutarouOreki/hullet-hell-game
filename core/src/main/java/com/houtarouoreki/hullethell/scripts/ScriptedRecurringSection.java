@@ -5,6 +5,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,7 +48,7 @@ public class ScriptedRecurringSection extends ScriptedSection{
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double delta) throws ScriptedSectionUpdateException {
         Iterator<ScriptedSection> i = sections.listIterator();
         while (i.hasNext()) {
             ScriptedSection section = i.next();

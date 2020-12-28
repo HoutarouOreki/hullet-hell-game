@@ -6,6 +6,9 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
 import com.houtarouoreki.hullethell.scripts.actions.interpreters.*;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.exceptions.RequiredArgumentNotFoundException;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.exceptions.UninterpretedArgumentStringException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -38,6 +41,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     protected ScriptedSection section;
     private int ticks;
     private boolean finished;
+    private boolean initialised;
+    public int scriptFileLineNumber;
 
     public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf,
                                                       ScriptedBody body,
@@ -46,6 +51,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         a.scriptedTime = conf.scriptedTime;
         a.arguments = conf.arguments;
         a.scriptedBody = body;
+        a.type = conf.type;
+        a.scriptFileLineNumber = conf.scriptFileLineNumber;
         return a;
     }
 
@@ -105,6 +112,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     }
 
     public void update() {
+        if (!initialised)
+            throw new RuntimeException("Scripted action not initialised.");
         performAction();
         ticks++;
     }
@@ -129,11 +138,16 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
 
     protected abstract void addArgumentsInfo();
 
-    protected void initialise(World world, ScriptedSection section, Body body) {
+    protected void initialise(World world, ScriptedSection section, Body body) throws ScriptedActionInitializationException {
         this.world = world;
         this.section = section;
         this.body = body;
-        parser.run(arguments);
+        try {
+            parser.run(arguments);
+        } catch (RequiredArgumentNotFoundException | UninterpretedArgumentStringException e) {
+            throw new ScriptedActionInitializationException(this, e);
+        }
+        initialised = true;
     }
 
     protected void setFinished() {

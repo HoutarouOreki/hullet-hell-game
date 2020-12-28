@@ -4,11 +4,16 @@ import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class ScriptedStageManager {
+    public final String name;
     private final HashMap<String, Integer> flags = new HashMap<>();
     private final LinkedList<ScriptedSection> waitingSections = new LinkedList<>();
     private final LinkedList<ScriptedSection> activeSections = new LinkedList<>();
@@ -16,6 +21,7 @@ public class ScriptedStageManager {
     private int bodiesRemovedPrevSections;
 
     public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) {
+        name = script.name;
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
             ScriptedSection section;
             section = createScriptedSection(world, dialogueBox, sectionConfiguration);
@@ -28,8 +34,6 @@ public class ScriptedStageManager {
         switch (sectionConfiguration.type) {
             case "dialogue":
                 return new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);
-            case "while":
-                return new ScriptedWhileSection(world, sectionConfiguration, dialogueBox);
             case "recurring":
                 return new ScriptedRecurringSection(world, sectionConfiguration, dialogueBox);
             default:
@@ -37,17 +41,17 @@ public class ScriptedStageManager {
         }
     }
 
-    public void update(double delta) {
-        startSections();
-        updateSections(delta);
+    @Override
+    public String toString() {
+        return "ScriptedStageManager:\n" +
+                " waiting sections (" + waitingSections.size() + "): " +
+                waitingSections.stream().map(scriptedSection -> scriptedSection.name).collect(Collectors.joining(", ")) + '\n' +
+                " active sections: (" + activeSections.size() + "):\n" + activeSections.stream().map(Object::toString).collect(Collectors.joining("\n"));
     }
 
-    private boolean canStartSection(ScriptedSection section) {
-        for (String flag : section.flagsRequiredToStart.keySet()) {
-            if (getFlagValue(flag) < section.flagsRequiredToStart.get(flag))
-                return false;
-        }
-        return true;
+    public void update(double delta) throws ScriptedStageUpdateException {
+        startSections();
+        updateSections(delta);
     }
 
     private void startSections() {
@@ -61,11 +65,15 @@ public class ScriptedStageManager {
         }
     }
 
-    private void updateSections(double delta) {
+    private void updateSections(double delta) throws ScriptedStageUpdateException {
         Iterator<ScriptedSection> i = activeSections.iterator();
         while (i.hasNext()) {
             ScriptedSection activeSection = i.next();
-            activeSection.update(delta);
+            try {
+                activeSection.update(delta);
+            } catch (ScriptedSectionUpdateException e) {
+                throw new ScriptedStageUpdateException(this, e);
+            }
             if (activeSection.isFinished()) {
                 i.remove();
                 incrementFlag("sectionDone:" + activeSection.name);
@@ -73,15 +81,23 @@ public class ScriptedStageManager {
         }
     }
 
-    public int getFlagValue(String flag) {
-        if (!flags.containsKey(flag))
-            return 0;
-        return flags.get(flag);
+    private boolean canStartSection(ScriptedSection section) {
+        for (String flag : section.flagsRequiredToStart.keySet()) {
+            if (getFlagValue(flag) < section.flagsRequiredToStart.get(flag))
+                return false;
+        }
+        return true;
     }
 
     public void incrementFlag(String flag) {
         int oldValue = getFlagValue(flag);
         flags.put(flag, oldValue + 1);
+    }
+
+    public int getFlagValue(String flag) {
+        if (!flags.containsKey(flag))
+            return 0;
+        return flags.get(flag);
     }
 
     public String getCurrentStageName() {
@@ -118,13 +134,5 @@ public class ScriptedStageManager {
 
     public boolean isFinished() {
         return waitingSections.isEmpty() && activeSections.isEmpty();
-    }
-
-    @Override
-    public String toString() {
-        return "ScriptedStageManager:\n" +
-                " waiting sections (" + waitingSections.size() + "): " +
-                waitingSections.stream().map(scriptedSection -> scriptedSection.name).collect(Collectors.joining(", ")) + '\n' +
-                " active sections: (" + activeSections.size() + "):\n" + activeSections.stream().map(Object::toString).collect(Collectors.joining("\n"));
     }
 }

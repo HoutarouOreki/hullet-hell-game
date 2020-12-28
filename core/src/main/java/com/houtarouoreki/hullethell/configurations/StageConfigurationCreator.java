@@ -16,7 +16,6 @@ public class StageConfigurationCreator {
     private final Pattern actionPattern = Pattern.compile("^[ \\t]*(?<time>\\d\\.?\\d*)\\s+(?<name>\\w+):?(?:[ \\t]+(?<arguments>.*))?$");
     private final Bindable<ScriptedSectionConfiguration> currentSection = new Bindable<>(null);
     private final Bindable<ScriptedBodyConfiguration> currentBody = new Bindable<>(null);
-    private final NextId id = new NextId();
 
     public StageConfigurationCreator(List<String> lines) {
         currentBody.addListener(this::sortPreviousBody);
@@ -26,7 +25,9 @@ public class StageConfigurationCreator {
 
     private void generate(List<String> lines) {
         Matcher matcher;
+        int lineNumber = 0;
         for (String line : lines) {
+            lineNumber++;
             if (line.startsWith("#"))
                 continue;
             if ((matcher = sectionPattern.matcher(line)).matches()) {
@@ -41,9 +42,9 @@ public class StageConfigurationCreator {
                 continue;
 
             if (currentSection.getValue().type.equals("dialogue"))
-                handleDialogueSection(line);
+                handleDialogueSection(line, lineNumber);
             else {
-                handleNormalOrWhileSection(line);
+                handleNormalOrWhileSection(line, lineNumber);
             }
         }
         currentBody.setValue(null);
@@ -63,16 +64,16 @@ public class StageConfigurationCreator {
         prev.actions.sort(null);
     }
 
-    private void handleNormalOrWhileSection(String line) {
-        handleBodyLine(line);
-        handleActionLine(line);
+    private void handleNormalOrWhileSection(String line, int lineNumber) {
+        handleBodyLine(line, lineNumber);
+        handleActionLine(line, lineNumber);
     }
 
-    private void handleActionLine(String line) {
+    private void handleActionLine(String line, int lineNumber) {
         Matcher matcher = actionPattern.matcher(line);
         if (!matcher.matches())
             return;
-        ScriptedActionConfiguration action = new ScriptedActionConfiguration(id.getNext(),
+        ScriptedActionConfiguration action = new ScriptedActionConfiguration(lineNumber,
                 matcher.group("name"),
                 getArgumentsList(matcher.group("arguments")),
                 Double.parseDouble(matcher.group("time")),
@@ -94,7 +95,7 @@ public class StageConfigurationCreator {
         return new ArrayList<>();
     }
 
-    private void handleBodyLine(String line) {
+    private void handleBodyLine(String line, int lineNumber) {
         Matcher matcher = bodyPattern.matcher(line);
         if (!matcher.matches())
             return;
@@ -107,7 +108,7 @@ public class StageConfigurationCreator {
         if (hasBodyName && allBodies.containsKey(bodyName))
             allBodies.get(bodyName).hasNextSection = true;
 
-        currentBody.setValue(new ScriptedBodyConfiguration(id.getNext(), line, bodyName, path));
+        currentBody.setValue(new ScriptedBodyConfiguration(lineNumber, line, bodyName, path));
 
         if (hasBodyName && allBodies.containsKey(bodyName))
             currentBody.getValue().hasPreviousSection = true;
@@ -121,27 +122,27 @@ public class StageConfigurationCreator {
         currentSection.getValue().bodies.add(currentBody.getValue());
     }
 
-    private void handleDialogueSection(String line) {
-        if (!handleDialogueCharacterLine(line))
-            handleDialogueTextLine(line);
+    private void handleDialogueSection(String line, int lineNumber) {
+        if (!handleDialogueCharacterLine(line, lineNumber))
+            handleDialogueTextLine(line, lineNumber);
     }
 
-    private void handleDialogueTextLine(String line) {
+    private void handleDialogueTextLine(String line, int lineNumber) {
         Matcher matcher = dialogueSectionTextPattern.matcher(line);
         if (!matcher.matches())
             return;
-        ScriptedActionConfiguration dialogueTextAction = new ScriptedActionConfiguration(id.getNext(),
+        ScriptedActionConfiguration dialogueTextAction = new ScriptedActionConfiguration(lineNumber,
                 "dialogueText",
                 Collections.singletonList(matcher.group("text")),
                 0, line);
         currentSection.getValue().actions.add(dialogueTextAction);
     }
 
-    private boolean handleDialogueCharacterLine(String line) {
+    private boolean handleDialogueCharacterLine(String line, int lineNumber) {
         Matcher matcher = dialogueSectionCharacterPattern.matcher(line);
         if (!matcher.matches())
             return false;
-        ScriptedActionConfiguration dialogueCharacterAction = new ScriptedActionConfiguration(id.getNext(),
+        ScriptedActionConfiguration dialogueCharacterAction = new ScriptedActionConfiguration(lineNumber,
                 "dialogueCharacter",
                 Collections.singletonList(matcher.group("characterName")),
                 0, line);
@@ -160,12 +161,5 @@ public class StageConfigurationCreator {
             else
                 section.flagsRequiredToStart.put(info[1], Integer.parseInt(info[0]));
         }
-    }
-}
-
-class NextId {
-    private int id = 0;
-    public int getNext() {
-        return id++;
     }
 }

@@ -24,6 +24,7 @@ public abstract class HulletHellScreen extends BasicGameScreen implements Contro
     public static final int SETTINGS_SCREEN = 4;
     public static final int LEVEL_SELECT_SCREEN = 5;
     public static final int GARAGE_SCREEN = 6;
+    public static final int SCRIPT_ERROR_SCREEN = 7;
     public final WindowSizeContainer container = new WindowSizeContainer();
 
     @Override
