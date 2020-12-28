@@ -11,8 +11,8 @@ Mechanic:
 0	newItemQuest:	1, 4 hologramCoin
 
 laserWall: "lasers/laser"
-	0 moveTo: 1.2, 0.375
-	0 moveTo: 0.2, 0.375, 4, sineOut
+	0 moveTo: (1.2, 0.375)
+	0 moveTo: (0.2, 0.375), over 4 seconds, sineOut interpolation
 	0 setLaserProperties: 0.5, 5, 0, 0
 
 bulletSpawner: "ships/Copper eye"
@@ -78,4 +78,5 @@ laserWall:
 bulletSpawner:
 	0	moveTo: 1.2, 0.5, 4, sineIn
 
-! secondIn
+! secondIn @sectionDone:firstOut
+	0	moveTo:

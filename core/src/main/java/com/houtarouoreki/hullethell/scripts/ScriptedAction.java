@@ -5,11 +5,12 @@ import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.scripts.actions.*;
+import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionArgsParser;
 
 import java.util.List;
-import java.util.regex.Matcher;
 
 public abstract class ScriptedAction implements Comparable<ScriptedAction> {
+    protected final ActionArgsParser parser = new ActionArgsParser();
     public String type;
     public List<String> arguments;
     public ScriptedBody scriptedBody;
@@ -76,6 +77,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         }
     }
 
+    protected abstract void createArgumentCallbacks();
+
     public double getScriptedTime() {
         return scriptedTime;
     }
@@ -86,10 +89,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         this.world = world;
         this.section = section;
         this.body = body;
-        initialiseArguments();
-    }
-
-    protected void initialiseArguments() {
+        parser.run(arguments);
     }
 
     public void update() {
@@ -109,7 +109,9 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         return finished;
     }
 
-    public abstract int bodiesAmount();
+    public int bodiesAmount() {
+        return 0;
+    }
 
     protected void setFinished() {
         this.finished = true;
@@ -118,13 +120,5 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     @Override
     public int compareTo(ScriptedAction o) {
         return (int) Math.signum(getScriptedTime() - o.getScriptedTime());
-    }
-
-    protected float parseFloatFirstGroup(Matcher matcher) {
-        return Float.parseFloat(matcher.group(1));
-    }
-
-    protected int parseIntFirstGroup(Matcher matcher) {
-        return Integer.parseInt(matcher.group(1));
     }
 }

@@ -1,10 +1,10 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.houtarouoreki.hullethell.environment.World;
-import com.houtarouoreki.hullethell.helpers.ParsingHelpers;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
+
+import java.util.regex.Pattern;
 
 public class MoveToAction extends ScriptedAction {
     private Vector2 startingPosition;
@@ -13,19 +13,19 @@ public class MoveToAction extends ScriptedAction {
     private Interpolation interpolation;
 
     @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        targetPosition = ParsingHelpers.vector2fromStrings(arguments.get(0), arguments.get(1)).scl(World.viewArea);
-        if (arguments.size() < 3) {
-            duration = 0;
-        } else {
-            duration = Double.parseDouble(arguments.get(2));
-        }
-        if (arguments.size() < 4) {
-            interpolation = Interpolation.linear;
-        } else {
-            interpolation = ParsingHelpers.getInterpolationFromString(arguments.get((3)));
-        }
+    protected void createArgumentCallbacks() {
+        parser.vector2Callbacks.put(
+                Pattern.compile("\\((\\d+(?:\\.\\d+)?, \\d+(?:\\.\\d+)?)\\)"),
+                this::setTargetPosition
+        );
+        parser.floatCallbacks.put(
+                Pattern.compile("over ([0-9]+(?:[.][0-9]+)?) s(?:econds?)?"),
+                this::setDuration
+        );
+        parser.interpolationCallbacks.put(
+                Pattern.compile("(\\w+) interpolation"),
+                this::setInterpolation
+        );
     }
 
     @Override
@@ -51,5 +51,17 @@ public class MoveToAction extends ScriptedAction {
         float x = interpolation.apply(startingPosition.x, targetPosition.x, progress);
         float y = interpolation.apply(startingPosition.y, targetPosition.y, progress);
         body.setPosition(new Vector2(x, y));
+    }
+
+    private void setTargetPosition(Vector2 targetPosition) {
+        this.targetPosition = targetPosition;
+    }
+
+    private void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    private void setInterpolation(Interpolation interpolation) {
+        this.interpolation = interpolation;
     }
 }

@@ -24,28 +24,18 @@ public class ShootSineCircleSeries extends ScriptedAction {
     private float repeats;
 
     @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        for (String s : arguments)
-            initialiseArgument(s);
+    protected void createArgumentCallbacks() {
+        parser.matcherCallbacks.put(bulletsPerShotPattern, this::setBulletTypeAndAmount);
+        parser.floatCallbacks.put(durationPattern, this::setDuration);
+        parser.floatCallbacks.put(intervalsPattern, this::setIntervalDuration);
+        parser.floatCallbacks.put(maxRotationPattern, this::setMaxRotation);
+        parser.floatCallbacks.put(speedPattern, this::setSpeed);
+        parser.floatCallbacks.put(repeatsPattern, this::setRepeats);
     }
 
-    private void initialiseArgument(String s) {
-        Matcher matcher = bulletsPerShotPattern.matcher(s);
-        if (matcher.matches()) {
-            bulletsPerShot = Integer.parseInt(matcher.group("amount"));
-            bulletType = matcher.group("type");
-        }
-        if ((matcher = durationPattern.matcher(s)).matches())
-            duration = parseFloatFirstGroup(matcher);
-        if ((matcher = intervalsPattern.matcher(s)).matches())
-            intervalDuration = parseFloatFirstGroup(matcher);
-        if ((matcher = maxRotationPattern.matcher(s)).matches())
-            maxRotation = parseFloatFirstGroup(matcher);
-        if ((matcher = speedPattern.matcher(s)).matches())
-            speed = parseFloatFirstGroup(matcher);
-        if ((matcher = repeatsPattern.matcher(s)).matches())
-            repeats = parseFloatFirstGroup(matcher);
+    private void setBulletTypeAndAmount(Matcher matcher) {
+        bulletsPerShot = Integer.parseInt(matcher.group("amount"));
+        bulletType = matcher.group("type");
     }
 
     @Override
@@ -73,5 +63,25 @@ public class ShootSineCircleSeries extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    private void setDuration(float duration) {
+        this.duration = duration;
+    }
+
+    private void setIntervalDuration(float intervalDuration) {
+        this.intervalDuration = intervalDuration;
+    }
+
+    private void setMaxRotation(float maxRotation) {
+        this.maxRotation = maxRotation;
+    }
+
+    private void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    private void setRepeats(float repeats) {
+        this.repeats = repeats;
     }
 }
