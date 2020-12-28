@@ -77,25 +77,21 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         }
     }
 
-    protected abstract void createArgumentCallbacks();
+    @Override
+    public int compareTo(ScriptedAction o) {
+        return (int) Math.signum(getScriptedTime() - o.getScriptedTime());
+    }
 
     public double getScriptedTime() {
         return scriptedTime;
-    }
-
-    protected abstract void performAction();
-
-    protected void initialise(World world, ScriptedSection section, Body body) {
-        this.world = world;
-        this.section = section;
-        this.body = body;
-        parser.run(arguments);
     }
 
     public void update() {
         performAction();
         ticks++;
     }
+
+    protected abstract void performAction();
 
     public double getTimeSinceStarted() {
         return section.getTimePassed() - getScriptedTime();
@@ -113,12 +109,16 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         return 0;
     }
 
-    protected void setFinished() {
-        this.finished = true;
+    protected abstract void createArgumentCallbacks();
+
+    protected void initialise(World world, ScriptedSection section, Body body) {
+        this.world = world;
+        this.section = section;
+        this.body = body;
+        parser.run(arguments);
     }
 
-    @Override
-    public int compareTo(ScriptedAction o) {
-        return (int) Math.signum(getScriptedTime() - o.getScriptedTime());
+    protected void setFinished() {
+        this.finished = true;
     }
 }
