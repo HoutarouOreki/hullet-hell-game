@@ -109,7 +109,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         return 0;
     }
 
-    protected abstract void createArgumentCallbacks();
+    protected abstract void addArgumentsInfo();
 
     protected void initialise(World world, ScriptedSection section, Body body) {
         this.world = world;

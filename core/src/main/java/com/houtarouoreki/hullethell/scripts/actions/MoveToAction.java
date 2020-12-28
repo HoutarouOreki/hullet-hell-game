@@ -45,7 +45,7 @@ public class MoveToAction extends ScriptedAction {
 	}
 
 	@Override
-	protected void createArgumentCallbacks() {
+	protected void addArgumentsInfo() {
 		parser.vector2Args.add(new ActionVector2Arg(
 				"Target position",
 				null,

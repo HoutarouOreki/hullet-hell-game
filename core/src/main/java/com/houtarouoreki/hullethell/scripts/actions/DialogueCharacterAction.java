@@ -12,12 +12,6 @@ public class DialogueCharacterAction extends ScriptedAction {
     }
 
     @Override
-    protected void initialiseArguments() {
-        super.initialiseArguments();
-        characterName = arguments.get(0);
-    }
-
-    @Override
     protected void performAction() {
         dialogueBox.setCharacter(characterName);
         setFinished();
@@ -26,5 +20,10 @@ public class DialogueCharacterAction extends ScriptedAction {
     @Override
     public int bodiesAmount() {
         return 0;
+    }
+
+    @Override
+    protected void addArgumentsInfo() {
+
     }
 }

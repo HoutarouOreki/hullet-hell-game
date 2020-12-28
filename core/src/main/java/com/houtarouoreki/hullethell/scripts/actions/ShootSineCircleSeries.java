@@ -24,7 +24,7 @@ public class ShootSineCircleSeries extends ScriptedAction {
     private float repeats;
 
     @Override
-    protected void createArgumentCallbacks() {
+    protected void addArgumentsInfo() {
         parser.matcherCallbacks.put(bulletsPerShotPattern, this::setBulletTypeAndAmount);
         parser.floatCallbacks.put(durationPattern, this::setDuration);
         parser.floatCallbacks.put(intervalsPattern, this::setIntervalDuration);
