@@ -6,9 +6,7 @@ import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.entities.Body;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
-import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
-import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedBodyUpdateException;
-import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
+import com.houtarouoreki.hullethell.scripts.exceptions.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,25 +24,39 @@ public class ScriptedSection {
     protected int allBodiesAmount;
     private int bodiesRemovedAmount;
 
-    public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
+    public ScriptedSection(World world, ScriptedSectionConfiguration conf, DialogueBox dialogueBox) throws ScriptedSectionInitializationException {
         flagsRequiredToStart = new HashMap<>(conf.flagsRequiredToStart);
         this.world = world;
-        generateWaitingBodies(conf, dialogueBox);
         name = conf.name;
-        generateWaitingActions(conf, dialogueBox);
+        try {
+            generateWaitingBodies(conf, dialogueBox);
+            generateWaitingActions(conf, dialogueBox);
+        } catch (ScriptedSectionGenerationException e) {
+            throw new ScriptedSectionInitializationException(conf, e);
+        }
     }
 
-    protected void generateWaitingBodies(ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
+    protected void generateWaitingBodies(ScriptedSectionConfiguration conf, DialogueBox dialogueBox) throws ScriptedSectionGenerationException {
         for (ScriptedBodyConfiguration bodyConf : conf.bodies) {
-            ScriptedBody body = new ScriptedBody(bodyConf, dialogueBox);
+            ScriptedBody body;
+            try {
+                body = new ScriptedBody(bodyConf, dialogueBox);
+            } catch (ScriptedBodyInitializationException e) {
+                throw new ScriptedSectionGenerationException(this, e);
+            }
             waitingBodies.add(body);
             allBodiesAmount += body.getAllSubbodiesAmount();
         }
     }
 
-    protected void generateWaitingActions(ScriptedSectionConfiguration conf, DialogueBox dialogueBox) {
+    protected void generateWaitingActions(ScriptedSectionConfiguration conf, DialogueBox dialogueBox) throws ScriptedSectionGenerationException {
         for (ScriptedActionConfiguration actionConf : conf.actions) {
-            ScriptedAction action = ScriptedAction.createScriptedAction(actionConf, null, dialogueBox);
+            ScriptedAction action;
+            try {
+                action = ScriptedAction.createScriptedAction(actionConf, null, dialogueBox);
+            } catch (ActionTypeNotFoundException e) {
+                throw new ScriptedSectionGenerationException(this, e);
+            }
             waitingActions.add(action);
             allBodiesAmount += action.bodiesAmount();
         }

@@ -5,7 +5,9 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.entities.*;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ActionTypeNotFoundException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedBodyInitializationException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedBodyUpdateException;
 
 import java.util.*;
@@ -23,15 +25,20 @@ public class ScriptedBody implements Comparable<ScriptedBody> {
     private World world;
     private ScriptedSection section;
 
-    public ScriptedBody(ScriptedBodyConfiguration conf, DialogueBox dialogueBox) {
+    public ScriptedBody(ScriptedBodyConfiguration conf, DialogueBox dialogueBox) throws ScriptedBodyInitializationException {
         type = conf.type;
         name = conf.name;
         configName = conf.configName;
         wasInPreviousSections = conf.hasPreviousSection;
         willBeInFutureSections = conf.hasNextSection;
         for (ScriptedActionConfiguration actionConf : conf.actions) {
-            ScriptedAction action = ScriptedAction
-                    .createScriptedAction(actionConf, this, dialogueBox);
+            ScriptedAction action;
+            try {
+                action = ScriptedAction
+                        .createScriptedAction(actionConf, this, dialogueBox);
+            } catch (ActionTypeNotFoundException e) {
+                throw new ScriptedBodyInitializationException(conf, e);
+            }
             waitingActions.add(action);
             allSubbodiesAmount += action.bodiesAmount();
         }

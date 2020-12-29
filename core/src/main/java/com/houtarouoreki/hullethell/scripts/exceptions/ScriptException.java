@@ -22,7 +22,10 @@ public class ScriptException extends Exception {
 
     public String getErrorScreenMessage() {
         String msg = getMessage();
-        if (getCause() instanceof ScriptException)
+        Throwable cause = getCause();
+        if (cause == null)
+            return msg;
+        if (cause instanceof ScriptException)
             msg += "\nCause: " + increasedIndent('\n' + ((ScriptException) getCause()).getErrorScreenMessage());
         else
             msg += "\nCause: " + increasedIndent('\n' + getCause().getMessage());

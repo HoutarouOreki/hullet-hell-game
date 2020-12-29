@@ -5,6 +5,8 @@ import com.houtarouoreki.hullethell.configurations.ScriptedBodyConfiguration;
 import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedRecurringSectionRepeatException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionInitializationException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
 
 import java.util.Iterator;
@@ -14,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class ScriptedRecurringSection extends ScriptedSection{
+public class ScriptedRecurringSection extends ScriptedSection {
     private final String flagToRestart;
     private final LinkedList<ScriptedSection> sections = new LinkedList<>();
     private final BindableNumber<Float> iterationTime;
@@ -23,7 +25,7 @@ public class ScriptedRecurringSection extends ScriptedSection{
 
     public ScriptedRecurringSection(World world,
                                     ScriptedSectionConfiguration conf,
-                                    DialogueBox dialogueBox) {
+                                    DialogueBox dialogueBox) throws ScriptedSectionInitializationException {
         super(world, conf, dialogueBox);
         this.dialogueBox = dialogueBox;
         Pattern parametersPattern = Pattern
@@ -47,6 +49,23 @@ public class ScriptedRecurringSection extends ScriptedSection{
         return repeatedConf;
     }
 
+    private List<ScriptedBodyConfiguration> getRepeatedBodyConfigurations(List<ScriptedBodyConfiguration> configurations) {
+        List<ScriptedBodyConfiguration> repeatedList = new LinkedList<>();
+        for (ScriptedBodyConfiguration normalConfig : configurations) {
+            ScriptedBodyConfiguration repeatedConfig = new ScriptedBodyConfiguration(0, normalConfig.line, normalConfig.name, normalConfig.path);
+            repeatedConfig.hasPreviousSection = true;
+            repeatedConfig.hasNextSection = true;
+            repeatedList.add(repeatedConfig);
+            repeatedConfig.actions.addAll(normalConfig.actions);
+        }
+        return repeatedList;
+    }
+
+    @Override
+    public boolean isFinished() {
+        return sections.isEmpty();
+    }
+
     @Override
     public void update(double delta) throws ScriptedSectionUpdateException {
         Iterator<ScriptedSection> i = sections.listIterator();
@@ -61,30 +80,22 @@ public class ScriptedRecurringSection extends ScriptedSection{
 
         if (iterationTime.isMax() && world.scriptedStageManager.getFlagValue(flagToRestart) == 0) {
             iterationTime.setMinValue();
-            addRepeatedSubsection();
+            try {
+                addRepeatedSubsection();
+            } catch (ScriptedRecurringSectionRepeatException e) {
+                throw new ScriptedSectionUpdateException(this, e);
+            }
         }
     }
 
-    private void addRepeatedSubsection() {
-        ScriptedSection section = new ScriptedSection(world, repeatedConf, dialogueBox);
+    private void addRepeatedSubsection() throws ScriptedRecurringSectionRepeatException {
+        ScriptedSection section;
+        try {
+            section = new ScriptedSection(world, repeatedConf, dialogueBox);
+        } catch (ScriptedSectionInitializationException e) {
+            throw new ScriptedRecurringSectionRepeatException(this, e);
+        }
         sections.add(section);
-    }
-
-    private List<ScriptedBodyConfiguration> getRepeatedBodyConfigurations(List<ScriptedBodyConfiguration> configurations) {
-        List<ScriptedBodyConfiguration> repeatedList = new LinkedList<>();
-        for (ScriptedBodyConfiguration normalConfig : configurations) {
-            ScriptedBodyConfiguration repeatedConfig = new ScriptedBodyConfiguration(0,normalConfig.line, normalConfig.name, normalConfig.path);
-            repeatedConfig.hasPreviousSection = true;
-            repeatedConfig.hasNextSection = true;
-            repeatedList.add(repeatedConfig);
-            repeatedConfig.actions.addAll(normalConfig.actions);
-        }
-        return repeatedList;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return sections.isEmpty();
     }
 
     @Override

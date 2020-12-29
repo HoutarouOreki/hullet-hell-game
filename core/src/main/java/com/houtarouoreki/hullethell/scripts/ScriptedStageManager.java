@@ -4,7 +4,9 @@ import com.houtarouoreki.hullethell.configurations.ScriptedSectionConfiguration;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
 import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionInitializationException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedSectionUpdateException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageInitializationException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
 
 import java.util.HashMap;
@@ -20,17 +22,21 @@ public class ScriptedStageManager {
     private int allBodiesAmount;
     private int bodiesRemovedPrevSections;
 
-    public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) {
+    public ScriptedStageManager(World world, StageConfiguration script, DialogueBox dialogueBox) throws ScriptedStageInitializationException {
         name = script.name;
         for (ScriptedSectionConfiguration sectionConfiguration : script.sections) {
             ScriptedSection section;
-            section = createScriptedSection(world, dialogueBox, sectionConfiguration);
+            try {
+                section = createScriptedSection(world, dialogueBox, sectionConfiguration);
+            } catch (ScriptedSectionInitializationException e) {
+                throw new ScriptedStageInitializationException(script, e);
+            }
             waitingSections.add(section);
             allBodiesAmount += section.getAllBodiesAmount();
         }
     }
 
-    private ScriptedSection createScriptedSection(World world, DialogueBox dialogueBox, ScriptedSectionConfiguration sectionConfiguration) {
+    private ScriptedSection createScriptedSection(World world, DialogueBox dialogueBox, ScriptedSectionConfiguration sectionConfiguration) throws ScriptedSectionInitializationException {
         switch (sectionConfiguration.type) {
             case "dialogue":
                 return new ScriptedDialogueSection(world, sectionConfiguration, dialogueBox);

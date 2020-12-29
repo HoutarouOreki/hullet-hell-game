@@ -12,6 +12,7 @@ import com.houtarouoreki.hullethell.graphics.WorldRenderingManager;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedStageManager;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageInitializationException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
 import com.houtarouoreki.hullethell.scripts.quests.Quest;
 import com.houtarouoreki.hullethell.scripts.quests.QuestManager;
@@ -38,7 +39,7 @@ public class World {
     private int ticksPassed;
     private float bufferedTime;
 
-    public World(StageConfiguration script, DialogueBox dialogueBox) {
+    public World(StageConfiguration script, DialogueBox dialogueBox) throws ScriptedStageInitializationException {
         player = new Ship(HulletHellGame.getPlayerState().currentShipFileName.getValue());
         statistics = new Statistics();
         questManager = new QuestManager();

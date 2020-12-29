@@ -8,6 +8,7 @@ import com.houtarouoreki.hullethell.scripts.actions.*;
 import com.houtarouoreki.hullethell.scripts.actions.interpreters.*;
 import com.houtarouoreki.hullethell.scripts.actions.interpreters.exceptions.RequiredArgumentNotFoundException;
 import com.houtarouoreki.hullethell.scripts.actions.interpreters.exceptions.UninterpretedArgumentStringException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ActionTypeNotFoundException;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedActionInitializationException;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
 
     public static ScriptedAction createScriptedAction(ScriptedActionConfiguration conf,
                                                       ScriptedBody body,
-                                                      DialogueBox dialogueBox) {
+                                                      DialogueBox dialogueBox) throws ActionTypeNotFoundException {
         ScriptedAction a = getScriptedAction(conf, dialogueBox);
         a.scriptedTime = conf.scriptedTime;
         a.arguments = conf.arguments;
@@ -57,7 +58,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         return a;
     }
 
-    private static ScriptedAction getScriptedAction(ScriptedActionConfiguration conf, DialogueBox dialogueBox) {
+    private static ScriptedAction getScriptedAction(ScriptedActionConfiguration conf, DialogueBox dialogueBox) throws ActionTypeNotFoundException {
         switch (conf.type) {
             case "moveTo":
                 return new MoveToAction();
@@ -98,8 +99,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
             case "shootSineCircleSeries":
                 return new ShootSineCircleSeries();
             default:
-                throw new Error("Could not find action of type \"" + conf.type + "\""
-                        + "\nSource line: " + conf.line);
+                throw new ActionTypeNotFoundException(conf);
         }
     }
 

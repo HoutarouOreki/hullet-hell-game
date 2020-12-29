@@ -11,7 +11,7 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageUpdateException;
+import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageInitializationException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -39,16 +39,20 @@ public class PlayScreen extends HulletHellScreen {
         container.add(dialogueBox = new DialogueBox());
     }
 
-    public void setStage(StageConfiguration script) {
-        this.script = script;
-    }
-
     @Override
     public void preTransitionIn(Transition transitionIn) {
         super.preTransitionIn(transitionIn);
         if (world != null)
             container.remove(world.questManager);
-        world = new World(script, dialogueBox);
+        try {
+            world = new World(script, dialogueBox);
+        } catch (Exception e) {
+            HulletHellGame.getScreensManager()
+                    .enterGameScreen(SCRIPT_ERROR_SCREEN, new FadeOutTransition(), new FadeInTransition());
+            ((ScriptErrorScreen) HulletHellGame.getScreensManager()
+                    .getGameScreen(SCRIPT_ERROR_SCREEN)).setException(e);
+            return;
+        }
         Ship player = world.player;
         player.setCollisionCooldown(2);
         player.getCollisionBodyManager().setTeam(CollisionTeam.PLAYER_SHIP);
@@ -62,15 +66,39 @@ public class PlayScreen extends HulletHellScreen {
         initialiseBackground();
     }
 
+    private void initialiseBackground() {
+        final float minStarSize = 0.04f;
+        final float maxStarSize = 0.07f;
+        for (int i = 0; i < starsAmount; i++) {
+            float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
+            BackgroundStar star = new BackgroundStar((float) Math.random() * World.viewArea.x,
+                    (float) Math.random() * World.viewArea.y, starSize);
+            star.setVelocity(new Vector2((float) Math.random() * -0.2f - 0.2f, 0));
+            stars.add(star);
+        }
+    }
+
     @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
-        world.stop();
+        if (world != null)
+            world.stop();
         HulletHellGame.getMusicManager().fadeOut(1);
     }
 
     @Override
     public void initialise(GameContainer gc) {
+    }
+
+    @Override
+    public void render(GameContainer gc, Graphics g) {
+        viewport.apply(g);
+        if (HulletHellGame.getSettings().backgrounds.getValue())
+            drawBackground(g);
+        if (world != null)
+            world.render(g);
+        viewport.unapply(g);
+        super.render(gc, g);
     }
 
     @Override
@@ -80,6 +108,8 @@ public class PlayScreen extends HulletHellScreen {
         updateSteering();
 
         updateBackground(delta);
+        if (world == null)
+            return;
         try {
             world.update(delta);
         } catch (Exception e) {
@@ -125,32 +155,10 @@ public class PlayScreen extends HulletHellScreen {
             player.stop();
     }
 
-    private void initialiseBackground() {
-        final float minStarSize = 0.04f;
-        final float maxStarSize = 0.07f;
-        for (int i = 0; i < starsAmount; i++) {
-            float starSize = minStarSize + (float) Math.random() * (maxStarSize - minStarSize);
-            BackgroundStar star = new BackgroundStar((float) Math.random() * World.viewArea.x,
-                    (float) Math.random() * World.viewArea.y, starSize);
-            star.setVelocity(new Vector2((float) Math.random() * -0.2f - 0.2f, 0));
-            stars.add(star);
-        }
-    }
-
     private void updateBackground(float delta) {
         for (BackgroundObject star : stars) {
             star.update(delta);
         }
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) {
-        viewport.apply(g);
-        if (HulletHellGame.getSettings().backgrounds.getValue())
-            drawBackground(g);
-        world.render(g);
-        viewport.unapply(g);
-        super.render(gc, g);
     }
 
     private void drawBackground(Graphics g) {
@@ -162,5 +170,9 @@ public class PlayScreen extends HulletHellScreen {
     @Override
     public int getId() {
         return PLAY_SCREEN;
+    }
+
+    public void setStage(StageConfiguration script) {
+        this.script = script;
     }
 }
