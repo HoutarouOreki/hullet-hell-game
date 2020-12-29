@@ -22,7 +22,7 @@ public class ShootMultipleAction extends ScriptedAction {
     @Override
     protected void performAction() {
         for (int i = 0; i < amount; i++) {
-            float directionDegrees = this.direction + spread * (-(amount - 1) * 0.5f + i);
+            float directionDegrees = getBulletRotation(i);
             Vector2 initialVelocity = new Vector2(0, 1).rotated(directionDegrees, true)
                     .scl(speed);
             Bullet bullet = new Bullet(bulletType);
@@ -37,6 +37,10 @@ public class ShootMultipleAction extends ScriptedAction {
         }
         setFinished();
         HulletHellGame.getSoundManager().playSound("laser2", 0.5f);
+    }
+
+    protected float getBulletRotation(int bulletNumber) {
+        return this.direction - spread * (amount - 1) * 0.5f + spread * bulletNumber;
     }
 
     @Override
@@ -66,7 +70,7 @@ public class ShootMultipleAction extends ScriptedAction {
         addSpeedArg(this::setSpeed, false);
     }
 
-    private void setBulletTypeAndAmount(Matcher matcher) {
+    protected void setBulletTypeAndAmount(Matcher matcher) {
         amount = Integer.parseInt(matcher.group("amount"));
         bulletType = matcher.group("type");
     }

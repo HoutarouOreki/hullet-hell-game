@@ -1,6 +1,7 @@
 package com.houtarouoreki.hullethell.scripts.actions;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.ScriptedAction;
 import com.houtarouoreki.hullethell.scripts.actions.interpreters.ActionInterpolationArg;
@@ -24,14 +25,13 @@ public class MoveToAction extends ScriptedAction {
         if (getTicks() == 0) {
             startingPosition = body.getPosition();
         }
-        float progress = (float) ((section.getTimePassed() - getScriptedTime()) / duration);
+        float progress = (float) (getTimeSinceStarted() / duration);
         if (progress > 1) {
             progress = 1;
             setFinished();
         }
-        float x = interpolation.apply(startingPosition.x, targetPosition.x, progress);
-        float y = interpolation.apply(startingPosition.y, targetPosition.y, progress);
-        body.setPosition(new Vector2(x, y));
+        Vector2 currentPosition = Vector2.interpolate(startingPosition, targetPosition, progress, interpolation);
+        body.setPosition(currentPosition);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MoveToAction extends ScriptedAction {
     }
 
     private void setTargetPosition(Vector2 targetPosition) {
-        this.targetPosition = targetPosition;
+        this.targetPosition = targetPosition.scl(World.viewArea);
     }
 
     private void setDuration(float duration) {

@@ -43,18 +43,8 @@ coin4: "items/hologramCoin"
 !recurring(every 29 seconds until quest:1) firstLoop @sectionDone:firstIn
 
 bulletSpawner:
-	0	shootMultiple: 12 hologramBullet per shot, at 0 degree angle, 30 degree spacing, 3 speed
-	0.1	shootMultiple: hologramBullet, 12, 02, 30, 3.5
-	0.2	shootMultiple: hologramBullet, 12, 04, 30, 4
-	0.3	shootMultiple: hologramBullet, 12, 06, 30, 4.5
-	0.4	shootMultiple: hologramBullet, 12, 08, 30, 5
-	4.2 shootMultiple: hologramBullet, 12, 16, 30, 3
-	4.3 shootMultiple: hologramBullet, 12, 18, 30, 3.5
-	4.4	shootMultiple: hologramBullet, 12, 20, 30, 4
-	4.5	shootMultiple: hologramBullet, 12, 22, 30, 4.5
-	4.6 shootMultiple: hologramBullet, 12, 24, 30, 5
-	4.7 shootMultiple: hologramBullet, 12, 26, 30, 5.5
-	4.8	shootMultiple: hologramBullet, 12, 28, 30, 6
+	0	shootCircleSeries: 12 hologramBullet per shot, spanning 0.4 seconds, 0.1 second intervals, max 8 degree rotation, 4 speed
+	4.2 shootCircleSeries: 12 hologramBullet per shot, spanning 1.2 seconds, 0.1 second intervals, max 8 degree rotation, 3 speed
 
 	9.0 shootSineCircleSeries: 14 hologramBullet per shot, spanning 15 seconds, 0.2 second intervals, max 25 degree rotation, 6.5 speed, 1 repeat
 
