@@ -158,7 +158,10 @@ public class ScriptErrorScreen extends HulletHellScreen {
         return SCRIPT_ERROR_SCREEN;
     }
 
-    public void setException(ScriptException e) {
-        messageLabel.setText(e.getErrorScreenMessage());
+    public void setException(Exception e) {
+        if (e instanceof ScriptException)
+            messageLabel.setText(((ScriptException) e).getErrorScreenMessage());
+        else
+            messageLabel.setText(e.getMessage());
     }
 }

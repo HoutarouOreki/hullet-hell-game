@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class ScriptedAction implements Comparable<ScriptedAction> {
-    protected static final Pattern match_everything_pattern = Pattern.compile("(.*)");
+    protected static final Pattern match_everything_pattern = Pattern.compile("^(.*)$");
     protected static final Pattern vector2_pattern
-            = Pattern.compile("\\((\\d+(?:\\.\\d+)?, \\d+(?:\\.\\d+)?)\\)");
+            = Pattern.compile("\\((-?\\d+(?:\\.\\d+)?, -?\\d+(?:\\.\\d+)?)\\)");
     protected static final Pattern bullets_per_shot_pattern
             = Pattern.compile("(?<amount>\\d+) (?<type>\\w+) per shot");
     protected static final Pattern duration_pattern
-            = Pattern.compile("spanning ([0-9]+(?:[.][0-9]+)?) s(?:econds?)?");
+            = Pattern.compile("(?:spanning |over |for )([0-9]+(?:[.][0-9]+)?)(?: seconds?| ?s)");
     protected static final Pattern intervals_pattern
             = Pattern.compile("(\\d+(?:\\.\\d+)?) ?s(?:\\w+)?(?: long)? intervals?");
     protected static final Pattern max_rotation_pattern
@@ -53,6 +53,7 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         a.scriptedBody = body;
         a.type = conf.type;
         a.scriptFileLineNumber = conf.scriptFileLineNumber;
+        a.addArgumentsInfo();
         return a;
     }
 
@@ -144,10 +145,10 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
         this.body = body;
         try {
             parser.run(arguments);
+            initialised = true;
         } catch (RequiredArgumentNotFoundException | UninterpretedArgumentStringException e) {
             throw new ScriptedActionInitializationException(this, e);
         }
-        initialised = true;
     }
 
     protected void setFinished() {

@@ -15,7 +15,7 @@ public class SetLaserPropertiesAction extends ScriptedAction {
     private static final Pattern width_pattern = Pattern.compile("(\\d+(?:\\.\\d+)?) ?m(?:eters?)? wide");
     private static final Pattern length_pattern = Pattern.compile("(\\d+(?:\\.\\d+)?) ?m(?:eters)? long");
     private static final Pattern rotation_duration_pattern = Pattern.compile("rotation(?: duration| spanning|) (\\d+(?:\\.\\d+)?) ?s(?:econds?)?");
-    private static final Pattern damage_pattern = Pattern.compile("deals (\\d+(?:\\.\\d+)?) (damage|dmg)");
+    private static final Pattern damage_pattern = Pattern.compile("(?:deals )?(\\d+(?:\\.\\d+)?) (damage|dmg)");
 
     @Override
     protected void performAction() {

@@ -88,10 +88,10 @@ public class StageConfigurationCreator {
     private List<String> getArgumentsList(String s) {
         if (s != null)
             return Arrays.asList(s
-                    // this regex splits only if the pattern is not surrounded by
-                    // a digit on the left and digits and closing parenthesis on the right,
+                    // this regex splits only if the pattern is not followed by
+                    // digits and closing parenthesis on the right,
                     // so (321, 3211.43) for example won't be split
-                    .split("(?<!\\d), (?!\\d+(?:\\.\\d+)?\\))"));
+                    .split(", (?!\\d+(?:\\.\\d+)?\\))"));
         return new ArrayList<>();
     }
 

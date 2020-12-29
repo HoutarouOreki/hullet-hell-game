@@ -8,36 +8,36 @@ Mechanic:
 
 ! firstIn
 
-0	newItemQuest:	1, 4 hologramCoin
+0	newItemQuest:	id: 1, 4 hologramCoin
 
 laserWall: "lasers/laser"
 	0 moveTo: (1.2, 0.375)
 	0 moveTo: (0.2, 0.375), over 4 seconds, sineOut interpolation
-	0 setLaserProperties: 0.5, 5, 0, 0
+	0 setLaserProperties: 0.5m wide, 5m long, 0 damage, rotation spanning 0s
 
 bulletSpawner: "ships/Copper eye"
-	0 moveTo: 1.6, 0.5
-	0 moveTo: 0.6, 0.5, 4, sineOut
+	0 moveTo: (1.6, 0.5)
+	0 moveTo: (0.6, 0.5), over 4 seconds, sineOut interpolation
 
 coin1: "items/hologramCoin"
-	0 moveTo: 1.9, 0.9
-	0 moveTo: 0.9, 0.9, 4, sineOut
+	0 moveTo: (1.9, 0.9)
+	0 moveTo: (0.9, 0.9), over 4 seconds, sineOut interpolation
 
 coin2: "items/hologramCoin"
-	0 moveTo: 1.3, 0.9
-	0 moveTo: 0.3, 0.9, 4, sineOut
+	0 moveTo: (1.3, 0.9)
+	0 moveTo: (0.3, 0.9), over 4 seconds, sineOut interpolation
 
 coin3: "items/hologramCoin"
-	0 moveTo: 1.9, 0.1
-	0 moveTo: 0.9, 0.1, 4, sineOut
+	0 moveTo: (1.9, 0.1)
+	0 moveTo: (0.9, 0.1), over 4 seconds, sineOut interpolation
 
 coin4: "items/hologramCoin"
-	0 moveTo: 1.3, 0.1
-	0 moveTo: 0.3, 0.1, 4, sineOut
+	0 moveTo: (1.3, 0.1)
+	0 moveTo: (0.3, 0.1), over 4 seconds, sineOut interpolation
 
-0 movePlayerTo: -0.2, 0.5
-0 movePlayerTo: -0.2, 0.5, 4
-3 movePlayerTo: 0.1, 0.5, 2
+0 movePlayerTo: (-0.2, 0.5)
+0 movePlayerTo: (-0.2, 0.5), over 4s
+3 movePlayerTo: (0.1, 0.5), over 2s
 
 
 !recurring(every 29 seconds until quest:1) firstLoop @sectionDone:firstIn
@@ -59,16 +59,16 @@ bulletSpawner:
 	9.0 shootSineCircleSeries: 14 hologramBullet per shot, spanning 15 seconds, 0.2 second intervals, max 25 degree rotation, 6.5 speed, 1 repeat
 
 coin1:
-	0 holdPositionFor 29
+	0 holdPosition for 29s
 
 coin2:
-	0 holdPositionFor 29
+	0 holdPosition for 29s
 
 coin3:
-	0 holdPositionFor 29
+	0 holdPosition for 29s
 
 coin4:
-	0 holdPositionFor 29
+	0 holdPosition for 29s
 
 laserWall:
 	29 nullAction
@@ -76,7 +76,7 @@ laserWall:
 
 ! firstOut @sectionDone:firstLoop
 bulletSpawner:
-	0	moveTo: 1.2, 0.5, 4, sineIn
+	0	moveTo: (1.2, 0.5), over 4 seconds, sineIn interpolation
 
 #! secondIn @sectionDone:firstOut
 #	0	moveTo:

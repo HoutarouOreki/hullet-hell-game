@@ -82,7 +82,7 @@ public class PlayScreen extends HulletHellScreen {
         updateBackground(delta);
         try {
             world.update(delta);
-        } catch (ScriptedStageUpdateException e) {
+        } catch (Exception e) {
             screenManager.enterGameScreen(SCRIPT_ERROR_SCREEN, new FadeOutTransition(), new FadeInTransition());
             ((ScriptErrorScreen) screenManager.getGameScreen(SCRIPT_ERROR_SCREEN)).setException(e);
         }

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class NewItemQuest extends ScriptedAction {
     private String name;
     private final HashMap<String, Integer> items = new HashMap<>();
-    private static final Pattern quest_id_pattern = Pattern.compile("id: \"(\\w+)\"");
+    private static final Pattern quest_id_pattern = Pattern.compile("id: (\\w+)");
 
     @Override
     protected void performAction() {
@@ -29,10 +29,9 @@ public class NewItemQuest extends ScriptedAction {
     protected void addArgumentsInfo() {
         parser.stringArgs.add(new ActionStringArg(
                 "Quest name",
-                "Used for flags. The portion inside quotation " +
-                        "marks is the quest name. It can only contain letters, " +
+                "Used for flags. It can only contain letters, " +
                         "numbers and underscores.",
-                "id: \"copperQuest\"",
+                "id: copperQuest",
                 quest_id_pattern,
                 this::setName,
                 false
