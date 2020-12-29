@@ -26,16 +26,17 @@ public class Vector2 {
                 interpolation.apply(start.y, end.y, a));
     }
 
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ')';
+    }
+
     public Vector2 add(Vector2 other) {
         return new Vector2(x + other.x, y + other.y);
     }
 
     public Vector2 sub(Vector2 other) {
         return new Vector2(x - other.x, y - other.y);
-    }
-
-    public Vector2 scl(float scale) {
-        return new Vector2(x * scale, y * scale);
     }
 
     public Vector2 sclX(float x) {
@@ -68,14 +69,6 @@ public class Vector2 {
         return new Vector2(dividend / x, dividend / y);
     }
 
-    public float len2() {
-        return x * x + y * y;
-    }
-
-    public float len() {
-        return (float) Math.sqrt(len2());
-    }
-
     /**
      * @return A vector with the same direction
      * with a length of 1, or 0 if the vector's
@@ -88,18 +81,26 @@ public class Vector2 {
         return new Vector2(x / length, y / length);
     }
 
+    public float len() {
+        return (float) Math.sqrt(len2());
+    }
+
+    public float len2() {
+        return x * x + y * y;
+    }
+
     public float dot(Vector2 other) {
         return x * other.x + y * other.y;
+    }
+
+    public float dst(Vector2 other) {
+        return (float) Math.sqrt(dst2(other));
     }
 
     public float dst2(Vector2 other) {
         float dx = other.x - x;
         float dy = other.y - y;
         return dx * dx + dy * dy;
-    }
-
-    public float dst(Vector2 other) {
-        return (float) Math.sqrt(dst2(other));
     }
 
     /**
@@ -164,10 +165,18 @@ public class Vector2 {
         return scl(Math.min(scaleDownX, scaleDownY));
     }
 
+    public Vector2 scl(float scale) {
+        return new Vector2(x * scale, y * scale);
+    }
+
     public Vector2 fill(Vector2 min) {
         float scaleUpX = min.x / x;
         float scaleUpY = min.y / y;
         return scl(Math.max(scaleUpX, scaleUpY));
+    }
+
+    public boolean outsideOf(Vector2 topLeft, Vector2 bottomRight) {
+        return lesserThan(topLeft) || greaterThan(bottomRight);
     }
 
     public boolean lesserThan(Vector2 other) {
@@ -176,10 +185,6 @@ public class Vector2 {
 
     public boolean greaterThan(Vector2 other) {
         return x > other.x || y > other.y;
-    }
-
-    public boolean outsideOf(Vector2 topLeft, Vector2 bottomRight) {
-        return lesserThan(topLeft) || greaterThan(bottomRight);
     }
 
     public Vector2 inv() {
