@@ -58,26 +58,15 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         add(line);
     }
 
-    public void setCharacter(String characterName) {
-        this.characterName = characterName;
-    }
-
-    public void addMessage(DialogueMessage message) {
-        message.character = characterName;
-        messages.add(message);
-    }
-
-    public void reset() {
-        setState(State.HIDDEN);
-        timeTableIsFor = "";
-        timeTable.clear();
-        messages.clear();
-    }
-
     @Override
     public boolean handleControl(Controls control) {
-        if (state == State.VISIBLE && control == Controls.select) {
+        if (control != Controls.select)
+            return false;
+        if (state == State.REVEALED) {
             nextMessage();
+            return true;
+        } else if (state == State.REVEALING) {
+            setState(State.REVEALED);
             return true;
         }
         return false;
@@ -86,13 +75,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
     private void nextMessage() {
         DialogueMessage completedMessage = messages.remove();
         completedMessage.completionListener.onAction();
-        setState(messages.isEmpty() ? State.TIMING_OUT : State.VISIBLE);
-    }
-
-    private void setState(State state) {
-        this.state = state;
-        stateChangeTime = getTime();
-        setVisibility(state != State.HIDDEN);
+        setState(messages.isEmpty() ? State.TIMING_OUT : State.REVEALING);
     }
 
     @Override
@@ -105,8 +88,11 @@ public class DialogueBox extends Drawable implements ControlProcessor {
             case POPPING_IN:
                 handlePopIn();
                 break;
-            case VISIBLE:
-                handleVisible();
+            case REVEALING:
+                handleRevealing();
+                break;
+            case REVEALED:
+                handleRevealed();
                 break;
             case TIMING_OUT:
                 handleTimingOut();
@@ -114,6 +100,58 @@ public class DialogueBox extends Drawable implements ControlProcessor {
             case POPPING_OUT:
                 handlePopOut();
                 break;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    public void addMessage(DialogueMessage message) {
+        message.character = characterName;
+        messages.add(message);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    private void setState(State state) {
+        this.state = state;
+        stateChangeTime = getTime();
+        setVisibility(state != State.HIDDEN);
+    }
+
+    public void reset() {
+        setState(State.HIDDEN);
+        timeTableIsFor = "";
+        timeTable.clear();
+        messages.clear();
+    }
+
+    public void setCharacter(String characterName) {
+        this.characterName = characterName;
+    }
+
+    private void generateTimeTable() {
+        timeTable.clear();
+        float totalTime = 0;
+        String message = messages.element().message;
+        for (int i = 0; i < message.length(); i++) {
+            timeTable.put(totalTime, i);
+            totalTime += getCharacterDuration(message.charAt(i));
+        }
+        timeTableIsFor = message;
+    }
+
+    private float getCharacterDuration(char c) {
+        switch (c) {
+            case '.':
+            case '?':
+            case '!':
+                return 0.7f;
+            case ',':
+                return 0.4f;
+            default:
+                return 0.02f;
         }
     }
 
@@ -139,7 +177,7 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         float a = getTransitionProgress();
         setY(Interpolation.sineOut.apply(0, -getSize().y, a));
         if (a == 1)
-            setState(State.VISIBLE);
+            setState(State.REVEALING);
     }
 
     private void handlePopOut() {
@@ -149,32 +187,15 @@ public class DialogueBox extends Drawable implements ControlProcessor {
             setState(State.HIDDEN);
     }
 
-    private float getCharacterDuration(char c) {
-        switch (c) {
-            case '.':
-            case '?':
-            case '!':
-                return 0.7f;
-            case ',':
-                return 0.4f;
-            default:
-                return 0.02f;
-        }
+    private void handleRevealed() {
+        float fullyRevealedDuration = 2;
+        characterLabel.setText(messages.element().character);
+        textLabel.setText(messages.element().message);
+        if (getTimeSinceStateChange() >= fullyRevealedDuration)
+            nextMessage();
     }
 
-    private void generateTimeTable() {
-        timeTable.clear();
-        float totalTime = 0;
-        String message = messages.element().message;
-        for (int i = 0; i < message.length(); i++) {
-            timeTable.put(totalTime, i);
-            totalTime += getCharacterDuration(message.charAt(i));
-        }
-        timeTable.put(totalTime + 2, -1);
-        timeTableIsFor = message;
-    }
-
-    private void handleVisible() {
+    private void handleRevealing() {
         String message = messages.element().message;
         characterLabel.setText(messages.element().character);
         if (timeTableIsFor == null || !timeTableIsFor.equals(message))
@@ -182,27 +203,27 @@ public class DialogueBox extends Drawable implements ControlProcessor {
         float maxTime = 0;
         for (Float time : timeTable.keySet()) {
             if (getTimeSinceStateChange() > time)
-                maxTime = Math.max(maxTime, time); // idk if necessary
+                // idk if necessary, but I think keySet doesn't ensure order
+                maxTime = Math.max(maxTime, time);
         }
         int lastIndex = timeTable.get(maxTime);
-        if (lastIndex == -1) {
-            nextMessage();
-            return;
-        }
         textLabel.setText(message.substring(0, lastIndex + 1));
+        if (lastIndex + 1 == message.length())
+            setState(State.REVEALED);
     }
 
     private void handleTimingOut() {
         if (getTimeSinceStateChange() > 0.1f)
             setState(State.POPPING_OUT);
         else if (!messages.isEmpty())
-            setState(State.VISIBLE);
+            setState(State.REVEALING);
     }
 
-    private enum State {
+    public enum State {
         HIDDEN,
         POPPING_IN,
-        VISIBLE,
+        REVEALING,
+        REVEALED,
         TIMING_OUT,
         POPPING_OUT
     }
