@@ -28,6 +28,10 @@ public abstract class Drawable {
     private Color color = Color.WHITE;
     private boolean visibility = true;
 
+    public void setParent(Drawable drawable) {
+        parent = drawable;
+    }
+
     public void setX(float x) {
         this.setPosition(this.getPosition().withX(x));
     }

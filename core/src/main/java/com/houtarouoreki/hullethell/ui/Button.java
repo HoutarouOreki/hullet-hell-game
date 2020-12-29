@@ -28,6 +28,8 @@ public class Button extends MenuComponent {
         label.setRelativeSizeAxes(bothAxes);
         label.setSize(new Vector2(1));
         label.alignment = Align.center;
+        label.setOrigin(new Vector2(0.5f));
+        label.setAnchor(new Vector2(0.5f));
         add(label);
     }
 

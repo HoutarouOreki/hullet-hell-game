@@ -5,24 +5,43 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.graphics.*;
+import com.houtarouoreki.hullethell.graphics.flow.FlowContainer;
 import com.houtarouoreki.hullethell.numbers.Vector2;
 import com.houtarouoreki.hullethell.scripts.exceptions.ScriptException;
 import com.houtarouoreki.hullethell.ui.Label;
-import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
 
 import java.util.EnumSet;
 
 public class ScriptErrorScreen extends HulletHellScreen {
-    private final Label messageLabel;
-    private final Label sorryLabel;
     private final float spacing = 76;
     private final float scale = 1;
-    private final Label titleLabel;
+    float bottomBarHeight = 40;
+    private Label messageLabel;
 
     public ScriptErrorScreen() {
-        float bottomBarHeight = 40;
+        createBackground();
+        createMainFlow();
 
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters
+                = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        Container controlsLabelContainer = new Container();
+        controlsLabelContainer.setAnchor(new Vector2(0, 1));
+        controlsLabelContainer.setOrigin(new Vector2(0, 1));
+        controlsLabelContainer.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
+        controlsLabelContainer.setSize(new Vector2(1, bottomBarHeight));
+        container.add(controlsLabelContainer);
+
+        Label controlsLabel = new Label();
+        controlsLabel.setOrigin(new Vector2(0, 0.5f));
+        controlsLabel.font = Fonts.getFont("OpenSans-SemiBold", fontParameters);
+        controlsLabel.setRelativePositionAxes(EnumSet.of(Axes.VERTICAL));
+        controlsLabel.setPosition(new Vector2((spacing - 5) * scale, 0.5f));
+        controlsLabel.setText("Press ESCAPE to go back");
+        controlsLabelContainer.add(controlsLabel);
+    }
+
+    private void createBackground() {
         Rectangle background = new Rectangle();
         background.setColor(Color.valueOf("FEFE00"));
         background.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
@@ -68,51 +87,57 @@ public class ScriptErrorScreen extends HulletHellScreen {
         bottomLine.setSize(new Vector2(1, 1));
         bottomLine.setPosition(new Vector2(0, -bottomBarHeight));
         container.add(bottomLine);
+    }
+
+    private void createMainFlow() {
+        FlowContainer flowContainer = new FlowContainer(Axes.VERTICAL);
+        flowContainer.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        container.add(flowContainer);
 
         Sprite gameLogo = new Sprite();
         gameLogo.texture = HulletHellGame.getAssetManager().get("logo-black-transparent.png");
-        gameLogo.setSize(new Vector2(150 * scale));
-        gameLogo.setPosition(new Vector2(scale * (spacing - 5) - 6, spacing * 0.56f));
-        container.add(gameLogo);
+        gameLogo.widthHeightRatioForFitFill = gameLogo.texture.getWidth() / (float)gameLogo.texture.getHeight();
+        gameLogo.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        gameLogo.setMargin(new PaddingMargin(0, -30));
+        gameLogo.setFillMode(FillMode.FIT);
+
+        Container gameLogoContainer = new Container();
+        gameLogoContainer.add(gameLogo);
+        gameLogoContainer.setSize(new Vector2(500, 150));
+        flowContainer.addFlowItem(gameLogoContainer);
+
+        flowContainer.setPadding(new PaddingMargin(spacing * scale,
+                scale * spacing + bottomBarHeight,
+                (spacing - 5) * scale,
+                spacing * scale));
+
+        FlowContainer textContainer = new FlowContainer(Axes.VERTICAL);
+        textContainer.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        textContainer.spacing = 30;
+        flowContainer.addFlowItem(textContainer);
 
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameters
                 = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        Label controlsLabel = new Label();
-        controlsLabel.setAnchor(new Vector2(0, 1));
-        controlsLabel.setOrigin(new Vector2(0, 1));
-        controlsLabel.font = Fonts.getFont("OpenSans-SemiBold", fontParameters);
-        float controlsLabelSpacing = (bottomRectangle.getSize().y + controlsLabel.font.getCapHeight()) * 0.5f;
-        controlsLabel.setPosition(new Vector2((spacing - 5) * scale, -controlsLabelSpacing + 2));
-        controlsLabel.setText("Press ESCAPE to go back");
-        container.add(controlsLabel);
-
-        Container textContainer = new Container();
-        container.add(textContainer);
-        textContainer.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
-        textContainer.setPadding(new PaddingMargin((spacing + 120) * scale, scale * spacing + bottomBarHeight, (spacing - 5) * scale, spacing * scale));
-
-        titleLabel = new Label();
-        textContainer.add(titleLabel);
+        Label titleLabel = new Label();
         titleLabel.setText("There was a problem executing the stage's script.");
         titleLabel.alignment = Align.topLeft;
-        titleLabel.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        titleLabel.setRelativeSizeAxes(EnumSet.of(Axes.HORIZONTAL));
         fontParameters.size = (int) (16 * scale);
         fontParameters.color = Color.BLACK;
         titleLabel.font = Fonts.getFont("OpenSans-Bold", fontParameters);
-        //titleLabel.setPosition(new Vector2(0, gameLogo.getSize().y));
+        textContainer.addFlowItem(titleLabel);
 
         fontParameters.size = (int) (16 * scale);
         messageLabel = new Label();
-        textContainer.add(messageLabel);
         messageLabel.alignment = Align.topLeft;
         messageLabel.font = Fonts.getFont("OpenSans-Regular", fontParameters);
-        //messageLabel.setRelativeSizeAxes(EnumSet.allOf(Axes.class));
+        textContainer.addFlowItem(messageLabel);
 
-        sorryLabel = new Label();
-        textContainer.add(sorryLabel);
+        Label sorryLabel = new Label();
         sorryLabel.font = Fonts.getFont("OpenSans-Bold", fontParameters);
         sorryLabel.setText("We're sorry for the inconvenience.");
+        textContainer.addFlowItem(sorryLabel);
 
         Label signature = new Label();
         signature.setText("HHHHHHHHH");
@@ -120,7 +145,7 @@ public class ScriptErrorScreen extends HulletHellScreen {
         signature.setOrigin(new Vector2(1));
         signature.setAnchor(new Vector2(1));
         signature.alignment = Align.bottomRight;
-        textContainer.add(signature);
+        flowContainer.addNonFlowItem(signature);
     }
 
     @Override
@@ -135,18 +160,5 @@ public class ScriptErrorScreen extends HulletHellScreen {
 
     public void setException(ScriptException e) {
         messageLabel.setText(e.getErrorScreenMessage());
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) {
-        super.render(gc, g);
-        messageLabel.setPosition(new Vector2(0, titleLabel.getPosition().y + titleLabel.lastComputedSize.y + spacing * 0.26f * scale));
-        Vector2 temp = messageLabel.getPosition().add(new Vector2(0, messageLabel.lastComputedSize.y));
-        temp = temp.add(new Vector2(0, spacing * 0.26f * scale));
-        sorryLabel.setPosition(new Vector2(0, temp.y));
-
-        Vector2 trp = titleLabel.getRenderPosition();
-        Vector2 trs = titleLabel.lastComputedSize;
-        g.fillRect(trp.x, trp.y, trs.x, trs.y);
     }
 }
