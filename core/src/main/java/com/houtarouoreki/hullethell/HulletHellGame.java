@@ -114,6 +114,7 @@ public class HulletHellGame extends ScreenBasedGame {
         assetManager.load(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class);
         assetManager.load("ui/songNotification.png", Texture.class);
         assetManager.load("ui/dialogueOverlay.png", Texture.class);
+        assetManager.load("logo-black-transparent.png", Texture.class);
 
         loadSounds(assetManager, Arrays.asList(
                 "laser1",

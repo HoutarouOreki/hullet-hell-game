@@ -93,9 +93,9 @@ public abstract class Drawable {
 
     public Vector2 getRenderPosition() {
         Vector2 renderPos = getPosition();
-        if (relativeSizeAxes.contains(Axes.HORIZONTAL))
+        if (relativePositionAxes.contains(Axes.HORIZONTAL))
             renderPos = renderPos.sclX(parent.getContentRenderSize().x);
-        if (relativeSizeAxes.contains(Axes.VERTICAL))
+        if (relativePositionAxes.contains(Axes.VERTICAL))
             renderPos = renderPos.sclY(parent.getContentRenderSize().y);
         renderPos = renderPos.add(getMargin().getLeftTop());
         if (parent == null)
