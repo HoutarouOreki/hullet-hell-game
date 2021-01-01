@@ -23,7 +23,7 @@ public class ShootCircleSeriesAction extends ShootCircleAction {
     }
 
     protected boolean isTimeForNextShot() {
-        return shotsShot * intervalDuration < getTimeSinceStarted();
+        return shotsShot * intervalDuration <= getTimeSinceStarted();
     }
 
     @Override
