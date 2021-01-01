@@ -1,10 +1,10 @@
 !
 0	setFlag		testFlag
-0	movePlayerTo:	-0.2, 0.5
-0	movePlayerTo:	0.2, 0.5, 2, sineOut
+0	movePlayerTo:	(-0.2, 0.5)
+0	movePlayerTo:	(0.2, 0.5), over 2 seconds, sineOut interpolation
 2	setFlag:	testFlag
 2	loopSong:	One Man Symphony - First Night In Space
-2	fadeInMusic	8
+2	fadeInMusic	over 8s
 
 !dialogue sergeantGivesQuest @2*testFlag
 Sergeant:
@@ -13,16 +13,16 @@ Player:
 	Got it.
 
 ! initialiseQuest @sectionDone:sergeantGivesQuest
-0	newItemQuest:	1, 5 copperOre / 10 ironOre
+0	newItemQuest:	id: 1, 5 copperOre, 10 ironOre
 
 
 !while(quest:1) asteroids @sectionDone:initialiseQuest
-2	randomAsteroid:		copperOre / ironOre / null / null / null / null / null / null / null
+2	randomAsteroid:		copperOre, ironOre, 7 null
 
 !while(quest:1) emptyQuestLoop @sectionDone:initialiseQuest
 
 ! @sectionDone:emptyQuestLoop
-0	fadeOutMusic:	7
+0	fadeOutMusic:	over 7s
 
 !dialogue questCompleted @sectionDone:emptyQuestLoop
 Player:
@@ -47,7 +47,7 @@ Player:
 
 ! alienFliesIn @sectionDone:radioDead
 eye1: "ships/Copper eye"
-	0	moveBezier:		5, 1.1 1.1 / 0.9 0.9 / 0.75 0.7 / 0.7 0.65 / 0.7 0.6 / 0.7 0.5
+	0	moveBezier:		over 5s, (1.1, 1.1), (0.9, 0.9), (0.75, 0.7), (0.7, 0.65), (0.7, 0.6), (0.7, 0.5)
 
 !dialogue afterAlienCommentary @sectionDone:radioDead
 Player:
@@ -55,51 +55,37 @@ Player:
 
 !while(customFlag1) alienWobble @sectionDone:alienFliesIn
 eye1:
-	0	moveTo:		0.7, 0.47, 0.5, sineOut
-	0.5	moveTo:		0.7, 0.5, 0.5, sineIn
-	1	moveTo:		0.7, 0.53, 0.5, sineOut
-	1.5	moveTo:		0.7, 0.5, 0.5, sineIn
+	0	moveTo:		(0.7, 0.47), over 0.5s, sineOut interpolation
+	0.5	moveTo:		(0.7, 0.5), over 0.5s, sineIn interpolation
+	1	moveTo:		(0.7, 0.53), over 0.5s, sineOut interpolation
+	1.5	moveTo:		(0.7, 0.5), over 0.5s, sineIn interpolation
 
 ! @sectionDone:afterAlienCommentary
 0	setFlag		customFlag1
 
 ! firstFight @sectionDone:alienWobble
 eye1:
-	0	moveBezier:		3, 0.7 0.5 / 0.7 0.5 / 0.7 0.55 / 0.75 0.6 / 0.8 0.7
-	3	shootMultiple:	Bullet 1, 3, -110, 5, 5
-	4	shootMultiple:	Bullet 1, 3, -110, 5, 5
-	5	shootMultiple:	Bullet 1, 3, -110, 5, 5
-	5	moveTo:			0.8, 0.3, 3, sine
-	8	shootMultiple:	Bullet 1, 3, -70, 5, 5
-	9	shootMultiple:	Bullet 1, 3, -70, 5, 5
-	10	shootMultiple:	Bullet 1, 3, -70, 5, 5
-	10	moveTo:			0.8, 0.5, 2, sine
-	12	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	12.5	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	13	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	15	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	15.5	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	16	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	18	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	18.5	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	19	shootMultiple:	Bullet 1, 7, -110, 5, 4
-	21	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	21.5	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	22	shootMultiple:	Bullet 1, 7, -70, 5, 4
-	24	shootMultiple:	Bullet 1, 7, -90, 8, 3
-	24.5	shootMultiple:	Bullet 1, 7, -90, 8, 3
-	25	shootMultiple:	Bullet 1, 7, -90, 8, 3
-	27	shootMultiple:	Bullet 1, 15, -90, 8, 3
-	30	moveTo:			1.1, 0.5, 3, sineIn
+	0	moveBezier:		over 3s, (0.7, 0.5), (0.7, 0.5), (0.7, 0.55), (0.75, 0.6), (0.8, 0.7)
+	3	shootMultipleSeries: over 2s, 1s intervals, 3 Bullet 1 per shot, at -110 degree angle, 5 degree spread, 5 speed
+	5	moveTo:			(0.8, 0.3), over 3s, sine interpolation
+	8	shootMultipleSeries: over 2s, 1s intervals, 3 Bullet 1 per shot, at -70 degree angle, 5 degree spread, 5 speed
+	10	moveTo:			(0.8, 0.5), over 2s, sine interpolation
+	12	shootMultipleSeries: over 1s, 0.5s intervals, 7 Bullet 1 per shot, at -110 degree angle, 5 degree spread, 4 speed
+	15	shootMultipleSeries: over 1s, 0.5s intervals, 7 Bullet 1 per shot, at -70 degree angle, 5 degree spread, 4 speed
+	18	shootMultipleSeries: over 1s, 0.5s intervals, 7 Bullet 1 per shot, at -110 degree angle, 5 degree spread, 4 speed
+	21	shootMultipleSeries: over 1s, 0.5s intervals, 7 Bullet 1 per shot, at -70 degree angle, 5 degree spread, 4 speed
+	24	shootMultipleSeries: over 1s, 0.5s intervals, 7 Bullet 1 per shot, at -90 degree angle, 8 degree spread, 3 speed
+	27	shootMultiple:	15 Bullet 1 per shot, at -90 degree angle, 8 degree spread, 3 speed
+	30	moveTo:			(1.1, 0.5), over 3s, sineIn interpolation
 
 ! backupsComeIn @sectionDone:firstFight
 eye2: "ships/Copper eye"
-	1	moveBezier:		5, 1.1 1.1 / 0.9 0.9 / 0.75 0.7 / 0.7 0.7 / 0.7 0.7 / 0.7 0.7
+	1	moveBezier:		over 5s, (1.1, 1.1), (0.9, 0.9), (0.75, 0.7), (0.7, 0.7), (0.7, 0.7), (0.7, 0.7)
 eye3: "ships/Copper eye"
-	3	moveTo:			1.1, 0.5
-	3	moveTo:			0.6, 0.5, 5, sineOut
+	3	moveTo:			(1.1, 0.5)
+	3	moveTo:			(0.6, 0.5), over 5s, sineOut interpolation
 eye4: "ships/Copper eye"
-	2	moveBezier:		5, 1.1 -0.1 / 0.9 0.1 / 0.75 0.3 / 0.7 0.3 / 0.7 0.3 / 0.7 0.3
+	2	moveBezier:		over 5s, (1.1, -0.1), (0.9, 0.1), (0.75, 0.3), (0.7, 0.3), (0.7, 0.3), (0.7, 0.3)
 
 ! breakAfterFirstFight @sectionDone:firstFight
 2	nullAction
@@ -110,26 +96,20 @@ Player:
 
 ! secondFight @sectionDone:alienBackups
 eye2:
-	0	moveTo:		0.9, 0.9, 3, sine
-	3	shootMultiple:	Bullet 1, 8, -110, 12, 3
-	4	shootMultiple:	Bullet 1, 8, -110, 12, 3
-	5	shootMultiple:	Bullet 1, 8, -110, 12, 3
-	6	moveTo:		1.1, 1.1, 3, sine
+	0	moveTo:		(0.9, 0.9), over 3s, sine interpolation
+	3	shootMultipleSeries:	8 Bullet 1 per shot, at -110 degree angle, 12 degree spread, 3 speed, over 3s, 1s intervals
+	6	moveTo:		(1.1, 1.1), over 3s, sine interpolation
 eye3:
-	0	moveTo:		0.8, 0.5, 3, sine
-	3	shootMultiple:	Bullet 1, 8, -90, 12, 3
-	4	shootMultiple:	Bullet 1, 8, -90, 12, 3
-	5	shootMultiple:	Bullet 1, 8, -90, 12, 3
-	6	moveTo:		1.1, 0.5, 3, sine
+	0	moveTo:		(0.8, 0.5), over 3s, sine interpolation
+	3	shootMultipleSeries:	8 Bullet 1 per shot, at -90 degree angle, 12 degree spread, 3 speed, over 3s, 1s intervals
+	6	moveTo:		(1.1, 0.5), over 3s, sine interpolation
 eye4:
-	0	moveTo:		0.9, 0.1, 3, sine
-	3	shootMultiple:	Bullet 1, 8, -70, 12, 3
-	4	shootMultiple:	Bullet 1, 8, -70, 12, 3
-	5	shootMultiple:	Bullet 1, 8, -70, 12, 3
-	6	moveTo:		1.1, -0.1, 3, sine
+	0	moveTo:		(0.9, 0.1), over 3s, sine interpolation
+	3	shootMultipleSeries:	8 Bullet 1 per shot, at -70 degree angle, 12 degree spread, 3 speed, over 3s, 1s intervals
+	6	moveTo:		(1.1, -0.1), over 3s, sine interpolation
 
 ! breakAfterSecondFight @sectionDone:secondFight
-2	fadeOutMusic	4
+2	fadeOutMusic	over 4s
 2	nullAction
 
 !dialogue outro1 @sectionDone:breakAfterSecondFight
@@ -137,4 +117,4 @@ Player:
 	Gotta head back before more of them come over.
 
 ! outro2 @sectionDone:outro1
-0	movePlayerTo	-0.2, 0.5, 2, sineIn
+0	movePlayerTo	(-0.2, 0.5), over 2s, sineIn interpolation
