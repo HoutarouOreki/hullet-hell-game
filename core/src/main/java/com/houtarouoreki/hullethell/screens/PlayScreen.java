@@ -1,5 +1,7 @@
 package com.houtarouoreki.hullethell.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.houtarouoreki.hullethell.HulletHellGame;
 import com.houtarouoreki.hullethell.collisions.CollisionTeam;
 import com.houtarouoreki.hullethell.configurations.StageConfiguration;
@@ -11,7 +13,6 @@ import com.houtarouoreki.hullethell.environment.World;
 import com.houtarouoreki.hullethell.graphics.dialogue.DialogueBox;
 import com.houtarouoreki.hullethell.input.Controls;
 import com.houtarouoreki.hullethell.numbers.Vector2;
-import com.houtarouoreki.hullethell.scripts.exceptions.ScriptedStageInitializationException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -79,11 +80,23 @@ public class PlayScreen extends HulletHellScreen {
     }
 
     @Override
+    public int getId() {
+        return PLAY_SCREEN;
+    }
+
+    @Override
+    public void postTransitionIn(Transition transitionIn) {
+        super.postTransitionIn(transitionIn);
+        HulletHellGame.getInputManager().managedProcessors.add(dialogueBox);
+    }
+
+    @Override
     public void preTransitionOut(Transition transitionOut) {
         super.preTransitionOut(transitionOut);
         if (world != null)
             world.stop();
         HulletHellGame.getMusicManager().fadeOut(1);
+        HulletHellGame.getInputManager().managedProcessors.remove(dialogueBox);
     }
 
     @Override
@@ -112,6 +125,10 @@ public class PlayScreen extends HulletHellScreen {
             return;
         try {
             world.update(delta);
+            if (Gdx.input.isKeyPressed(Input.Keys.END)) {
+                for (int i = 0; i < 16; i++)
+                    world.update(delta);
+            }
         } catch (Exception e) {
             screenManager.enterGameScreen(SCRIPT_ERROR_SCREEN, new FadeOutTransition(), new FadeInTransition());
             ((ScriptErrorScreen) screenManager.getGameScreen(SCRIPT_ERROR_SCREEN)).setException(e);
@@ -138,7 +155,8 @@ public class PlayScreen extends HulletHellScreen {
             targetY += 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.up))
             targetY -= 1;
-        if (HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
+        if (!dialogueBox.isVisibility() &&
+                HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
             Entity ammunition = player.shoot();
             if (ammunition != null) {
                 world.addBody(ammunition);
@@ -165,11 +183,6 @@ public class PlayScreen extends HulletHellScreen {
         for (BackgroundObject star : stars) {
             star.render(g);
         }
-    }
-
-    @Override
-    public int getId() {
-        return PLAY_SCREEN;
     }
 
     public void setStage(StageConfiguration script) {
