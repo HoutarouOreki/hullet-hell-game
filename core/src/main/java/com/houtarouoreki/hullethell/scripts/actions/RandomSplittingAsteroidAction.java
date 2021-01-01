@@ -116,7 +116,8 @@ public class RandomSplittingAsteroidAction extends ScriptedAction {
     }
 
     private void addItemDrop(Matcher matcher) {
-        int amount = Integer.parseInt(matcher.group("itemAmount"));
+        String itemAmountString = matcher.group("itemAmount");
+        int amount = itemAmountString == null ? 1 : Integer.parseInt(itemAmountString);
         String itemName = matcher.group("itemName");
         for (int i = 0; i < amount; i++)
             itemStrings.add(itemName);
