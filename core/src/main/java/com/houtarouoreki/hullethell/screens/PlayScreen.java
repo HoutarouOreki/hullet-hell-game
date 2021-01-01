@@ -145,6 +145,7 @@ public class PlayScreen extends HulletHellScreen {
 
     private void updateSteering() {
         Ship player = world.player;
+
         float targetX = 0;
         float targetY = 0;
         if (HulletHellGame.getInputManager().isControlActive(Controls.left))
@@ -155,22 +156,31 @@ public class PlayScreen extends HulletHellScreen {
             targetY += 1;
         if (HulletHellGame.getInputManager().isControlActive(Controls.up))
             targetY -= 1;
+
         if (!dialogueBox.isVisibility() &&
-                HulletHellGame.getInputManager().isControlActive(Controls.shoot)) {
-            Entity ammunition = player.shoot();
-            if (ammunition != null) {
-                world.addBody(ammunition);
-                ammunition.getCollisionBodyManager().setTeam(CollisionTeam.PLAYER_BULLETS);
-                HulletHellGame.getSoundManager()
-                        .playSound("laser1", 0.3f);
-            }
-        }
+                HulletHellGame.getInputManager().isControlActive(Controls.shoot))
+            tryShootBullet(player);
 
         Vector2 targetDirection = new Vector2(targetX, targetY);
         if (targetDirection.len2() > 0)
             player.move(targetDirection.angle());
         else
             player.stop();
+    }
+
+    @Override
+    public boolean handleControl(Controls control) {
+        return dialogueBox.handleControl(control) || super.handleControl(control);
+    }
+
+    private void tryShootBullet(Ship player) {
+        Entity ammunition = player.shoot();
+        if (ammunition != null) {
+            world.addBody(ammunition);
+            ammunition.getCollisionBodyManager().setTeam(CollisionTeam.PLAYER_BULLETS);
+            HulletHellGame.getSoundManager()
+                    .playSound("laser1", 0.3f);
+        }
     }
 
     private void updateBackground(float delta) {
