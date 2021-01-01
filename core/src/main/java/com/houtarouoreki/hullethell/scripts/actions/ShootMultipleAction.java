@@ -11,8 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShootMultipleAction extends ScriptedAction {
-    private static final Pattern at_angle_pattern = Pattern.compile("at (\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°) angle");
-    private static final Pattern spacing_pattern = Pattern.compile("(\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°) spacing");
+    private static final Pattern at_angle_pattern = Pattern.compile("at (-?\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°) angle");
+    private static final Pattern spacing_pattern = Pattern.compile("(\\d+(?:\\.\\d+)?)(?: deg(?:rees?)?|°)(?: spacing| spread)");
     protected String bulletType;
     private int amount;
     private float direction;

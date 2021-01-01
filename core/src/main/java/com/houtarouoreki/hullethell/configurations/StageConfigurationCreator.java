@@ -91,7 +91,7 @@ public class StageConfigurationCreator {
                     // this regex splits only if the pattern is not followed by
                     // digits and closing parenthesis on the right,
                     // so (321, 3211.43) for example won't be split
-                    .split(", (?!\\d+(?:\\.\\d+)?\\))"));
+                    .split(", (?!-?\\d+(?:\\.\\d+)?\\))"));
         return new ArrayList<>();
     }
 

@@ -19,19 +19,19 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
     protected static final Pattern vector2_pattern
             = Pattern.compile("\\((-?\\d+(?:\\.\\d+)?, -?\\d+(?:\\.\\d+)?)\\)");
     protected static final Pattern bullets_per_shot_pattern
-            = Pattern.compile("(?<amount>\\d+) (?<type>\\w+) per shot");
+            = Pattern.compile("(?<amount>\\d+) (?<type>(?:\\w| )+) per shot");
     protected static final Pattern duration_pattern
             = Pattern.compile("(?:spanning |over |for )([0-9]+(?:[.][0-9]+)?)(?: seconds?| ?s)");
     protected static final Pattern intervals_pattern
             = Pattern.compile("(\\d+(?:\\.\\d+)?) ?s(?:\\w+)?(?: long)? intervals?");
     protected static final Pattern max_rotation_pattern
-            = Pattern.compile("max (\\d+(?:\\.\\d+)?)(?:°| degrees?)(?: of)? ?rotation");
+            = Pattern.compile("max (-?\\d+(?:\\.\\d+)?)(?:°| degrees?)(?: of)? ?rotation");
     protected static final Pattern speed_pattern
             = Pattern.compile("(\\d+(?:\\.\\d+)?)(?: ?m| meters?|) speed");
     protected static final Pattern repeats_pattern
             = Pattern.compile("(\\d+(?:\\.\\d+)?) repeats?");
     protected static final Pattern item_amount_pattern
-            = Pattern.compile("(?<itemAmount>\\d+) (?<itemName>\\w+)");
+            = Pattern.compile("(?:(?<itemAmount>\\d+) )?(?<itemName>\\w+)");
     protected final ActionArgsParser parser = new ActionArgsParser();
     public String type;
     public List<String> arguments;
