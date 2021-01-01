@@ -100,6 +100,8 @@ public abstract class ScriptedAction implements Comparable<ScriptedAction> {
                 return new ShootSineCircleSeries();
             case "shootCircleSeries":
                 return new ShootCircleSeriesAction();
+            case "shootMultipleSeries":
+                return new ShootMultipleSeriesAction();
             default:
                 throw new ActionTypeNotFoundException(conf);
         }
