@@ -16,12 +16,12 @@ Player:
 0	newItemQuest:	id: 1, 5 copperOre, 10 ironOre
 
 
-!while(quest:1) asteroids @sectionDone:initialiseQuest
+!recurring(every 1 seconds until quest:1) asteroids @sectionDone:initialiseQuest
 2	randomAsteroid:		copperOre, ironOre, 7 null
 
-!while(quest:1) emptyQuestLoop @sectionDone:initialiseQuest
+!recurring(every 0.1 seconds until quest:1) emptyQuestLoop @sectionDone:initialiseQuest
 
-! @sectionDone:emptyQuestLoop
+! @sectionDone:asteroids
 0	fadeOutMusic:	over 7s
 
 !dialogue questCompleted @sectionDone:emptyQuestLoop

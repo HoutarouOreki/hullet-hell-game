@@ -63,7 +63,7 @@ public class ScriptedRecurringSection extends ScriptedSection {
 
     @Override
     public boolean isFinished() {
-        return sections.isEmpty();
+        return sections.isEmpty() && world.scriptedStageManager.getFlagValue(flagToRestart) != 0;
     }
 
     @Override
