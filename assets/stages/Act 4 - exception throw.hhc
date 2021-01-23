@@ -1,0 +1,42 @@
+! intro
+0	movePlayerTo: (-0.1, 0.5)
+0	movePlayerTo: (0.1, 0.5), over 1 second, sineIn interpolation
+1	playSong: One Man Symphony - Transmission
+
+! firstEnemies @sectionDone:intro
+eye1: "ships/Copper eye"
+	0	moveTo: (1.1, 0.2)
+	0	moveTo: (0, -0.1), over 40 seconds
+	2	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	5	shootCircleSeries: over 2s, 0.5s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speedd
+	7	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+	10	shootCircleSeries: over 2s, 0.3s intervals, 24 Bullet 1 per shot, at -80 degree angle, 5 speed
+	13	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	16	shootCircleSeries: over 2s, 0.3s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speed
+	19	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+	24	shootCircleSeries: over 2s, 0.3s intervals, 24 Bullet 1 per shot, at -80 degree angle, 5 speed
+	27	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	32	shootCircleSeries: over 2s, 0.3s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speed
+	36	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+
+eye2: "ships/Copper eye"
+	3	moveTo: (1.1, 0.7)
+	3	moveTo: (0, 1.1), over 40 seconds
+	5	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	8	shootCircleSeries: over 2s, 0.3s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speed
+	10	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+	13	shootCircleSeries: over 2s, 0.3s intervals, 24 Bullet 1 per shot, at -80 degree angle, 5 speed
+	16	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	19	shootCircleSeries: over 2s, 0.3s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speed
+	22	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+	27	shootCircleSeries: over 2s, 0.3s intervals, 24 Bullet 1 per shot, at -80 degree angle, 5 speed
+	30	shootCircleSeries: over 2s, 0.5s intervals, 14 Bullet 1 per shot, at -80 degree angle, 5 speed
+	35	shootCircleSeries: over 2s, 0.3s intervals, 17 Bullet 1 per shot, at -80 degree angle, 5 speed
+	39	shootCircleSeries: over 2s, 0.5s intervals, 26 Bullet 1 per shot, at -80 degree angle, 5 speed
+
+eye3: "ships/Copper eye"
+	8	moveTo: (1.1, 0.6)
+	8	moveTo: (0.1, -0.1), over 40 seconds
+	10	shootSineCircleSeries: over 5s, 0.3s intervals, 14 Bullet 1 per shot, 4 speed, max 15 degrees of rotation
+	20	shootSineCircleSeries: over 5s, 0.3s intervals, 14 Bullet 1 per shot, 4 speed, max 15 degrees of rotation
+	30	shootSineCircleSeries: over 5s, 0.3s intervals, 14 Bullet 1 per shot, 4 speed, max 30 degrees of rotation
