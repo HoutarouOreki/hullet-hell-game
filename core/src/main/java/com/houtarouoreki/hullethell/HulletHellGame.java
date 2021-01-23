@@ -130,10 +130,8 @@ public class HulletHellGame extends ScreenBasedGame {
                 "collision-loop"
         ));
         loadMusicAndConfigs(assetManager, Arrays.asList(
-                "To Eris - Social Blast",
                 "One Man Symphony - Beat 02",
                 "One Man Symphony - First Night In Space",
-                "One Man Symphony - Into The Unknown",
                 "One Man Symphony - Ambush At The Dawn",
                 "One Man Symphony - Transmission"
         ));
