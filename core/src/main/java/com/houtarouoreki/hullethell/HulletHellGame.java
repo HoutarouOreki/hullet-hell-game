@@ -30,6 +30,7 @@ import org.mini2Dx.ui.UiThemeLoader;
 import org.mini2Dx.ui.style.UiTheme;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HulletHellGame extends ScreenBasedGame {
@@ -133,7 +134,8 @@ public class HulletHellGame extends ScreenBasedGame {
                 "One Man Symphony - Beat 02",
                 "One Man Symphony - First Night In Space",
                 "One Man Symphony - Into The Unknown",
-                "One Man Symphony - Ambush At The Dawn"
+                "One Man Symphony - Ambush At The Dawn",
+                "One Man Symphony - Transmission"
         ));
 
         loadItems(Arrays.asList(
@@ -155,7 +157,7 @@ public class HulletHellGame extends ScreenBasedGame {
                 "Bullet 1", "Player bullet 1",
                 "hologramBullet"));
 
-        loadExplosives(assetManager, Arrays.asList("Explosive"));
+        loadExplosives(assetManager, Collections.singletonList("Explosive"));
         loadShips(Arrays.asList(
                 "Enemy ship 1", "Copper eye",
                 "Ship 1",
@@ -174,7 +176,8 @@ public class HulletHellGame extends ScreenBasedGame {
         loadStages(assetManager, Arrays.asList("Stage 1", "Stage 2",
                 "Act 1",
                 "Act 2a",
-                "Act 2b"
+                "Act 2b",
+                "Act 3"
         ));
 
         Gdx.input.setInputProcessor(inputManager);
