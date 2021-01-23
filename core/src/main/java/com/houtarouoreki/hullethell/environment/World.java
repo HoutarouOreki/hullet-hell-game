@@ -129,7 +129,7 @@ public class World {
             collisionSoundManager.update(delta);
             bufferedTime -= time_step_duration;
             ticksPassed++;
-            scriptedStageManager.update(delta);
+            scriptedStageManager.update(time_step_duration);
             renderingManager.update(delta);
         }
     }
